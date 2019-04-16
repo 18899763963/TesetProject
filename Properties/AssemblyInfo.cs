@@ -22,10 +22,10 @@ using System.Runtime.InteropServices;
 
 // Review the values of the assembly attributes
 
-[assembly:AssemblyTitle("MasterDetailSample")]
+[assembly: AssemblyTitle("SmallManagerTitle")]
 [assembly:AssemblyDescription("")]
 [assembly:AssemblyCompany("")]
-[assembly:AssemblyProduct("MasterDetailSample")]
+[assembly: AssemblyProduct("SmallManagerProduct")]
 [assembly:AssemblyCopyright("Copyright ©  2014")]
 [assembly:AssemblyTrademark("")]
 

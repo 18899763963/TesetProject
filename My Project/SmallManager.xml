@@ -4,18 +4,18 @@
         <name>SmallManager</name>
     </assembly>
     <members>
-        <member name="F:SmallManagerSpace.PropertySettingBox.components">
+        <member name="F:SmallManagerSpace.LoginMessageBox.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.PropertySettingBox.Dispose(System.Boolean)">
+        <member name="M:SmallManagerSpace.LoginMessageBox.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:SmallManagerSpace.PropertySettingBox.InitializeComponent">
+        <member name="M:SmallManagerSpace.LoginMessageBox.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
@@ -89,18 +89,6 @@
               查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Raws.Resource.Enum">
-             <summary>
-               查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-16&quot;?&gt;
-            
-            &lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xdo=&quot;urn:pxp&quot; xmlns:ms=&quot;urn:schemas-microsoft-com:xslt&quot; xmlns:stack=&quot;urn:anything&quot; xmlns:xdb=&quot;http://xmlns.oracle.com/xdb&quot; xmlns:w=&quot;http://www.fiberhome.com.cn/board/control&quot;&gt;  
-              &lt;!--***********************简单类型***********************--&gt;
-              &lt;xsd:simpleType name=&quot;IMA_Clock_Mode&quot;&gt;
-                &lt;xsd:restriction base=&quot;xsd:byte&quot;&gt;
-                  &lt;xsd:length value=&quot;1&quot;/&gt;
-                  &lt;xsd:enumeration w:en=&quot;Sys_Clock&quot; w:cn=&quot;系统时钟&quot; value=&quot;00 [字符串的其余部分被截断]&quot;; 的本地化字符串。
-             </summary>
-        </member>
         <member name="P:SmallManagerSpace.Raws.Resource.Green">
             <summary>
               查找 System.Drawing.Bitmap 类型的本地化资源。
@@ -137,137 +125,155 @@
                   &lt;xsl:apply-template [字符串的其余部分被截断]&quot;; 的本地化字符串。
              </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.ComRunDatas.BussnessInitCommonData(DevComponents.DotNetBar.TabControl,System.String)">
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXml(System.Data.DataTable)">
             <summary>
-            初始化程序运行的公共数据
+            将DataTable对象转换成XML字符串
+            </summary>
+            <param name="dt">DataTable对象</param>
+            <returns>XML字符串</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXml(System.Data.DataSet,System.Int32)">
+            <summary>
+            将DataSet对象中指定的Table转换成XML字符串
+            </summary>
+            <param name="ds">DataSet对象</param>
+            <param name="tableIndex">DataSet对象中的Table索引</param>
+            <returns>XML字符串</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXml(System.Data.DataSet)">
+            <summary>
+            将DataSet对象转换成XML字符串
+            </summary>
+            <param name="ds">DataSet对象</param>
+            <returns>XML字符串</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXml(System.Data.DataView)">
+            <summary>
+            将DataView对象转换成XML字符串
+            </summary>
+            <param name="dv">DataView对象</param>
+            <returns>XML字符串</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXmlFile(System.Data.DataTable,System.String)">
+            <summary>
+            将DataSet对象数据保存为XML文件
+            </summary>
+            <param name="dt">DataSet</param>
+            <param name="xmlFilePath">XML文件路径</param>
+            <returns>bool值</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXmlFile(System.Data.DataSet,System.Int32,System.String)">
+            <summary>
+            将DataSet对象中指定的Table转换成XML文件
+            </summary>
+            <param name="ds">DataSet对象</param>
+            <param name="tableIndex">DataSet对象中的Table索引</param>
+            <param name="xmlFilePath">xml文件路径</param>
+            <returns>bool]值</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXmlFile(System.Data.DataSet,System.String)">
+            <summary>
+            将DataSet对象转换成XML文件
+            </summary>
+            <param name="ds">DataSet对象</param>
+            <param name="xmlFilePath">xml文件路径</param>
+            <returns>bool]值</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.DataToXml.CDataToXmlFile(System.Data.DataView,System.String)">
+            <summary>
+            将DataView对象转换成XML文件
+            </summary>
+            <param name="dv">DataView对象</param>
+            <param name="xmlFilePath">xml文件路径</param>
+            <returns>bool]值</returns>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.XmlToData">
+            <summary>
+            XML形式的字符串、XML文江转换成DataSet、DataTable格式
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.ComRunDatas.InitBaseAndEnumData">
+        <member name="M:SmallManagerSpace.Resources.XmlToData.CXmlToDataSet(System.String)">
             <summary>
-            初始化程序运行的Base,Enum公共数据
+            将Xml内容字符串转换成DataSet对象
             </summary>
+            <param name="xmlStr">Xml内容字符串</param>
+            <returns>DataSet对象</returns>
         </member>
-        <member name="T:SmallManagerSpace.Resources.BaseData">
+        <member name="M:SmallManagerSpace.Resources.XmlToData.CXmlToDatatTable(System.String,System.Int32)">
             <summary>
-            用于存储base文件中的数据
+            将Xml字符串转换成DataTable对象
             </summary>
+            <param name="xmlStr">Xml字符串</param>
+            <param name="tableIndex">Table表索引</param>
+            <returns>DataTable对象</returns>
         </member>
-        <member name="M:SmallManagerSpace.Resources.BaseDataOperation.GetBaseElementString(System.Xml.Linq.XElement)">
+        <member name="M:SmallManagerSpace.Resources.XmlToData.CXmlToDatatTable(System.String)">
             <summary>
-            通过文件根节点得到数据
+            将Xml字符串转换成DataTable对象
             </summary>
-            <param name="xRootElements">文件根节点</param>
-            <returns>返回数据列表</returns>
+            <param name="xmlStr">Xml字符串</param>
+            <returns>DataTable对象</returns>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.CreateConfigFileInfo">
+        <member name="M:SmallManagerSpace.Resources.XmlToData.CXmlFileToDataSet(System.String)">
             <summary>
-             创建对象configfile
+            读取Xml文件信息,并转换成DataSet对象
             </summary>
+            <remarks>
+            DataSet ds = new DataSet();
+            ds = CXmlFileToDataSet("/XML/upload.xml");
+            </remarks>
+            <param name="xmlFilePath">Xml文件地址</param>
+            <returns>DataSet对象</returns>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.XmlSerializeToStructFile(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.XmlToData.CXmlToDataTable(System.String,System.Int32)">
             <summary>
-             将对象数据序列化
+            读取Xml文件信息,并转换成DataTable对象
             </summary>
+            <param name="xmlFilePath">xml文江路径</param>
+            <param name="tableIndex">Table索引</param>
+            <returns>DataTable对象</returns>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.UpdateValueOfStructItem(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.XmlToData.CXmlToDataTable(System.String)">
             <summary>
-             修改StructItem中数据
+            读取Xml文件信息,并转换成DataTable对象
             </summary>
+            <param name="xmlFilePath">xml文江路径</param>
+            <returns>DataTable对象</returns>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.UpdateValueOfParameterItem(System.String,System.String)">
-            <summary>
-             修改ParameterItem中数据
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeSetting">
-            <summary>
-            设置该页的名称，树的列，图片，字体等
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetStateOfProcessNode(DevComponents.AdvTree.Node,System.String)">
-            <summary>
-            判断是否需要变更树的节点
-            </summary>
-            <param name="selectedNode">选择的节点</param>
-            <param name="NowSelectedValue">选择的节点值</param>
-            <returns>等于0:不需要更新树的节点</returns>
-            <returns>小于0:需要删除树的节点</returns>
-            <returns>大于0:需要添加树的节点</returns>
-        </member>
-        <member name="T:SmallManagerSpace.Resources.EntitySerializeHelper">
-            <summary>
-            XML序列化公共处理类
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.XmlSerializeOnFile``1(``0)">
-            <summary>
-            将实体对象转换成XML文件
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="obj">实体对象</param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.XmlSerializeOnString``1(``0,System.String)">
-            <summary>
-            将实体对象转换成XML
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="obj">实体对象</param>
-            <param name="fileName">文件路径</param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.DESerializerOnFile``1(System.String)">
-            <summary>
-            将XML文件转换成实体对象
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.DESerializerOnString``1(System.String)">
-            <summary>
-            将XML转换成实体对象
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="strXML">XML</param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumUserDataOperation.XmlSerializeToEnumFile(System.String,System.String)">
-            <summary>
-             将对象数据序列化
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumUserDataOperation.addValueOfsimpleTypeItemWithout(System.String,System.String,System.String)">
-            <summary>
-             添加数据到simpleType，除enumeration部分
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumUserDataOperation.updateValueOfsimpleTypeItem(System.String,System.String)">
-            <summary>
-             修改simpleTypeItem数据
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EventLogClass.SaveErrorEventLog(System.String,System.String,System.String)">
-            *****第二种*******/
-        </member>
-        <member name="F:MasterDetailSample.LoadDataBox.components">
+        <member name="F:MasterDetailSample.MessageBox.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:MasterDetailSample.LoadDataBox.Dispose(System.Boolean)">
+        <member name="M:MasterDetailSample.MessageBox.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:MasterDetailSample.LoadDataBox.InitializeComponent">
+        <member name="M:MasterDetailSample.MessageBox.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="M:MasterDetailSample.frmMain.SaveFileToolStripMenuItem_Click(System.Object,System.EventArgs)">
+        <member name="M:MasterDetailSample.frmMain.SkipMaxLine(System.Int32)">
             <summary>
-            遍历树中节点，生成.h文件
+            超过最大行数，这删除文本框中溢出行
             </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
+            <param name="MaxLines"></param>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.ReceiveBuffChangeSubscriber">
+            <summary>
+            Telnet登陆成功后，订阅事件，当有新的TCP内容后，触发该事件
+            </summary>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.CmdPing(System.String)">
+            <summary>
+            调用cmd的ping命令测试某ip是否能通
+            </summary>
+            <param name="strIp">目标ip</param>
+            <returns>ping的结果</returns>
         </member>
         <member name="T:My.Resources.Resources">
             <summary>
@@ -284,6 +290,12 @@
               重写当前线程的 CurrentUICulture 属性
               重写当前线程的 CurrentUICulture 属性。
             </summary>
+        </member>
+        <member name="M:TelnetNameSpace.TelnetClass.receive_thread(System.Object)">
+             <summary>
+            字符接收函数,并且过滤不显示的字符串
+             </summary>
+             <param name="o"></param>
         </member>
     </members>
 </doc>

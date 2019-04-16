@@ -6,11 +6,13 @@
     <ProjectGuid>{9E5E0E94-7CE6-4EE8-9399-DC8A800578DC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <StartupObject>MasterDetailSample.My.MyApplication</StartupObject>
-    <RootNamespace>MasterDetailSample</RootNamespace>
-    <AssemblyName>MasterDetailSample</AssemblyName>
+    <RootNamespace>SmallManagerSpace</RootNamespace>
+    <AssemblyName>SmallManager</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,13 +24,12 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
@@ -36,6 +37,9 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>MasterDetailSample.xml</DocumentationFile>
     <NOWARN>1591,660,661</NOWARN>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DefineConstants>
+    </DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,8 +48,11 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>MasterDetailSample.xml</DocumentationFile>
+    <DocumentationFile>SmallManager.xml</DocumentationFile>
     <NOWARN>1591,660,661</NOWARN>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DefineConstants>
+    </DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -60,20 +67,80 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Raws\imageready cs2.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DocumentationFile>MasterDetailSample.xml</DocumentationFile>
+    <NoWarn>1591,660,661</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DocumentationFile>MasterDetailSample.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1591,660,661</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>MasterDetailSample.xml</DocumentationFile>
+    <NoWarn>1591,660,661</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>MasterDetailSample.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1591,660,661</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevComponents.DotNetBar.SuperGrid, Version=14.1.0.28, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL" />
-    <Reference Include="DevComponents.DotNetBar2, Version=14.1.0.28, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL" />
-    <Reference Include="DevComponents.Instrumentation, Version=14.1.0.28, Culture=neutral, PublicKeyToken=f90dc37c26666a67" />
+    <Reference Include="DevComponents.DotNetBar2, Version=14.0.0.15, Culture=neutral, PublicKeyToken=c39c3242a43eee2b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Raws\DevComponents.DotNetBar2.dll</HintPath>
+    </Reference>
+    <Reference Include="IrisSkin4">
+      <HintPath>C:\Windows\System32\IrisSkin4.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="mscorlib" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Spire.Common, Version=2.2.2.61040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.License, Version=1.3.7.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=5.2.3.2040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.XLS, Version=9.2.2.61040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.XLS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -88,17 +155,40 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Resource.Designer.cs">
+    <Compile Include="Forms\PropertySettingBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PropertySettingBox.Designer.cs">
+      <DependentUpon>PropertySettingBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SendFileToDiskMessageBoxcs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SendFileToDiskMessageBoxcs.Designer.cs">
+      <DependentUpon>SendFileToDiskMessageBoxcs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TipMessageBoxcs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TipMessageBoxcs.Designer.cs">
+      <DependentUpon>TipMessageBoxcs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Raws\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="XMLFileClass.cs" />
-    <Compile Include="Forms\SmallManage.cs">
+    <Compile Include="Forms\LoadDataBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SmallManage.Designer.cs">
-      <DependentUpon>SmallManage.cs</DependentUpon>
+    <Compile Include="Forms\LoadDataBox.Designer.cs">
+      <DependentUpon>LoadDataBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GenCodeTools.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GenCodeTools.Designer.cs">
+      <DependentUpon>GenCodeTools.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,24 +206,173 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="TelnetClass.cs" />
+    <Compile Include="Resources\ComRunDatas\ComRunDatas.cs" />
+    <Compile Include="Resources\EntityModels\BaseDatas.cs" />
+    <Compile Include="Resources\EntityModels\StructDatas.cs" />
+    <Compile Include="Resources\EntityModels\EnumDatas.cs" />
+    <Compile Include="Resources\EntityVsXml\EntityToXml.cs" />
+    <Compile Include="Resources\GUIModels\ComBoxObj.cs" />
+    <Compile Include="Resources\GUIModels\PropertyGridObj.cs" />
+    <Compile Include="Resources\GUIModels\TabalControlObj.cs" />
+    <Compile Include="Resources\GUIModels\AdvTreeObj.cs" />
+    <Compile Include="Resources\GUIVsEntity\AdvTreeToEntity.cs" />
+    <Compile Include="Resources\GUIVsEntity\EntityToAdvTree.cs" />
+    <Compile Include="Resources\SerializeModel\EntitySerializeHelper.cs" />
+    <Compile Include="Resources\PathStringADU\PathFileADU.cs" />
+    <Compile Include="Resources\EntityModels\EnumUserDatas.cs" />
+    <Compile Include="Resources\EventLog\EventLogClass.cs" />
+    <Compile Include="Resources\EntityVsXls\EntityToXls.cs" />
+    <Compile Include="Resources\HeadFileToEntity\HeadFileToEntity.cs" />
+    <Compile Include="Resources\PropertyGrid\PropertyGridClass.cs" />
+    <Compile Include="Resources\StringOperation\StringOperation.cs" />
+    <Compile Include="Resources\PathStringADU\TransformFileInterface.cs" />
+    <Compile Include="Resources\XmlToXls\XmlToXls.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\SmallManage.resx">
-      <DependentUpon>SmallManage.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SendFileToDiskMessageBoxcs.resx">
+      <DependentUpon>SendFileToDiskMessageBoxcs.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GenCodeTools.resx">
+      <DependentUpon>GenCodeTools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PropertySettingBox.resx">
+      <DependentUpon>PropertySettingBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TipMessageBoxcs.resx">
+      <DependentUpon>TipMessageBoxcs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx" />
+    <EmbeddedResource Include="obj\Debug\MasterDetailSample.frmMain.resources" />
+    <EmbeddedResource Include="obj\Debug\SmallManagerSpace.Forms.SendFileToDiskMessageBoxcs.resources" />
+    <EmbeddedResource Include="obj\Debug\SmallManagerSpace.Forms.TipMessageBoxcs.resources" />
+    <EmbeddedResource Include="obj\Debug\SmallManagerSpace.My_Project.Resources.resources" />
+    <EmbeddedResource Include="obj\Debug\SmallManagerSpace.Properties.Resources.resources" />
+    <EmbeddedResource Include="obj\Debug\SmallManagerSpace.Raws.Resource.resources" />
+    <EmbeddedResource Include="obj\Release\MasterDetailSample.frmMain.resources" />
+    <EmbeddedResource Include="obj\Release\MasterDetailSample.MessageBox.resources" />
+    <EmbeddedResource Include="obj\Release\SmallManagerSpace.Forms.SendFileToDiskMessageBoxcs.resources" />
+    <EmbeddedResource Include="obj\Release\SmallManagerSpace.Forms.TipMessageBoxcs.resources" />
+    <EmbeddedResource Include="obj\Release\SmallManagerSpace.LoginMessageBox.resources" />
+    <EmbeddedResource Include="obj\Release\SmallManagerSpace.My_Project.Resources.resources" />
+    <EmbeddedResource Include="obj\Release\SmallManagerSpace.Properties.Resources.resources" />
+    <EmbeddedResource Include="obj\Release\SmallManagerSpace.Raws.Resource.resources" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource.resx">
+    <EmbeddedResource Include="Raws\Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoadDataBox.resx">
+      <DependentUpon>LoadDataBox.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="bin\Debug\AutoGen.xlsx" />
+    <None Include="bin\Debug\base.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="bin\Debug\enum.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="bin\Debug\Skins\Calmness.ssk" />
+    <None Include="bin\Debug\Skins\CalmnessColor1.ssk" />
+    <None Include="bin\Debug\Skins\CalmnessColor2.ssk" />
+    <None Include="bin\Debug\Skins\DeepCyan.ssk" />
+    <None Include="bin\Debug\Skins\DeepGreen.ssk" />
+    <None Include="bin\Debug\Skins\DeepOrange.ssk" />
+    <None Include="bin\Debug\Skins\DiamondBlue.ssk" />
+    <None Include="bin\Debug\Skins\DiamondGreen.ssk" />
+    <None Include="bin\Debug\Skins\DiamondOlive.ssk" />
+    <None Include="bin\Debug\Skins\DiamondPurple.ssk" />
+    <None Include="bin\Debug\Skins\DiamondRed.ssk" />
+    <None Include="bin\Debug\Skins\Eighteen.ssk" />
+    <None Include="bin\Debug\Skins\EighteenColor1.ssk" />
+    <None Include="bin\Debug\Skins\EighteenColor2.ssk" />
+    <None Include="bin\Debug\Skins\Emerald.ssk" />
+    <None Include="bin\Debug\Skins\EmeraldColor1.ssk" />
+    <None Include="bin\Debug\Skins\EmeraldColor2.ssk" />
+    <None Include="bin\Debug\Skins\EmeraldColor3.ssk" />
+    <None Include="bin\Debug\Skins\GlassBrown.ssk" />
+    <None Include="bin\Debug\Skins\GlassGreen.ssk" />
+    <None Include="bin\Debug\Skins\GlassOrange.ssk" />
+    <None Include="bin\Debug\Skins\Longhorn.ssk" />
+    <None Include="bin\Debug\Skins\MacOS.ssk" />
+    <None Include="bin\Debug\Skins\Midsummer.ssk" />
+    <None Include="bin\Debug\Skins\MidsummerColor1.ssk" />
+    <None Include="bin\Debug\Skins\MidsummerColor2.ssk" />
+    <None Include="bin\Debug\Skins\MidsummerColor3.ssk" />
+    <None Include="bin\Debug\Skins\mp10.ssk" />
+    <None Include="bin\Debug\Skins\mp10green.ssk" />
+    <None Include="bin\Debug\Skins\mp10maroon.ssk" />
+    <None Include="bin\Debug\Skins\mp10mulberry.ssk" />
+    <None Include="bin\Debug\Skins\mp10pink.ssk" />
+    <None Include="bin\Debug\Skins\mp10purple.ssk" />
+    <None Include="bin\Debug\Skins\MSN.ssk" />
+    <None Include="bin\Debug\Skins\office2007.ssk" />
+    <None Include="bin\Debug\Skins\OneBlue.ssk" />
+    <None Include="bin\Debug\Skins\OneCyan.ssk" />
+    <None Include="bin\Debug\Skins\OneGreen.ssk" />
+    <None Include="bin\Debug\Skins\OneOrange.ssk" />
+    <None Include="bin\Debug\Skins\Page.ssk" />
+    <None Include="bin\Debug\Skins\PageColor1.ssk" />
+    <None Include="bin\Debug\Skins\PageColor2.ssk" />
+    <None Include="bin\Debug\Skins\RealOne.ssk" />
+    <None Include="bin\Debug\Skins\Silver.ssk" />
+    <None Include="bin\Debug\Skins\SilverColor1.ssk" />
+    <None Include="bin\Debug\Skins\SilverColor2.ssk" />
+    <None Include="bin\Debug\Skins\SportsBlack.ssk" />
+    <None Include="bin\Debug\Skins\SportsBlue.ssk" />
+    <None Include="bin\Debug\Skins\SportsCyan.ssk" />
+    <None Include="bin\Debug\Skins\SportsGreen.ssk" />
+    <None Include="bin\Debug\Skins\SportsOrange.ssk" />
+    <None Include="bin\Debug\Skins\SteelBlack.ssk" />
+    <None Include="bin\Debug\Skins\SteelBlue.ssk" />
+    <None Include="bin\Debug\Skins\vista1.ssk" />
+    <None Include="bin\Debug\Skins\vista1_green.ssk" />
+    <None Include="bin\Debug\Skins\Vista2_color1.ssk" />
+    <None Include="bin\Debug\Skins\Vista2_color2.ssk" />
+    <None Include="bin\Debug\Skins\Vista2_color3.ssk" />
+    <None Include="bin\Debug\Skins\Vista2_color4.ssk" />
+    <None Include="bin\Debug\Skins\Vista2_color5.ssk" />
+    <None Include="bin\Debug\Skins\Vista2_color6.ssk" />
+    <None Include="bin\Debug\Skins\Vista2_color7.ssk" />
+    <None Include="bin\Debug\Skins\Warm.ssk" />
+    <None Include="bin\Debug\Skins\WarmColor1.ssk" />
+    <None Include="bin\Debug\Skins\WarmColor2.ssk" />
+    <None Include="bin\Debug\Skins\WarmColor3.ssk" />
+    <None Include="bin\Debug\Skins\Wave.ssk" />
+    <None Include="bin\Debug\Skins\WaveColor1.ssk" />
+    <None Include="bin\Debug\Skins\WaveColor2.ssk" />
+    <None Include="bin\Debug\Skins\XPBlue.ssk" />
+    <None Include="bin\Debug\Skins\XPGreen.ssk" />
+    <None Include="bin\Debug\Skins\XPOrange.ssk" />
+    <None Include="bin\Debug\Skins\XPSilver.ssk" />
+    <None Include="bin\Debug\SmallManager.exe.config" />
+    <None Include="bin\Debug\vsE81.tmp" />
+    <None Include="My Project\Settings.settings" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\MasterDetailSample.csproj.CopyComplete" />
+    <None Include="obj\Debug\MasterDetailSample.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\MasterDetailSample.csproj.GenerateResource.cache" />
+    <None Include="obj\Debug\MasterDetailSample.csprojAssemblyReference.cache" />
+    <None Include="obj\Release\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Release\MasterDetailSample.csproj.CopyComplete" />
+    <None Include="obj\Release\MasterDetailSample.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Release\MasterDetailSample.csproj.GenerateResource.cache" />
+    <None Include="My Project\packages.config" />
+    <None Include="packages\FreeSpire.XLS.9.2.0\.signature.p7s" />
+    <None Include="packages\FreeSpire.XLS.9.2.0\FreeSpire.XLS.9.2.0.nupkg" />
+    <None Include="Raws\Base_Enum.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.cs</LastGenOutput>
@@ -143,18 +382,90 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\Tamplate_XSL.xsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\books.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tamplate_XSL.xsl">
+    <None Include="Raws\enum.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Setting\App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Raws\Tamplate_XSL.xsl">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\BlockIco.ico" />
+    <Content Include="bin\Debug\GenCSource.h" />
+    <Content Include="bin\Debug\imageready cs2.ico" />
+    <Content Include="bin\Debug\IrisSkin4.dll" />
+    <Content Include="bin\Debug\MasterDetailSample.xml" />
+    <Content Include="bin\Debug\SmallManager.exe" />
+    <Content Include="bin\Debug\SmallManager.pdb" />
+    <Content Include="bin\Debug\Spire.Common.dll" />
+    <Content Include="bin\Debug\Spire.Common.xml" />
+    <Content Include="bin\Debug\Spire.License.dll" />
+    <Content Include="bin\Debug\Spire.Pdf.dll" />
+    <Content Include="bin\Debug\Spire.Pdf.xml" />
+    <Content Include="bin\Debug\Spire.XLS.dll" />
+    <Content Include="bin\Debug\Spire.XLS.xml" />
+    <Content Include="bin\Debug\StructItems.xml" />
+    <Content Include="MasterDetailSample.xml" />
+    <Content Include="My Project\MasterDetailSample.xml" />
+    <Content Include="My Project\Application.myapp" />
+    <Content Include="obj\Debug\MasterDetailSample.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\SmallManager.exe" />
+    <Content Include="obj\Debug\SmallManager.pdb" />
+    <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <Content Include="obj\Debug\TempPE\Raws.Resource.Designer.cs.dll" />
+    <Content Include="obj\Release\MasterDetailSample.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Release\SmallManager.exe" />
+    <Content Include="obj\Release\SmallManager.pdb" />
+    <Content Include="obj\Release\TempPE\Properties.Resources.Designer.cs.dll" />
+    <Content Include="obj\Release\TempPE\Raws.Resource.Designer.cs.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net20\Spire.Common.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net20\Spire.Common.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net20\Spire.License.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net20\Spire.Pdf.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net20\Spire.Pdf.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net20\Spire.XLS.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net20\Spire.XLS.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.Common.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.Common.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.License.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.Pdf.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.Pdf.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.XLS.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net40\Spire.XLS.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.Common.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.Common.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.License.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.License.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.Pdf.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.Pdf.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.XLS.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\net46\Spire.XLS.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.License.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.License.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.Pdf.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.Pdf.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.XLS.dll" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.XLS.xml" />
+    <Content Include="packages\FreeSpire.XLS.9.2.0\license.txt" />
+    <Content Include="My Project\SmallManager.xml" />
+    <None Include="Raws\BlockIco.ico" />
+    <None Include="Raws\ParameterIco.ico" />
+    <None Include="Raws\PathIco.ico" />
+    <None Include="Raws\Green.png" />
+    <None Include="Raws\Red.png" />
+    <Content Include="Raws\imageready cs2.ico" />
+    <Content Include="Setting\MasterDetailSample.xml" />
+    <Content Include="Setting\SmallManager.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="bin\x64\Debug\" />
+    <Folder Include="bin\x64\Release\" />
+    <Folder Include="bin\x86\Debug\" />
+    <Folder Include="bin\x86\Release\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
