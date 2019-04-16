@@ -1,0 +1,1313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xdo="urn:pxp" xmlns:ms="urn:schemas-microsoft-com:xslt" xmlns:stack="urn:anything" xmlns:xdb="http://xmlns.oracle.com/xdb" xmlns:w="http://www.fiberhome.com.cn/board/control">  
+  <xsd:simpleType name="TIME4BYTE">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="configBlockName">
+    <xsd:restriction base="xsd:hexBinary"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE4">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE1208">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1208"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE253">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="253"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="decimal_i1d1">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="stataddress">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="15"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="WORD">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="DWORD">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE3">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="3"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE5">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="5"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE6">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE7">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="7"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE8">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="8"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE9">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="9"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE10">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="10"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE11">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="11"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE12">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="12"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE13">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="13"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE14">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="14"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE15">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="15"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE16">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="16"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE17">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="17"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE18">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="18"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE20">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="20"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE21">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="21"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE22">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="22"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE23">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="23"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE24">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="24"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE26">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="26"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE28">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="28"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE29">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="29"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE30">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="30"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE31">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="31"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE32">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="32"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE34">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="34"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE35">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="35"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE36">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="36"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE37">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="37"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE39">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="39"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE40">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="40"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE41">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="41"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE42">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="42"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE45">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="45"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE48">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="48"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE50">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="50"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE52">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="52"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE53">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="53"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE60">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="60"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE62">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="62"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE63">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="63"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE64">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="64"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE68">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="68"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE70">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="70"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE72">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="72"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE73">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="73"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE74">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="74"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE80">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="80"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE82">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="82"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE83">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="83"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE85">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="85"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE92">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="92"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE100">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE101">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="101"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE128">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="128"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE153">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="153"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE160">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="160"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE180">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="180"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE176">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="176"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE192">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="192"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE200">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="200"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE300">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="300"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE150">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="150"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE207">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="207"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UNBOUNDED">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="IPv4">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="IPv6">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="MACAdress">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Byte6ToIPv4">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Byte6ToUDec4">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Byte6ToHex">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Byte6ToNa">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE71">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="71"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE51">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="51"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE106">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="106"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE27">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="27"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE65">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="65"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE99">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="99"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE240">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="240"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE81">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="81"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UnsignedHex">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="RANGE4">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE2">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE86">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="86"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE93">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="93"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE25">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="25"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE79">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="79"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE66">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="66"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE38">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="38"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE256">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="256"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE44">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="44"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE19">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="19"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE87">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="87"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE288">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="288"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE174">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="174"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE516">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="516"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE163">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="163"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE800">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="800"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE403">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="403"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE404">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="404"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="SignedDEC">
+    <xsd:restriction base="xsd:integer"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE91">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="91"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE540">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="540"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE49">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="49"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE43">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="43"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE157">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="157"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE151">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="151"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE169">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="169"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE950">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="950"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE182">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="182"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE130">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="130"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE58">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="58"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE57">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="57"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE181">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="181"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ASCII">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="DateTime">
+    <xsd:restriction base="xsd:dateTime"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="HEX">
+    <xsd:restriction base="xsd:hexBinary"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="DEC">
+    <xsd:restriction base="xsd:integer"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="ULONG">
+    <xsd:restriction base="xsd:unsignedLong"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="UINT">
+    <xsd:restriction base="xsd:unsignedInt"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="HEXBlock">
+    <xsd:restriction base="xsd:hexBinary"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="option">
+    <xsd:restriction base="xsd:hexBinary"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Backup">
+    <xsd:restriction base="xsd:hexBinary"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE59">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="59"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE859">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="859"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE899">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="899"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="int">
+    <xsd:restriction base="xsd:int"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="union">
+    <xsd:restriction base="xsd:int"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE75">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="75"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE143">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="143"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE123">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="123"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE190">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="190"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE84">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="84"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE250">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="250"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Byte46">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="46"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE111">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="111"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE55">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="55"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE54">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="54"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE165">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="165"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Byte199">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="199"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE120">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="120"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ASCII_512">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="512"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="INT8">
+    <xsd:restriction base="xsd:int">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="OLT_VLAN_ITEM">
+    <xsd:restriction base="xsd:short">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="OLT_VLAN_ITEM_INDEX">
+    <xsd:restriction base="xsd:integer">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="OLT_VLAN_SERVICES_NAME">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="23"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="OLT_VLAN_ID">
+    <xsd:restriction base="xsd:short">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="OLT_VLAN_ADD_PORT_ITEM">
+    <xsd:restriction base="xsd:short">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE61">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="61"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="BYTE166">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="166"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE576">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="576"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String_20Bytes">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="20"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="LineNO_Pots">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="6"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Dscp_Value">
+    <xsd:restriction base="xsd:unsignedByte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE400">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="400"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Vlanid">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="RingSelect_Err">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Continuous_Magnification_Power">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AC_WaitResumeOrNot">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="NNI_WaitResumeOrNot">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE112">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="112"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE107">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="107"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE12817">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="12817"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE78">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="78"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE131">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="131"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="J0_data">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="15"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="PMMASK">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="90"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ALMMASK">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="104"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Line_J0_Value">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="32"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BDINF">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="5"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TIME">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="7"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BDINFEX">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="10"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Reserve">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="83"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="SD_LIMIT">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="SD_LIMITPARA1">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="RS_ES_LIMIT">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="RS_ES_LIMITPARA">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CRC">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE1187">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1187"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TS">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="RTP_swith">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="E1_TPYE">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="tdm_clock_recovery">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="E1_Interface_Type">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CRC_limit">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="lofs_limit">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="lofsclear_limit">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ES_limit">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="backup1">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="28"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="backup">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="27"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="backup2">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="25"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="myproity">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TS_GROUP_ID">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Power_adjust_mode">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="O_VLAN">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="I_VLAN">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Start_Frequency">
+    <xsd:restriction base="xsd:integer">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Stop_frenquency">
+    <xsd:restriction base="xsd:integer">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE76">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="76"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+ 
+  <xsd:simpleType name="OverlayEnable">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="VLAN_ID">
+    <xsd:restriction base="xsd:int">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Dscp_XCUM3_Enable">
+    <xsd:restriction base="xsd:boolean">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Port_Config">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="20"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="west_slot_no_xcum2">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ovlan">
+    <xsd:restriction base="xsd:unsignedInt">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ivlan">
+    <xsd:restriction base="xsd:unsignedInt">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="byte1">
+    <xsd:restriction base="xsd:int">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="PTN_Protect_Gpid">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Ingress">
+    <xsd:restriction base="xsd:unsignedLong">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Egress">
+    <xsd:restriction base="xsd:unsignedLong">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tunnelid">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Lspid">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="VC_ID">
+    <xsd:restriction base="xsd:unsignedLong">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Broad_Cast_Channel_Num">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BackUp4">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="backup8">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="8"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BETY90">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="90"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE90">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="90"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Twamp_Test_session_num">
+    <xsd:restriction base="xsd:unsignedInt">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="unsignedint">
+    <xsd:restriction base="xsd:unsignedInt">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="u_int16_t">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Backup148">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="148"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="HQOS_QUEUE_INDEX_ID">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BYTE512">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="512"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BackUp3">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="3"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="unknown_frame_policy">
+    <xsd:restriction base="xsd:int">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="sd_alarm_threshold_X">
+    <xsd:restriction base="xsd:unsignedByte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="sd_alarm_threshold_Y">
+    <xsd:restriction base="xsd:unsignedByte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="sd_cancel_alarm_threshold_X">
+    <xsd:restriction base="xsd:unsignedByte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="sd_cancel_alarm_threshold_Y">
+    <xsd:restriction base="xsd:unsignedByte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="sd_decision_window_per_second">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="pvid_setting">
+    <xsd:restriction base="xsd:unsignedShort">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="backup5">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="5"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Subrack_Number">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="SN">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="16"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Production_Date">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="12"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Material_Number">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="18"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Subrack_Number_or_Group_Number">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Slot">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Fan_Gear">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Software_Version_Number">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="13"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Software_Programming_Time">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="11"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Card_Number">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="15"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Board_Number">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="15"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Subrack_Number_or_Slot">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Slot_Number">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="IPv6_16">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="16"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TESTGBKUTF8">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="E1_CONFIG_MPTN">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="a">
+    <xsd:restriction base="xsd:dateTime">
+      <xsd:length value="208"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="time">
+    <xsd:restriction base="xsd:unsignedLong">
+      <xsd:length value="4"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Power_LOS_Threshold">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Power_Low_Threshold">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Power_High_Threshold">
+    <xsd:restriction base="xsd:hexBinary">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BackUp1">
+    <xsd:restriction base="xsd:byte">
+      <xsd:length value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType> 
+</xsd:schema>

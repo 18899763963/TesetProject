@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MasterDetailSample</name>
+    </assembly>
+    <members>
+        <member name="T:MasterDetailSample.Resource">
+            <summary>
+              一个强类型的资源类，用于查找本地化的字符串等。
+            </summary>
+        </member>
+        <member name="P:MasterDetailSample.Resource.ResourceManager">
+            <summary>
+              返回此类使用的缓存的 ResourceManager 实例。
+            </summary>
+        </member>
+        <member name="P:MasterDetailSample.Resource.Culture">
+            <summary>
+              重写当前线程的 CurrentUICulture 属性
+              重写当前线程的 CurrentUICulture 属性。
+            </summary>
+        </member>
+        <member name="P:MasterDetailSample.Resource.Base_Enum">
+             <summary>
+               查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+            &lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xdo=&quot;urn:pxp&quot; xmlns:ms=&quot;urn:schemas-microsoft-com:xslt&quot; xmlns:stack=&quot;urn:anything&quot; xmlns:xdb=&quot;http://xmlns.oracle.com/xdb&quot; xmlns:w=&quot;http://www.fiberhome.com.cn/board/control&quot;&gt;  
+              &lt;xsd:simpleType name=&quot;TIME4BYTE&quot;&gt;
+                &lt;xsd:restriction base=&quot;xsd:hexBinary&quot;&gt;
+                  &lt;xsd:length value=&quot;4&quot;/&gt;
+                &lt;/xsd:restriction&gt;
+              &lt;/xsd:simpleType&gt;
+              &lt;xsd:simpleType name=&quot;configBlockName&quot;&gt;
+                &lt;xsd:restriction base=&quot;xsd [字符串的其余部分被截断]&quot;; 的本地化字符串。
+             </summary>
+        </member>
+        <member name="P:MasterDetailSample.Resource.Tamplate_XSL">
+             <summary>
+               查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+            &lt;xsl:stylesheet version=&quot;1.0&quot;    xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;  xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+              &lt;xsl:output method =&quot;xml&quot; version =&quot;1.0&quot; encoding =&quot;gb2312&quot; indent=&quot;yes&quot; /&gt;
+              &lt;xsl:param name=&quot;baseFile&quot;/&gt;
+              
+              &lt;xsl:template name=&quot;start&quot; match=&quot;node()&quot;&gt;
+                &lt;xsl:copy&gt;
+                  &lt;xsl:copy-of select=&quot;@*&quot; /&gt;
+                  &lt;xsl:apply-templates select=&quot;node()&quot; /&gt;
+                &lt;/xsl:copy&gt;
+              &lt;/xsl:template&gt;
+            
+              &lt;xsl:template match=&quot;Parameter&quot;&gt;
+                &lt;xsl: [字符串的其余部分被截断]&quot;; 的本地化字符串。
+             </summary>
+        </member>
+        <member name="T:My.Resources.Resources">
+            <summary>
+              一个强类型的资源类，用于查找本地化的字符串等。
+            </summary>
+        </member>
+        <member name="P:My.Resources.Resources.ResourceManager">
+            <summary>
+              返回此类使用的缓存的 ResourceManager 实例。
+            </summary>
+        </member>
+        <member name="P:My.Resources.Resources.Culture">
+            <summary>
+              使用此强类型资源类，为所有资源查找
+              重写当前线程的 CurrentUICulture 属性。
+            </summary>
+        </member>
+        <member name="M:TelnetNameSpace.TelnetClass.CmdPing(System.String)">
+            <summary>
+            调用cmd的ping命令测试某ip是否能通
+            </summary>
+            <param name="strIp">目标ip</param>
+            <returns>ping的结果</returns>
+        </member>
+    </members>
+</doc>
