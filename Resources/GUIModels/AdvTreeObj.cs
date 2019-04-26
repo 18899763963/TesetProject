@@ -167,9 +167,9 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 //3.判断选中节点的数据是否含有preinput=entry 变量
                 if (IsMatchedEntryVar(SelectedNodeData["name"]))
                 {
-                    //3. 根据变量的范围统一设定为节点的父节点内     
-                    int CountOfProcess = GetStateOfProcessNode(selectedNode, SelectedNodeData["value"]);
-                    //4.判断是否为PublicPreinput
+                    //4. 根据变量的范围统一设定为节点的父节点内     
+                    int CountOfProcess = GetStateOfProcessNode(selectedNode, SelectedNodeData["name"], SelectedNodeData["value"]);
+                    //5.判断是否为PublicPreinput
                     if ((SelectedNodeData["name"]).Equals(ComRunDatas.PublicPreinputName) && CountOfProcess != 0)
                     {
                         Dictionary<string, List<Node>> ListNode = GetMatchNodeOnAncestorTree(selectedNode, SelectedTagData["name"]);
@@ -433,42 +433,22 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 }
             }
         }
+        private void UpdateRegisterPreinputValue(string name, int value)
+        {
+            //1.注册entry变量的新值
+            ComRunDatas.RegisterPreinput[name] = value;
 
-        //private void AddMinusNodeOnAllTree(Dictionary<string, List<Node>> ListNode, string matchName, int preinputNumber)
-        //{
-        //    foreach (List<Node> listnode in ListNode.Values)
-        //    {
-        //        //1.增加节点
-        //        int listcount = listnode.Count();
-        //        if (preinputNumber > listcount)
-        //        {
-        //            for (int count = 0; count < (preinputNumber - listcount); count++)
-        //            {
-        //                //1.复制节点最后一个内容
-        //                Node OriginNode = listnode.LastOrDefault<Node>();
-        //                Node LastNode = OriginNode.DeepCopy();
-        //                //2.修改复制的节点内容 isRealChildNode ,NodeCount,ReviseName=preinput,
-        //                GetRevisedNode(LastNode, matchName, listcount + count);
-        //                //3.插入节点
-        //                OriginNode.Parent.Nodes.Insert(OriginNode.Index + count + 1, LastNode);
-        //            }
-        //        }
-        //        //2.删除节点
-        //        else if (preinputNumber < listcount)
-        //        {
-
-        //        }
-        //    }
-        //}
+        }
         /// <summary>
         /// 判断是否需要变更树的节点
         /// </summary>
         /// <param name="selectedNode">选择的节点</param>
+        /// <param name="PreinputName">匹配变量名称</param>
         /// <param name="NowSelectedValue">选择的节点值</param>
         /// <returns>等于0:不需要更新树的节点</returns>
         /// <returns>小于0:需要删除树的节点</returns>
         /// <returns>大于0:需要添加树的节点</returns>
-        private int GetStateOfProcessNode(Node selectedNode, string NowSelectedValue)
+        private int GetStateOfProcessNode(Node selectedNode,string PreinputName, string NowSelectedValue)
         {
             int stateProcess = 0;
             //值相同：返回0
@@ -483,6 +463,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     if (NowValueInt > 0 && BeforeValueInt > 0)
                     {
                         stateProcess = NowValueInt - BeforeValueInt;
+                        UpdateRegisterPreinputValue(PreinputName,NowValueInt);
                         return stateProcess;
                     }
                     else

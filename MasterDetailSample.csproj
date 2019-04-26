@@ -211,6 +211,7 @@
     <Compile Include="Resources\EntityModels\StructDatas.cs" />
     <Compile Include="Resources\EntityModels\EnumDatas.cs" />
     <Compile Include="Resources\EntityVsXml\EntityToXml.cs" />
+    <Compile Include="Resources\FileStringADU\FileStringADU.cs" />
     <Compile Include="Resources\GUIModels\ComBoxObj.cs" />
     <Compile Include="Resources\GUIModels\PropertyGridObj.cs" />
     <Compile Include="Resources\GUIModels\TabalControlObj.cs" />
