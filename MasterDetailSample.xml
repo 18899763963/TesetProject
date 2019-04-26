@@ -184,11 +184,12 @@
             设置该页的名称，树的列，图片，字体等
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetStateOfProcessNode(DevComponents.AdvTree.Node,System.String)">
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetStateOfProcessNode(DevComponents.AdvTree.Node,System.String,System.String)">
             <summary>
             判断是否需要变更树的节点
             </summary>
             <param name="selectedNode">选择的节点</param>
+            <param name="PreinputName">匹配变量名称</param>
             <param name="NowSelectedValue">选择的节点值</param>
             <returns>等于0:不需要更新树的节点</returns>
             <returns>小于0:需要删除树的节点</returns>

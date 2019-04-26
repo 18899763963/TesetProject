@@ -26,7 +26,8 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                         //2.通过节点数据得到StructItem对象
                         StructItem structItem = GetStructItemEntity(node, CID++);
                         foreach (Node childNode in node.Nodes)
-                        { //3.通过节点数据得到Parameter对象
+                        {
+                            //3.通过节点数据得到Parameter对象
                             Parameter parameter = GetParameterEntity(childNode, CID++);
                             structItem.parameterList.Add(parameter);
                         }

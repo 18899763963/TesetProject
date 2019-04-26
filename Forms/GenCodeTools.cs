@@ -2,6 +2,7 @@ using DevComponents.AdvTree;
 using DevComponents.DotNetBar;
 using SmallManagerSpace.Forms;
 using SmallManagerSpace.Resources;
+using SmallManagerSpace.Resources.FileStringADU;
 using SmallManagerSpace.Resources.GUIVsEntity;
 using System;
 using System.Collections.Generic;
@@ -175,8 +176,12 @@ namespace MasterDetailSample
                         {   //1.将当前树的数据转换为对象
                             AdvTreeToEntity advTreeToEntity = new AdvTreeToEntity();
                             advTreeToEntity.GetEntityByAdvTreeNode(CurrentAdvTree);
-                            //2.将当前树的数据放入header文件中
-                            EntityVsFile.GetFileFromEntity(ComRunDatas.SinkCFileName);
+                            //2.将当前树的数据放入header文件中                            
+                            string GenFileFullName = ComRunDatas.SinkWorkPath +@"\"+ ComRunDatas.SinkCFileName;
+                            EntityVsFile.GetFileFromEntity(GenFileFullName);
+                            //3.将文件结构体中的数组变量用数组值替换
+                            FileStringADU fileStringADU = new FileStringADU();
+                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComRunDatas.RegisterPreinput);
                             //3.将对象的数据序列化到xml文件中
                             BusnissGenerationXmlFromEntity busnissGenerationXmlFromEntity = new BusnissGenerationXmlFromEntity(BussnessSerialEntityToXml);
                             busnissGenerationXmlFromEntity(ComRunDatas.SinkWorkPath, ComRunDatas.StructItemsOfSourceFileName);

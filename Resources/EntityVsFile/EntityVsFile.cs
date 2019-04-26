@@ -342,14 +342,12 @@ namespace SmallManagerSpace.Resources
             }
             sr.Close();
         }
-        public static void GetFileFromEntity(string CFileName)
+        public static void GetFileFromEntity(string GenFileFullName)
         {
             if (ComRunDatas.SourceWorkPath == null && ComRunDatas.HeadSourceFileName == null && ComRunDatas.StructOfSourceFileEntity == null) return;
             //1.将数据同类数据合并到字典中
             Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComRunDatas.StructOfSourceFileEntity);
             //2.复制源文件到新文件中，并且将生成数据放入到其中
-            string GenFileName = @"\" + CFileName;
-            string GenFileFullName = ComRunDatas.SinkWorkPath + GenFileName;
             File.Copy(ComRunDatas.SourceWorkPath + ComRunDatas.HeadSourceFileName, GenFileFullName, true);
             //3.得到文件流,将数据添加到文件后面
             FileStream fileStream = new FileStream(GenFileFullName, FileMode.Append);
