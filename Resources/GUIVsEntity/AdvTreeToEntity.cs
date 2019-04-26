@@ -1,89 +1,104 @@
-﻿using System;
+﻿using DevComponents.AdvTree;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace SmallManagerSpace.Resources.GUIVsEntity
 {
     class AdvTreeToEntity
     {
-        //private static class CommStr
-        //{
-        //    public static string Enter = "\r\n";
-        //    public static string Space = "  ";
-        //    public static string Comma = ",";
-        //    public static string Semicolon = ";";
-        //    public static string Quotation = "\"";
-        //    public static string ParenttheseOpen = "(";
-        //    public static string ParentthsisClose = ")";
-        //    public static string SquareBracketOpen = "[";
-        //    public static string SquareBracketClose = "]";
-        //    public static string BraceBracketOpen = "{";
-        //    public static string BraceBracketClose = "}";
-        //    public static string AngleBracketOpen = "<";
-        //    public static string AngleBracketClose = ">";
-        //}
 
-        //private class CSoureFormat
-        //{
-        //    public int count;
-        //    public List<string> StructData;
-        //}
-       
-        //private void GetAdvTreeData(AdvTree advTree, Dictionary<string, CSoureFormat> CSourceStr)
-        //{
-        //    if (advTree == null && CSourceStr == null) return;
-        //    foreach (Node node in advTree.Nodes)
-        //    {
-        //        TraversalAdvTreeToDict(node, CSourceStr);
-        //    }
-        //}
-        //public void GennrateCSourceFile(AdvTree advTree)
-        //{
-        //    if (advTree == null && ComRunDatas.WorkPath == null && ComRunDatas.HeadSourceFileName == null) return;
-        //    Dictionary<string, CSoureFormat> CSourceStr = new Dictionary<string, CSoureFormat>();
-        //    //1.遍历AdvTree数据表,得到数据
-        //    GetAdvTreeData(advTree, CSourceStr);
-        //    //2.复制源文件到新文件中，并且将生成数据放入到其中
-        //    string GenFileName = @"\GenCSource.h";
-        //    string GenFileFullName = ComRunDatas.WorkPath + GenFileName;
-        //    File.Copy(ComRunDatas.WorkPath + ComRunDatas.HeadSourceFileName, ComRunDatas.WorkPath + GenFileName, true);
-        //    //3.得到文件流,将数据添加到文件后面
-        //    FileStream fileStream = new FileStream(GenFileName, FileMode.Append);
-        //    StreamWriter stringWriter = new StreamWriter(fileStream);
-        //    stringWriter.Write("\r\n//******************************Automatic generation*********************************//\r\n");
-        //    //4.将数据写入到文件
-        //    //结构体数组
-        //    //TEST_T gst[10] = { { }, { }, { }, { } };
-        //    foreach (string keyName in CSourceStr.Keys)
-        //    {
-        //        //5.添加GST gst[10] =
-        //        string defineString = keyName + CommStr.Space + keyName.ToLower() + CommStr.SquareBracketOpen + CSourceStr[keyName].count + CommStr.SquareBracketClose + " = ";
-        //        stringWriter.Write(defineString);
-        //        if (CSourceStr[keyName].count != 1) stringWriter.Write(CommStr.BraceBracketOpen);
-        //        //6.添加{ { }, { }, { }, { } }
-        //        int nextIndex = 0;
-        //        int max = CSourceStr[keyName].StructData.Count();
-        //        string preValue = string.Empty;
-        //        string nextValue = string.Empty;
-        //        foreach (string item in CSourceStr[keyName].StructData)
-        //        {
-        //            if (nextIndex < max - 1) { nextValue = CSourceStr[keyName].StructData[++nextIndex]; }
-        //            stringWriter.Write(item);
-        //            if (!item.Equals(CommStr.BraceBracketOpen) && !nextValue.Equals(CommStr.BraceBracketClose))
-        //            {
-        //                stringWriter.Write(CommStr.Comma);
-        //            }
-        //        }
-        //        if (CSourceStr[keyName].count != 1) stringWriter.Write(CommStr.BraceBracketClose);
-        //        stringWriter.Write(CommStr.Semicolon + CommStr.Enter);
-        //    }
-        //    stringWriter.Write("//****************************************************************************************//\r\n");
-        //    //7.关闭文件流
-        //    stringWriter.Flush();
-        //    stringWriter.Close();
+        public void GetEntityByAdvTreeNode(AdvTree advTree)
+        {
+            if (advTree == null && ComRunDatas.StructOfSourceFileEntity == null) return;
+            int CID = 1;
+            //1.重新得到ComRunDatas.StructEntity对象
+            StructOfSourceFileDataOperation structDataOperation = new StructOfSourceFileDataOperation();
+            structDataOperation.CreateConfigFileInfo();
+            foreach (Node RootNode in advTree.Nodes)
+            {
+                foreach (Node node in RootNode.Nodes)
+                {
+                    if (node.HasChildNodes)
+                    {
+                        //2.通过节点数据得到StructItem对象
+                        StructItem structItem = GetStructItemEntity(node, CID++);
+                        foreach (Node childNode in node.Nodes)
+                        { //3.通过节点数据得到Parameter对象
+                            Parameter parameter = GetParameterEntity(childNode, CID++);
+                            structItem.parameterList.Add(parameter);
+                        }
+                        //4.添加数据到Parameter对象
+                        ComRunDatas.StructOfSourceFileEntity.structItemList.Add(structItem);
+                    }
+                }
+            }
+        }
 
-        //}
+        public StructItem GetStructItemEntity(Node node, int CID)
+        {
+            StructItem structItem = new StructItem();
+            Dictionary<string, string> NodeDictinary = GetNodeEntireData(node);
+            structItem.CID = string.Format("{0:D6}", CID);
+            structItem.type = NodeDictinary.ContainsKey("type") ? NodeDictinary["type"] : "";
+            structItem.name = NodeDictinary.ContainsKey("name") ? NodeDictinary["name"] : "";
+            structItem.preinput = NodeDictinary.ContainsKey("preinput") ? NodeDictinary["preinput"] : "";
+            structItem.note = NodeDictinary.ContainsKey("note") ? NodeDictinary["note"] : "";
+            structItem.parameterList = new List<Parameter>();
+            return structItem;
+        }
+        public Parameter GetParameterEntity(Node node, int CID)
+        {
+            Parameter parameter = new Parameter();
+            Dictionary<string, string> NodeDictinary = GetNodeEntireData(node);
+            parameter.CID = string.Format("{0:D6}", CID);
+            parameter.type = NodeDictinary.ContainsKey("type") ? NodeDictinary["type"] : "";
+            parameter.name = NodeDictinary.ContainsKey("name") ? NodeDictinary["name"] : "";
+            parameter.preinput = NodeDictinary.ContainsKey("preinput") ? NodeDictinary["preinput"] : "";
+            parameter.range = NodeDictinary.ContainsKey("range") ? NodeDictinary["range"] : "";
+            parameter.value = NodeDictinary.ContainsKey("value") ? NodeDictinary["value"] : "";
+            parameter.length = NodeDictinary.ContainsKey("length") ? NodeDictinary["length"] : "";
+            parameter.note = NodeDictinary.ContainsKey("note") ? NodeDictinary["note"] : "";
+            return parameter;
+        }
+        private Dictionary<string, string> GetNodeEntireData(Node node)
+        {
+            Dictionary<string, string> NodeDictinary = new Dictionary<string, string>();
+            foreach (Cell cellItem in node.Cells)
+            {
+                string stringText = cellItem.Text;
+                string HeaderName = cellItem.ColumnHeader == null ? "" : cellItem.ColumnHeader.Name;
+                if (!HeaderName.Equals("value"))
+                {
+                    NodeDictinary[HeaderName] = stringText;
+                }
+                else
+                {
+                    if (cellItem.HostedControl != null)
+                    {
+                        ComboBox comboBox = cellItem.HostedControl as ComboBox;
+                        stringText = comboBox.Text.ToString();
+                        // stringText = comboBox.SelectedItem.ToString();
+
+                    }
+                    NodeDictinary[HeaderName] = stringText;
+                }
+            }
+            if (node.Tag != null)
+            {
+                Dictionary<string, string> TagData = (Dictionary<string, string>)node.Tag;
+                foreach (string key in TagData.Keys)
+                {
+                    if (!NodeDictinary.ContainsKey(key))
+                    {
+                        NodeDictinary[key] = TagData[key];
+                    }
+                }
+            }
+            return NodeDictinary;
+        }
 
     }
 }

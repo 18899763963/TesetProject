@@ -2,7 +2,7 @@
 using System.Linq;
 namespace SmallManagerSpace.Resources
 {
-    static class ObjectToXls
+    static class EntityVsXls
     {
         //static public void SerializeToXlsFromXml(string XMLFilePath)
         //{

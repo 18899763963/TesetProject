@@ -12,45 +12,25 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
 {
     class EntityToAdvTree
     {
-        //private void SettingDisplayDictionary()
-        //{
-        //    structblockDic = new Dictionary<string, string>();
-        //    parameterDic = new Dictionary<string, string>();
-        //    structblockDic["CID"] = "Null";
-        //    structblockDic["type"] = "Null";
-        //    structblockDic["name"] = "Null";
-        //    structblockDic["preinput"] = "Null";
-        //    structblockDic["note"] = "Null";
-        //    parameterDic["CID"] = "Null";
-        //    parameterDic["type"] = "Null";
-        //    parameterDic["vartype"] = "Null";
-        //    parameterDic["preinput"] = "Null";
-        //    parameterDic["preinputarea"] = "Null";
-        //    parameterDic["name"] = "Null";
-        //    parameterDic["range"] = "Null";
-        //    parameterDic["value"] = "Null";
-        //    parameterDic["length"] = "Null";
-        //    parameterDic["note"] = "Null";
-        //}
         public void FullDataToAdvTreeFromXMLObj()
         {
-            if (ComRunDatas.advTree == null && ComRunDatas.StructEntity == null && ComRunDatas.NodeElementStyle == null) return;
+            if (ComRunDatas.advTree == null && ComRunDatas.StructOfSourceFileEntity == null && ComRunDatas.NodeElementStyle == null) return;
             ComRunDatas.advTree.BeginUpdate();
             Node NewTreeNode = null;
             NewTreeNode = CreateNode(ComRunDatas.StructBody, ComRunDatas.NodeElementStyle["BlockStyle"], 0);
-            FillDataToTreeByTraversvalObj(ComRunDatas.StructEntity, NewTreeNode);
+            FillDataToTreeByTraversvalObj(ComRunDatas.StructOfSourceFileEntity, NewTreeNode);
             NewTreeNode.Expanded = true;
             ComRunDatas.advTree.Nodes.Add(NewTreeNode);
             ComRunDatas.advTree.EndUpdate();
         }
-        public void FillDataToTreeByTraversvalObj(StructDatas StructEntity, Node RreeNode)
+        public void FillDataToTreeByTraversvalObj(StructOfSourceFileDatas StructEntity, Node RreeNode)
         {
-            foreach (structitem structitemObj in StructEntity.structitemlist)
+            foreach (StructItem structitemObj in StructEntity.structItemList)
             {
                 //1.将structItemObj数据添加到节点中
                 Node StructitemNode = GetNodeByObjOfStructitem(structitemObj, ComRunDatas.NodeElementStyle["BlockStyle"], 0);
                 //2.将structItemObj. List<parameter> 添加到节点中
-                foreach (parameter parameterObj in structitemObj.parameterlist)
+                foreach (Parameter parameterObj in structitemObj.parameterList)
                 {
                     Node ParameterNode = GetNodeByObjOfParameter(parameterObj, ComRunDatas.NodeElementStyle["ParameterStyle"], 2);
                     StructitemNode.Nodes.Add(ParameterNode);
@@ -66,7 +46,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             node.ImageIndex = imageIndex;
             return node;
         }
-        private Node GetNodeByObjOfStructitem(structitem structItemObj, ElementStyle elementStyle, int imageIndex)
+        private Node GetNodeByObjOfStructitem(StructItem structItemObj, ElementStyle elementStyle, int imageIndex)
         {
             Node newTreeNode = new Node();
             newTreeNode = CreateNode(structItemObj.type, elementStyle, imageIndex);
@@ -84,7 +64,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
 
 
-        private Node GetNodeByObjOfParameter(parameter paremeterObj, ElementStyle elementStyle, int imageIndex)
+        private Node GetNodeByObjOfParameter(Parameter paremeterObj, ElementStyle elementStyle, int imageIndex)
         {
             //1.添加数据到Node
             Node newTreeNode = new Node();
@@ -137,91 +117,5 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             List<Enumration> enumrationList = ComRunDatas.CommonEnumDictonary[inputName].EnumrationList;
             return enumrationList;
         }
-
-
-        //public void AdvTreeDisplayDataViaObj()
-        //{
-
-        //    //清空页状态记录
-        //    //清空变更记录
-        //    //UpdateRecords.Clear();
-        //    //清空preinput的变量名
-
-        //    //初始化显示列字典
-        //    //SettingDisplayDictionary();
-        //    //得到节点元素
-        //    //xmlFileClass = new TransformFileClass();
-        //    //string PathName = fileOperation.GetDirectionNameString(xmlpathSource);
-        //    //string FileName = fileOperation.GetFileNameString(xmlpathSource);
-        //    //string FileFullName = PathName + FileName;
-        //    //xElementStartPublic = xmlFileClass.GetRootElement(FileFullName);
-        //    //得到指定节点下子节点名称
-        //ListBlockName = xmlFileClass.GetStartElementChildName(xElementStartPublic, "structitems");
-        //CreatePageAndPageProperty();
-        //得到第一页的内容
-        //string TabPageNameBlock = GetTabPageName(0);
-        // SetTabPageProperty(0, "cn", true);
-        //得到反序列化的对象
-        //StructDatas structfileObj = ObjectToXml.xmlDeSerializeToStructObj(PathName, FileName);
-        //填充第一页的内容 用structfileObj 下级 TabPageNameBlock
-        // FullDataToAdvTreeFromXMLObj(CurrentAdvTree, structfileObj, TabPageNameBlock, 0);
-        //}
-        //private AdvTree GetAdvTree(int index)
-        //{
-        //    //得到指定的advTree
-        //    if (tabControl2.TabPages.Count >= 1 && tabControl2.TabPages.Count > index)
-        //    {
-        //        var currentControls = tabControl2.TabPages[index].Controls;
-        //        foreach (Control con in currentControls)
-        //        {
-        //            if (con is AdvTree)
-        //            {
-        //                return (AdvTree)con;
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
-        //    private void TraversalAdvTreeToObj(Node node)
-        //    {
-        //        if (node == null) return;
-        //        int CID = 1;
-        //        if (node.HasChildNodes)
-        //        {
-        //            foreach (Node StructNode in node.Nodes)
-        //            {
-        //                //得到structitem数据 eg <structitem CID="0001" type="_otn_user_b_type_info" name="OTN_USER_B_TYPE_INFO" preinput="preinputValue" note="NoteValue">
-        //                string typeOfStruct = GetNodeCellColumnName(StructNode, "type");
-        //                string nameOfStruct = GetNodeCellColumnName(StructNode, "name");
-        //                string noteOfStruct = GetNodeCellColumnName(StructNode, "note");
-        //                string preinputOfStruct = GetTagDataByName(StructNode, "preinput");
-        //                ObjectToXml.addValueOfStructItem(CID.ToString().PadLeft(4, '0'), typeOfStruct, nameOfStruct, preinputOfStruct, noteOfStruct);
-        //                CID++;
-        //                if (StructNode.HasChildNodes)
-        //                {
-
-        //                    foreach (Node ParameterNode in StructNode.Nodes)
-        //                    {
-        //                        //1.得到name,value,vartype和preinput,preinputarea
-        //                        string typeOfParameter = GetNodeCellColumnName(ParameterNode, "type");
-        //                        string vartypeOfParameter = GetNodeCellColumnName(ParameterNode, "vartype");
-        //                        string nameOfParameter = GetNodeCellColumnName(ParameterNode, "name");
-        //                        string rangeOfParameter = GetNodeCellColumnName(ParameterNode, "range");
-        //                        string valueOfParameter = GetNodeCellColumnName(ParameterNode, "value");
-        //                        string lengthOfParameter = GetNodeCellColumnName(ParameterNode, "length");
-        //                        string noteOfParameter = GetNodeCellColumnName(ParameterNode, "note");
-        //                        string preinputOfParameter = GetTagDataByName(ParameterNode, "preinput"); ;
-        //                        string preinputareaOfParameter = GetTagDataByName(ParameterNode, "preinputarea");
-        //                        ObjectToXml.addValueOfParameterItem(CID.ToString().PadLeft(4, '0'),
-        //                            typeOfParameter, vartypeOfParameter, preinputOfParameter,
-        //                            preinputareaOfParameter, nameOfParameter, rangeOfParameter,
-        //                            valueOfParameter, lengthOfParameter, noteOfParameter);
-        //                        CID++;
-
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
     }
 }

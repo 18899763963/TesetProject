@@ -13,6 +13,10 @@ namespace SmallManagerSpace.Resources
         public string en { get; set; }
         public string cn { get; set; }
         public string value { get; set; }
+        public override string ToString()
+        {
+            return this.value;
+        }
     }
     public class EnumData
     {

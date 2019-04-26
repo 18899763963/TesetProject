@@ -221,8 +221,8 @@
     <Compile Include="Resources\PathStringADU\PathFileADU.cs" />
     <Compile Include="Resources\EntityModels\EnumUserDatas.cs" />
     <Compile Include="Resources\EventLog\EventLogClass.cs" />
-    <Compile Include="Resources\EntityVsXls\EntityToXls.cs" />
-    <Compile Include="Resources\HeadFileToEntity\HeadFileToEntity.cs" />
+    <Compile Include="Resources\EntityVsXls\EntityVsXls.cs" />
+    <Compile Include="Resources\EntityVsFile\EntityVsFile.cs" />
     <Compile Include="Resources\PropertyGrid\PropertyGridClass.cs" />
     <Compile Include="Resources\StringOperation\StringOperation.cs" />
     <Compile Include="Resources\PathStringADU\TransformFileInterface.cs" />

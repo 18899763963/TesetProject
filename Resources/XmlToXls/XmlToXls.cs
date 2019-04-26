@@ -124,7 +124,7 @@ namespace SmallManagerSpace.Resources
             workbook.DocumentProperties.Keywords = "H文件生成的XlS ";   //关键词
             workbook.DocumentProperties.CreatedTime = DateTime.Now; //创建时间
         }
-        public static void GenerateToObjFromXls(StructDatas structfileObj, string WorkPath, string XlsxFileName)
+        public static void GenerateToObjFromXls(StructOfSourceFileDatas structfileObj, string WorkPath, string XlsxFileName)
         {
             Workbook workbook = new Workbook();
             workbook.LoadFromFile(WorkPath + XlsxFileName);
@@ -132,7 +132,7 @@ namespace SmallManagerSpace.Resources
             //保存到物理路径
             workbook.SaveToFile(WorkPath + XlsxFileName, ExcelVersion.Version2013);
         }
-        public static void GenerateToXlsFromObj(StructDatas structfileObj, string WorkPath, string XlsxFileName)
+        public static void GenerateToXlsFromObj(StructOfSourceFileDatas structfileObj, string WorkPath, string XlsxFileName)
         {
             //新建Workbook
             Workbook workbook = new Workbook();
@@ -144,14 +144,14 @@ namespace SmallManagerSpace.Resources
             int column = 1;
             //int startRow = 1;
             //int lastRow = 1;
-            foreach (structitem structitemObj in structfileObj.structitemlist)
+            foreach (StructItem structitemObj in structfileObj.structItemList)
             {
                 //1.将structItemObj数据添加到节点中
                 FullDataToXlsByStructitem(structitemObj, sheet, row, column);
                 row++;
                 //2.将structItemObj. List<parameter> 添加到节点中
                 // startRow = row;
-                foreach (parameter parameterObj in structitemObj.parameterlist)
+                foreach (Parameter parameterObj in structitemObj.parameterList)
                 {
 
                     FullDataToXlsByParameter(parameterObj, sheet, row, column + 1);
@@ -164,7 +164,7 @@ namespace SmallManagerSpace.Resources
             //保存到物理路径
             workbook.SaveToFile(WorkPath + XlsxFileName, ExcelVersion.Version2013);
         }
-        public static void FullDataToXlsByStructitem(structitem structitemObj, Worksheet sheet, int row, int column)
+        public static void FullDataToXlsByStructitem(StructItem structitemObj, Worksheet sheet, int row, int column)
         {
             sheet.Range[row, column++].Text = structitemObj.CID;
             sheet.Range[row, column++].Text = structitemObj.type;
@@ -172,7 +172,7 @@ namespace SmallManagerSpace.Resources
             sheet.Range[row, column++].Text = structitemObj.preinput;
             sheet.Range[row, column++].Text = structitemObj.note;
         }
-        public static void FullDataToXlsByParameter(parameter parameterObj, Worksheet sheet, int row, int column)
+        public static void FullDataToXlsByParameter(Parameter parameterObj, Worksheet sheet, int row, int column)
         {
             sheet.Range[row, column++].Text = parameterObj.CID;
             sheet.Range[row, column++].Text = parameterObj.type;

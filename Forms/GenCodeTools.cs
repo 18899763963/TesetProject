@@ -57,7 +57,7 @@ namespace MasterDetailSample
         delegate void BusnissDisplayDataGuiViaString(string n);
         delegate void BusnissDisplayDataGuiViaEntity(string n);
         delegate void BusnissGenerationXlsFromXml(string n);
-        delegate void BusnissGenerationXmlFromEntity();
+        delegate void BusnissGenerationXmlFromEntity(string WorkSpace,string FileName);
         delegate void BusnissInitCommonData(TabControl tabControlInstance, string n);
         delegate void BusnissMainProcess(string n);
         public void BusnissMainProcessInstance(string PathFileName)
@@ -99,18 +99,18 @@ namespace MasterDetailSample
         private void BussnessGetEntityFromHeaderFile(string InputFilePath)
         {
             //1.解析文件内容
-            HeadFileToEntity.GetEntityFromHeadFile(InputFilePath);
+            EntityVsFile.GetEntityFromFile(InputFilePath);
         }
         private void BussnessGetEntityFromXmlFile(string InputFilePath)
         {
             //1.解析XML文件内容到Entity
-            ComRunDatas.StructEntity = ComRunDatas.CommonStructDataOperation.XmlDeSerializeToStructObj(ComRunDatas.WorkPath, ComRunDatas.StructItemsFileName);
+            ComRunDatas.StructOfSourceFileEntity = ComRunDatas.structOfSourceFileDataOperation.XmlDeSerializeToStructObj(ComRunDatas.SourceWorkPath, ComRunDatas.StructItemsOfSourceFileName);
         }
-        private void BussnessSerialEntityToXml()
+        private void BussnessSerialEntityToXml(string WorkSpace,String FileName)
         {
-            ComRunDatas.CommonStructDataOperation.XmlSerializeToStructFile(ComRunDatas.WorkPath, ComRunDatas.StructItemsFileName);
-            ComRunDatas.CommonEnumUserDatasOperation.XmlSerializeToEnumFile(ComRunDatas.WorkPath, ComRunDatas.EnumItemsFileName);
-
+             ComRunDatas.structOfSourceFileDataOperation.XmlSerializeToStructFile(WorkSpace, FileName);
+            // ComRunDatas.CommonStructDataOperation.XmlSerializeToStructFile(ComRunDatas.WorkPath, ComRunDatas.StructItemsFileName);
+            ComRunDatas.enumOfSourceFileDataOperation.XmlSerializeToEnumFile(WorkSpace, ComRunDatas.EnumItemsOfSourceFileName);
         }
         private void BusnissDisplayDataGuiViaOBJ(string InputFilePath)
         {
@@ -154,16 +154,36 @@ namespace MasterDetailSample
         {
             try
             {
-                
-                AdvTree CurrentAdvTree = ComRunDatas.advTree;
-                if (CurrentAdvTree != null)
-                {   //1.将当前树的数据转换为对象
+                //设置文件类型 
+                //saveFileDialog1.Filter = "c文件|*.c|日志文件|*.xml";
+                saveFileDialog1.Filter = "c文件|*.c";
 
-                    //2.将当前树的数据放入xml文件中
-                    GennrateXMLSourceFile(CurrentAdvTree);
-                    //3.将当前树的数据放入header文件中
-                    GennrateCSourceFile(CurrentAdvTree);
+                //设置默认文件类型显示顺序 
+                saveFileDialog1.FilterIndex = 1;
+                //保存对话框是否记忆上次打开的目录 
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    if(saveFileDialog1.FileName.ToLower().Contains(".c"))
+                    {
+                        PathFileStringADU pathFileStringADU = new PathFileStringADU();
+                        ComRunDatas.SinkWorkPath = pathFileStringADU.GetDirectionNameString(saveFileDialog1.FileName);
+                        ComRunDatas.SinkCFileName = pathFileStringADU.GetFileNameString(saveFileDialog1.FileName); //获取文件名，不带路径;
+                        AdvTree CurrentAdvTree = ComRunDatas.advTree;
+                        if (CurrentAdvTree != null)
+                        {   //1.将当前树的数据转换为对象
+                            AdvTreeToEntity advTreeToEntity = new AdvTreeToEntity();
+                            advTreeToEntity.GetEntityByAdvTreeNode(CurrentAdvTree);
+                            //2.将当前树的数据放入header文件中
+                            EntityVsFile.GetFileFromEntity(ComRunDatas.SinkCFileName);
+                            //3.将对象的数据序列化到xml文件中
+                            BusnissGenerationXmlFromEntity busnissGenerationXmlFromEntity = new BusnissGenerationXmlFromEntity(BussnessSerialEntityToXml);
+                            busnissGenerationXmlFromEntity(ComRunDatas.SinkWorkPath, ComRunDatas.StructItemsOfSourceFileName);
+                        }
+                    }
                 }
+
             }
             catch (Exception ex)
             {

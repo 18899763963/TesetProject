@@ -73,6 +73,7 @@ namespace MasterDetailSample
             this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.eventLog1 = new System.Diagnostics.EventLog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.Panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -510,6 +511,7 @@ namespace MasterDetailSample
         private ToolStripMenuItem EnglishToolStripMenuItem;
         private ToolStripMenuItem DataToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator7;
+        private SaveFileDialog saveFileDialog1;
     }
 	
 }

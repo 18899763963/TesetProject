@@ -159,22 +159,22 @@
             <param name="xRootElements">文件根节点</param>
             <returns>返回数据列表</returns>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.CreateConfigFileInfo">
+        <member name="M:SmallManagerSpace.Resources.StructOfSourceFileDataOperation.CreateConfigFileInfo">
             <summary>
              创建对象configfile
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.XmlSerializeToStructFile(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.StructOfSourceFileDataOperation.XmlSerializeToStructFile(System.String,System.String)">
             <summary>
              将对象数据序列化
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.UpdateValueOfStructItem(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.StructOfSourceFileDataOperation.UpdateValueOfStructItem(System.String,System.String)">
             <summary>
              修改StructItem中数据
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructDataOperation.UpdateValueOfParameterItem(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.StructOfSourceFileDataOperation.UpdateValueOfParameterItem(System.String,System.String)">
             <summary>
              修改ParameterItem中数据
             </summary>
@@ -227,17 +227,17 @@
             <typeparam name="T">实体类型</typeparam>
             <param name="strXML">XML</param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EnumUserDataOperation.XmlSerializeToEnumFile(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.EnumOfSourceFileDataOperation.XmlSerializeToEnumFile(System.String,System.String)">
             <summary>
              将对象数据序列化
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EnumUserDataOperation.addValueOfsimpleTypeItemWithout(System.String,System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.EnumOfSourceFileDataOperation.addValueOfsimpleTypeItemWithout(System.String,System.String,System.String)">
             <summary>
              添加数据到simpleType，除enumeration部分
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EnumUserDataOperation.updateValueOfsimpleTypeItem(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.EnumOfSourceFileDataOperation.updateValueOfsimpleTypeItem(System.String,System.String)">
             <summary>
              修改simpleTypeItem数据
             </summary>

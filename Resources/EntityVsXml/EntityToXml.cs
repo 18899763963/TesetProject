@@ -2,7 +2,7 @@
 using System.Linq;
 namespace SmallManagerSpace.Resources
 {
-    static class ObjectToXml
+    static class EntityVsXml
     {
 
         //public void GennrateXMLSourceFile(AdvTree advTree)

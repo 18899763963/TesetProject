@@ -13,15 +13,17 @@ namespace SmallManagerSpace.Resources
     {
         static public Dictionary<string, BaseData> CommonBaseDictonary = null;
         static public Dictionary<string, EnumData> CommonEnumDictonary = null;
-        static public EnumUserDataOperation CommonEnumUserDatasOperation = null;
-        static public StructDataOperation CommonStructDataOperation = null;
+        static public EnumOfSourceFileDataOperation enumOfSourceFileDataOperation = null;
+        static public StructOfSourceFileDataOperation structOfSourceFileDataOperation = null;
         static public StepProcess StepNow = StepProcess.InitComm;
-        static public StructDatas StructEntity = null;
-        static public EnumUserDatas EnumEntity = null;        
-        static public string StructItemsFileName = null;
-        static public string EnumItemsFileName = null;
+        static public StructOfSourceFileDatas StructOfSourceFileEntity = null;
+        static public EnumOfSourceFileDatas EnumOfSourceFileEntity = null;        
+        static public string StructItemsOfSourceFileName = null;
+        static public string EnumItemsOfSourceFileName = null;
         static public string HeadSourceFileName = null;
-        static public string WorkPath = null;
+        static public string SinkCFileName = null;
+        static public string SinkWorkPath = null;
+        static public string SourceWorkPath = null;
         static public bool isSuccessdLoadFile = false;
         static public TabControl tabControl1 = null;
         static public AdvTree advTree = null;
@@ -29,66 +31,16 @@ namespace SmallManagerSpace.Resources
         static public string PublicPreinputName = null;
         static public Dictionary<string, int> RegisterPreinput = null;
         static public Dictionary<string, ElementStyle> NodeElementStyle = null;
-        static public DataTable dataTableEntity = null;
-        //——————————————————————————————————
-        //static public frmMain defaultInstance;
-        //XElement xElementStartPublic = null;
-        //TransformFileClass xmlFileClass = null;
-        //XElement xEnumElements = null;
-        //List<string> ListBlockName = null;
-        //List<TabPageProperty> tabPageProperties = new List<TabPageProperty>();
-        //List<ChangedNode> changedNodeList = new List<ChangedNode>();
-        //Dictionary<string, string> structblockDic;
-        //Dictionary<string, string> parameterDic;
 
-        public class Student
-        {
-            private int studentNo;
+ 
 
-            public int StudentNo
-            {
-                get { return studentNo; }
-                set { studentNo = value; }
-            }
 
-            private string studentName;
-
-            public string StudentName
-            {
-                get { return studentName; }
-                set { studentName = value; }
-            }
-
-            private string sex;
-
-            public string Sex
-            {
-                get { return sex; }
-                set { sex = value; }
-            }
-        }
-        static public DataTable GetDataTable()
-        {
-            DataTable dt = new DataTable();
-            DataColumn dcNo = new DataColumn("StudentNo", typeof(Int32));
-            DataColumn dcName = new DataColumn("StudentName", typeof(string));
-            DataColumn dcSex = new DataColumn("Sex", typeof(string));
-            dt.Columns.Add(dcNo);
-            dt.Columns.Add(dcName);
-            dt.Columns.Add(dcSex);
-            dt.Rows.Add(new object[] { 1, "测试", "男" });
-            dt.Rows.Add(new object[] { 2, "开发", "男" });
-            dt.Rows.Add(new object[] { 3, "会计", "男" });
-            return dt;
-        }
-        //——————————————————————————————————
 
         /// <summary>
         /// 初始化程序运行的公共数据
         /// </summary>
         static public void BussnessInitCommonData(TabControl tabControlObj,string PathFileName)
         {
-            dataTableEntity = GetDataTable();
             InitBaseAndEnumData();
             InitPathAndFileData(PathFileName);       
             InitTableControlData(tabControlObj);
@@ -110,19 +62,19 @@ namespace SmallManagerSpace.Resources
             CommonEnumDictonary = enumDataOperation.GetEnumElementString(EnumElement);
 
             //3.建立数据容器对象
-            CommonEnumUserDatasOperation  = new EnumUserDataOperation();
-            CommonEnumUserDatasOperation.CreatesimpleTypeInfo();
-            CommonStructDataOperation = new StructDataOperation();
-            CommonStructDataOperation.CreateConfigFileInfo();
+            enumOfSourceFileDataOperation  = new EnumOfSourceFileDataOperation();
+            enumOfSourceFileDataOperation.CreatesimpleTypeInfo();
+            structOfSourceFileDataOperation = new StructOfSourceFileDataOperation();
+            structOfSourceFileDataOperation.CreateConfigFileInfo();
         }
         static public void InitPathAndFileData(string PathFileName)
         {
             //1.解析xml文件路径
             PathFileStringADU pathFileStringADU = new PathFileStringADU();
-            WorkPath            = pathFileStringADU.GetDirectionNameString(PathFileName);
+            SourceWorkPath            = pathFileStringADU.GetDirectionNameString(PathFileName);
             HeadSourceFileName  = pathFileStringADU.GetFileNameString(PathFileName);
-            StructItemsFileName = "StructItems.xml";
-            EnumItemsFileName   = "EnumItems.xml";
+            StructItemsOfSourceFileName = "SourceFileToStructItems.xml";
+            EnumItemsOfSourceFileName   = "SourceFileToEnumItems.xml";
         }
         static public void InitAdvTreeData()
         {
