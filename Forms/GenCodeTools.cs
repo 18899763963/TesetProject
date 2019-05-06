@@ -182,7 +182,7 @@ namespace MasterDetailSample
                             //3.将文件结构体中的数组变量用数组值替换
                             FileStringADU fileStringADU = new FileStringADU();
                             fileStringADU.ReplaceStringOnFile(GenFileFullName, ComRunDatas.RegisterPreinput);
-                            //3.将对象的数据序列化到xml文件中
+                            //4.将对象的数据序列化到xml文件中
                             BusnissGenerationXmlFromEntity busnissGenerationXmlFromEntity = new BusnissGenerationXmlFromEntity(BussnessSerialEntityToXml);
                             busnissGenerationXmlFromEntity(ComRunDatas.SinkWorkPath, ComRunDatas.StructItemsOfSourceFileName);
                         }

@@ -362,11 +362,11 @@ namespace SmallManagerSpace.Resources
             //eg: TEST_T gst[10] = { { }, { }, { }, { } };
             foreach (string keyName in FormatEntityData.Keys)
             {
-                //5.添加GST gst[10] =
+                //1.添加GST gst[10] =
                 string defineString = keyName + CommStr.Space + keyName.ToLower() + CommStr.SquareBracketOpen + FormatEntityData[keyName].count + CommStr.SquareBracketClose + " = ";
                 stringWriter.Write(defineString);
                 if (FormatEntityData[keyName].count != 1) stringWriter.Write(CommStr.BraceBracketOpen);
-                //6.添加{ { }, { }, { }, { } }
+                //2.添加{ { }, { }, { }, { } }
                 int nextIndex = 0;
                 int max = FormatEntityData[keyName].StructData.Count();
                 string preValue = string.Empty;
@@ -382,6 +382,25 @@ namespace SmallManagerSpace.Resources
                 }
                 if (FormatEntityData[keyName].count != 1) stringWriter.Write(CommStr.BraceBracketClose);
                 stringWriter.Write(CommStr.Semicolon + CommStr.Enter);
+            }
+            stringWriter.Write("//****************************************************************************************//\r\n");
+            //5.生成得到结构体指针的函数 eg: OTN_USER_B_TYPE_INFO  GetOTN_USER_B_TYPE_INFO(int index){ ... }
+            foreach (string keyName in FormatEntityData.Keys)
+            {
+                //1.添加 OTN_USER_B_TYPE_INFO  GetOTN_USER_B_TYPE_INFO(int index)
+                string defineString = keyName + " * Get" + keyName + "(int index)"+"\r\n";
+                stringWriter.Write(defineString);
+                stringWriter.Write("{\r\n");
+                defineString = CommStr.Space+"if(index < (sizeof(" + keyName.ToLower() + ")/sizeof("+keyName.ToLower()+"[0]" + ")))" + "\r\n";
+                stringWriter.Write(defineString);
+                stringWriter.Write(CommStr.Space + "{\r\n");
+                defineString = CommStr.Space + CommStr.Space + "return &" + keyName.ToLower() + "[index];" + "\r\n";
+                stringWriter.Write(defineString);
+                stringWriter.Write(CommStr.Space + "}\r\n");
+                defineString = CommStr.Space + "else\r\n" + CommStr.Space + "{\r\n" + CommStr.Space + CommStr.Space + "return NULL;\r\n" + CommStr.Space + "}\r\n";
+                stringWriter.Write(defineString);
+                stringWriter.Write("}\r\n");
+
             }
             stringWriter.Write("//****************************************************************************************//\r\n");
             //7.关闭文件流

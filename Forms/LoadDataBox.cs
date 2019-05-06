@@ -18,8 +18,17 @@ namespace MasterDetailSample
             InitializeComponent();
             if (InputOriginDataStr != null)
             {
+                if (InputOriginDataStr.Contains("{") || InputOriginDataStr.Contains("}"))
+                {
+                    string currentString = InputOriginDataStr.Replace('{', ' ');
+                    currentString = currentString.Replace('}', ' ');
+                    textBox1.Text = currentString.Trim();
+                }
+                else
+                {
+                    textBox1.Text = InputOriginDataStr.Trim();
+                }
                 InputOriginData = InputOriginDataStr;
-                textBox1.Text = InputOriginDataStr;
             }
         }
         #region 属性区
@@ -30,18 +39,22 @@ namespace MasterDetailSample
         #region 函数区
         private void Confirmbutton1_Click(object sender, EventArgs e)
         {
-
-            string InputData = textBox1.Text.Trim();
-            bool Result = Regex.IsMatch(InputData, @"^[0-9a-fA-FxX,]+$");
-            if (!Result)
+            string InputData = string.Empty;
+            if (!textBox1.Text.Contains("{") && !textBox1.Text.Contains("}"))
             {
-                System.Windows.Forms.MessageBox.Show("请输入一组十进制或十六进制数据.");
-                InputTextData = InputOriginData;
-                InputSplitCount = InputOriginData.Split(',').Count();
-                return;
+                InputData = textBox1.Text.Trim();
+
+                bool Result = Regex.IsMatch(InputData, @"^[0-9a-fA-FxX,]+$");
+                if (!Result)
+                {
+                    System.Windows.Forms.MessageBox.Show("请输入一组十进制或十六进制数据.");
+                    InputTextData = InputOriginData;
+                    InputSplitCount = InputOriginData.Split(',').Count();
+                    return;
+                }
+                InputTextData = "{" + InputData + "}";
+                InputSplitCount = InputData.Split(',').Count();
             }
-            InputTextData = InputData;
-            InputSplitCount = InputTextData.Split(',').Count();
             this.Close();
             return;
 

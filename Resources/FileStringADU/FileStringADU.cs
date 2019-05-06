@@ -28,5 +28,9 @@ namespace SmallManagerSpace.Resources.FileStringADU
             sw.Close();
             fs2.Close();
         }
+        public void AddFunctionInterface(string FileName, Dictionary<string, int> PreinputDictionary)
+        {
+
+        }
     }
 }
