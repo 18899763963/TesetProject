@@ -240,6 +240,7 @@ namespace SmallManagerSpace.Resources
                                 Console.WriteLine("parameterpointer:{0},parametername:{1},parameterarray:{2}", matc2.Groups["parameterpointer"].ToString(), matc2.Groups["parametername"].ToString(), matc2.Groups["parameterarray"].ToString());
                                 name = "*" + matc2.Groups["parametername"].ToString() + "[0]";
                                 preinput = matc2.Groups["parameterarray"].ToString();
+                                value = "{" + value + "}";
                                 // vartype = "pointer* array[0]";
                             }
                             //(2)结构如*cfg_buf
@@ -252,6 +253,10 @@ namespace SmallManagerSpace.Resources
                                 if (type == "AAL_SINT8")
                                 {
                                     value = "DefString";
+                                }
+                                else
+                                {
+                                    value = "{"+value+"}";
                                 }
                                 // vartype = "pointer *";
                             }
