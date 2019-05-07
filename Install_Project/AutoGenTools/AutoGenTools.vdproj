@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_03C5C2F3767B4CC1B0BF4723F7F0F6DE"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_20461FFE076DE1CA1EBE9EF084D7484F"
         "OwnerKey" = "8:_C7361AB8B03B728674CAD5B50AEDA283"
         "MsmSig" = "8:_UNDEFINED"
@@ -35,6 +41,12 @@
         {
         "MsmKey" = "8:_20461FFE076DE1CA1EBE9EF084D7484F"
         "OwnerKey" = "8:_628422FB313D3FE4BDBC96A744779807"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3ACD884851EB4A40808E793D5465F4EE"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -88,6 +100,12 @@
         "Entry"
         {
         "MsmKey" = "8:_6D3FF16C2E1046CDA17DE5F4646BFC1A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A34C764FEDC54476A10D9A91F494CB14"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -220,6 +238,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_03C5C2F3767B4CC1B0BF4723F7F0F6DE"
+            {
+            "SourcePath" = "8:..\\..\\bin\\Debug\\StructItems.xml"
+            "TargetName" = "8:StructItems.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_17C624A263A74F28BFF6B4DABCE5AE72"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_20461FFE076DE1CA1EBE9EF084D7484F"
             {
             "AssemblyRegister" = "3:1"
@@ -249,6 +287,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3ACD884851EB4A40808E793D5465F4EE"
+            {
+            "SourcePath" = "8:..\\..\\bin\\Debug\\enum.xsd"
+            "TargetName" = "8:enum.xsd"
+            "Tag" = "8:"
+            "Folder" = "8:_17C624A263A74F28BFF6B4DABCE5AE72"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_52025B39C8A829272D8BEA4A70FE4AE7"
@@ -395,6 +453,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A34C764FEDC54476A10D9A91F494CB14"
+            {
+            "SourcePath" = "8:..\\..\\bin\\Debug\\base.xsd"
+            "TargetName" = "8:base.xsd"
+            "Tag" = "8:"
+            "Folder" = "8:_17C624A263A74F28BFF6B4DABCE5AE72"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C7361AB8B03B728674CAD5B50AEDA283"
             {
             "AssemblyRegister" = "3:1"
@@ -514,7 +592,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AutoGenTools"
         "ProductCode" = "8:{26493BD1-7244-4E36-AD28-9DA11464688A}"
-        "PackageCode" = "8:{06FFB23C-729F-4BB3-A7CA-788246FBB49D}"
+        "PackageCode" = "8:{7F999331-5AA4-4D9F-AEB4-EACE50358C78}"
         "UpgradeCode" = "8:{8DEDDB83-1C52-46DD-8788-AC57FA546C49}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
