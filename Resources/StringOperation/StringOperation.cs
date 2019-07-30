@@ -55,9 +55,7 @@ namespace SmallManagerSpace.Resources
                     }
                     else if (LanguageType == "en")
                     {
-
                         NodeValue[nodevar.Attribute("value").Value] = nodevar.Attribute(FiberHomeSpace + "en").Value;
-
                     }
                 }
             }

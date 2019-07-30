@@ -142,15 +142,15 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 Dictionary<string, string> SelectedNodeData = GetSelectedNodeData(selectedNode);
                 string type_space_name = SelectedNodeData["type"] + " " + SelectedNodeData["name"];
                 //2.判断节点类型是否为 *var[] 或者*var[]类型
-                if (IsMatchedPointerVar(type_space_name))
-                {
-                    //3.打开数据导入窗口
-                    LoadDataBox loadDataBox = new LoadDataBox(SelectedCellOriginValue);
-                    loadDataBox.ShowDialog();
-                    selectedNode.SelectedCell.Text = loadDataBox.InputTextData;
-                    //PropertySettingBox propertySettingBox = new PropertySettingBox();
-                    //propertySettingBox.ShowDialog();
-                }
+                //if (IsMatchedPointerVar(type_space_name))
+                //{
+                //    //3.打开数据导入窗口
+                //    LoadDataBox loadDataBox = new LoadDataBox(SelectedCellOriginValue);
+                //    loadDataBox.ShowDialog();
+                //    selectedNode.SelectedCell.Text = loadDataBox.InputTextData;
+                //    //PropertySettingBox propertySettingBox = new PropertySettingBox();
+                //    //propertySettingBox.ShowDialog();
+                //}
             }
         }
 

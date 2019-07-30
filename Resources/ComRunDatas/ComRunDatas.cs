@@ -1,9 +1,9 @@
 ﻿using DevComponents.AdvTree;
 using DevComponents.DotNetBar;
+using SmallManagerSpace.Resources.FileStringADU;
 using SmallManagerSpace.Resources.GUIVsEntity;
-using System;
+using SmallManagerSpace.Resources.XmlVsEntity;
 using System.Collections.Generic;
-using System.Data;
 using System.Xml.Linq;
 
 namespace SmallManagerSpace.Resources
@@ -17,7 +17,7 @@ namespace SmallManagerSpace.Resources
         static public StructOfSourceFileDataOperation structOfSourceFileDataOperation = null;
         static public StepProcess StepNow = StepProcess.InitComm;
         static public StructOfSourceFileDatas StructOfSourceFileEntity = null;
-        static public EnumOfSourceFileDatas EnumOfSourceFileEntity = null;        
+        static public EnumOfSourceFileDatas EnumOfSourceFileEntity = null;
         static public string StructItemsOfSourceFileName = null;
         static public string EnumItemsOfSourceFileName = null;
         static public string HeadSourceFileName = null;
@@ -32,17 +32,17 @@ namespace SmallManagerSpace.Resources
         static public Dictionary<string, int> RegisterPreinput = null;
         static public Dictionary<string, ElementStyle> NodeElementStyle = null;
 
- 
+
 
 
 
         /// <summary>
         /// 初始化程序运行的公共数据
         /// </summary>
-        static public void BussnessInitCommonData(TabControl tabControlObj,string PathFileName)
+        static public void BussnessInitCommonData(TabControl tabControlObj, string PathFileName)
         {
             InitBaseAndEnumData();
-            InitPathAndFileData(PathFileName);       
+            InitPathAndFileData(PathFileName);
             InitTableControlData(tabControlObj);
             InitAdvTreeData();
         }
@@ -52,17 +52,17 @@ namespace SmallManagerSpace.Resources
         static public void InitBaseAndEnumData()
         {
             //1.得到base中各个元素的值
-            BaseDataOperation bassDataOperation = new BaseDataOperation();
+            XmlVsBase bassDataOperation = new XmlVsBase();
             XElement BaseElement = bassDataOperation.GetBaseRootElement();
             CommonBaseDictonary = bassDataOperation.GetBaseElementString(BaseElement);
 
             //2.得到enum中各个元素的值
-            EnumDataOperation enumDataOperation = new EnumDataOperation();
+            XmlVsEnum enumDataOperation = new XmlVsEnum();
             XElement EnumElement = enumDataOperation.GetEnumRootElement();
             CommonEnumDictonary = enumDataOperation.GetEnumElementString(EnumElement);
 
             //3.建立数据容器对象
-            enumOfSourceFileDataOperation  = new EnumOfSourceFileDataOperation();
+            enumOfSourceFileDataOperation = new EnumOfSourceFileDataOperation();
             enumOfSourceFileDataOperation.CreatesimpleTypeInfo();
             structOfSourceFileDataOperation = new StructOfSourceFileDataOperation();
             structOfSourceFileDataOperation.CreateConfigFileInfo();
@@ -70,11 +70,11 @@ namespace SmallManagerSpace.Resources
         static public void InitPathAndFileData(string PathFileName)
         {
             //1.解析xml文件路径
-            PathFileStringADU pathFileStringADU = new PathFileStringADU();
-            SourceWorkPath            = pathFileStringADU.GetDirectionNameString(PathFileName);
-            HeadSourceFileName  = pathFileStringADU.GetFileNameString(PathFileName);
+            FileStringOperation pathFileString = new FileStringOperation();
+            SourceWorkPath = pathFileString.GetDirectionNameString(PathFileName);
+            HeadSourceFileName = pathFileString.GetFileNameString(PathFileName);
             StructItemsOfSourceFileName = "SourceFileToStructItems.xml";
-            EnumItemsOfSourceFileName   = "SourceFileToEnumItems.xml";
+            EnumItemsOfSourceFileName = "SourceFileToEnumItems.xml";
         }
         static public void InitAdvTreeData()
         {
@@ -85,7 +85,7 @@ namespace SmallManagerSpace.Resources
             PublicPreinputName = "board_num";
             AdvTreeObj advTreeObj = new AdvTreeObj();
             advTreeObj.InitAdvTreeDatas();
-            
+
         }
         static public void InitTableControlData(TabControl tabControlObj)
         {
@@ -93,5 +93,5 @@ namespace SmallManagerSpace.Resources
             tabControl1.Controls.Clear();
         }
     }
-    
+
 }

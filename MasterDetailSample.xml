@@ -118,13 +118,6 @@
             用于存储base文件中的数据
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.BaseDataOperation.GetBaseElementString(System.Xml.Linq.XElement)">
-            <summary>
-            通过文件根节点得到数据
-            </summary>
-            <param name="xRootElements">文件根节点</param>
-            <returns>返回数据列表</returns>
-        </member>
         <member name="M:SmallManagerSpace.Resources.StructOfSourceFileDataOperation.CreateConfigFileInfo">
             <summary>
              创建对象configfile
@@ -211,6 +204,20 @@
         </member>
         <member name="M:SmallManagerSpace.Resources.EventLogClass.SaveErrorEventLog(System.String,System.String,System.String)">
             *****第二种*******/
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetLengthOfType(System.String)">
+            <summary>
+            得到Type类型的长度
+            </summary>
+            <param name="Type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.XmlVsEntity.XmlVsBase.GetBaseElementString(System.Xml.Linq.XElement)">
+            <summary>
+            通过文件根节点得到数据
+            </summary>
+            <param name="xRootElements">文件根节点</param>
+            <returns>返回数据列表</returns>
         </member>
         <member name="F:MasterDetailSample.LoadDataBox.components">
             <summary>

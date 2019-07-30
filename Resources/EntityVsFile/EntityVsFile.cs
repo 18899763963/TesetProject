@@ -34,7 +34,7 @@ namespace SmallManagerSpace.Resources
         private static bool IsString(string InputName)
         {
             bool isString = false;
-            if (InputName.Contains("AAL_SINT8"))
+            if (InputName.Contains("AAL_UINT8"))
             {
                 isString = true;
             }
@@ -57,6 +57,17 @@ namespace SmallManagerSpace.Resources
                 arrayName = InputName.Substring(0, InputName.IndexOf('['));
             }
             return arrayName;
+        }
+        /// <summary>
+        /// 得到Type类型的长度
+        /// </summary>
+        /// <param name="Type"></param>
+        /// <returns></returns>
+        private static string GetLengthOfType(string Type)
+        {
+            string Length="";
+
+            return Length;
         }
         private static List<string> GeParamterDataList(List<Parameter> ParameterList)
         {
@@ -139,7 +150,7 @@ namespace SmallManagerSpace.Resources
         {
             StreamReader sr = new StreamReader(FilePath, Encoding.Default);
             String line;
-            int CID = 1;
+            int Cid = 1;
             //匹配第一行
             string CapturedType = "";
             int enumAutoStep = 0;
@@ -172,9 +183,9 @@ namespace SmallManagerSpace.Resources
                             node = " ";
                             CapturedType = "isStruct";
                             //添加structitem数据到列表中
-                            ComRunDatas.structOfSourceFileDataOperation.AddValueOfStructItem(CID.ToString().PadLeft(4, '0'), type, name, preinput, node);
+                            ComRunDatas.structOfSourceFileDataOperation.AddValueOfStructItem(Cid.ToString().PadLeft(4, '0'), type, name, preinput, node);
                             ProcessStep++;
-                            CID++;
+                            Cid++;
                         }
                         //2.匹配字符串的typedef enum
                         else if (Regex.IsMatch(line, @"typedef[\s]+enum[\s]*"))
@@ -228,18 +239,20 @@ namespace SmallManagerSpace.Resources
                             string length = "1";
                             string note = "";
                             string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;[\s]*/+(?<parameternote>[\S]+)";
-                            Match matc1 = Regex.Match(line, RegexStr3);
-                            type = matc1.Groups["parametertype"].ToString();
-                            note = matc1.Groups["parameternote"].ToString();
-                            string lineItem = matc1.Groups["parametername"].ToString();
+                            Match matchStr = Regex.Match(line, RegexStr3);
+                            type = matchStr.Groups["parametertype"].ToString();
+                            note = matchStr.Groups["parameternote"].ToString();
+                            length = GetLengthOfType(type);
+
+                            string lineItem = matchStr.Groups["parametername"].ToString();
                             //(1)结构如*cfg_buf[switch_cfg_num]
                             if (lineItem.Contains("*") && lineItem.Contains("[") && lineItem.Contains("]"))
                             {
                                 string RegexStr4 = @"(?<parameterpointer>[\*]*)[\s]*(?<parametername>[\S]+)[\s]*[\[]+(?<parameterarray>[\S]*)[\]]+";
-                                Match matc2 = Regex.Match(lineItem, RegexStr4);
-                                Console.WriteLine("parameterpointer:{0},parametername:{1},parameterarray:{2}", matc2.Groups["parameterpointer"].ToString(), matc2.Groups["parametername"].ToString(), matc2.Groups["parameterarray"].ToString());
-                                name = "*" + matc2.Groups["parametername"].ToString() + "[0]";
-                                preinput = matc2.Groups["parameterarray"].ToString();
+                                Match matchString = Regex.Match(lineItem, RegexStr4);
+                                Console.WriteLine("parameterpointer:{0},parametername:{1},parameterarray:{2}", matchString.Groups["parameterpointer"].ToString(), matchString.Groups["parametername"].ToString(), matchString.Groups["parameterarray"].ToString());
+                                name = "*" + matchString.Groups["parametername"].ToString() + "[0]";
+                                preinput = matchString.Groups["parameterarray"].ToString();
                                 value = "{" + value + "}";
                                 // vartype = "pointer* array[0]";
                             }
@@ -247,28 +260,27 @@ namespace SmallManagerSpace.Resources
                             else if (lineItem.Contains("*") && !lineItem.Contains("[") && !lineItem.Contains("]"))
                             {
                                 string RegexStr4 = @"(?<parameterpointer>[\*]*)[\s]*(?<parametername>[\S]+)";
-                                Match matc2 = Regex.Match(lineItem, RegexStr4);
-                                Console.WriteLine("parameterpointer:{0},parametername:{1}", matc2.Groups["parameterpointer"].ToString(), matc2.Groups["parametername"].ToString());
-                                name = "*" + matc2.Groups["parametername"].ToString();
-                                if (type == "AAL_SINT8")
+                                Match matchString = Regex.Match(lineItem, RegexStr4);
+                                Console.WriteLine("parameterpointer:{0},parametername:{1}", matchString.Groups["parameterpointer"].ToString(), matchString.Groups["parametername"].ToString());
+                                name = "*" + matchString.Groups["parametername"].ToString();
+                                if (type == "AAL_UINT8")
                                 {
-                                    value = "DefString";
+                                    value = "defaultString";
                                 }
-                                else
-                                {
-                                    value = "{"+value+"}";
-                                }
+                                //else
+                                //{                                  
+                                //    value = "{"+value + "}";
+                                //}
                                 // vartype = "pointer *";
                             }
                             //(3)结构如cfg_buf[switch_cfg_num]
                             else if (!lineItem.Contains("*") && lineItem.Contains("[") && lineItem.Contains("]"))
                             {
                                 string RegexStr4 = @"(?<parametername>[\S]+)[\s]*[\[]+(?<parameterarray>[\S]*)[\]]+";
-                                Match matc2 = Regex.Match(lineItem, RegexStr4);
-                                Console.WriteLine("parametername:{0},parameterarray:{1}", matc2.Groups["parametername"].ToString(), matc2.Groups["parameterarray"].ToString());
-                                name = matc2.Groups["parametername"].ToString() + "[0]";
-                                preinput = matc2.Groups["parameterarray"].ToString();
-                                //vartype = "array[0]";
+                                Match matchString = Regex.Match(lineItem, RegexStr4);
+                                Console.WriteLine("parametername:{0},parameterarray:{1}", matchString.Groups["parametername"].ToString(), matchString.Groups["parameterarray"].ToString());
+                                name = matchString.Groups["parametername"].ToString() + "[0]";
+                                preinput = matchString.Groups["parameterarray"].ToString();
                             }
                             //(4)结构如cfg_buf
                             else if (!lineItem.Contains("*") && !lineItem.Contains("[") && !lineItem.Contains("]"))
@@ -277,8 +289,8 @@ namespace SmallManagerSpace.Resources
                                 name = lineItem;
                             }
                             if (name.Equals("board_num") && isStartCapture.Equals(true)) { isCaptured = true; CapturedData = "board_num"; }
-                            ComRunDatas.structOfSourceFileDataOperation.AddValueOfParameterItem(CID.ToString().PadLeft(4, '0'), type, preinput, name, range, value, length, note);
-                            CID++;
+                            ComRunDatas.structOfSourceFileDataOperation.AddValueOfParameterItem(Cid.ToString().PadLeft(4, '0'), type, preinput, name, range, value, length, note);
+                            Cid++;
                         }
                     }
                 }
