@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterDetailSample", "MasterDetailSample.csproj", "{9E5E0E94-7CE6-4EE8-9399-DC8A800578DC}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AutoGenTools", "Install_Project\AutoGenTools\AutoGenTools.vdproj", "{67FBF488-6408-4383-B820-07ED81705B0E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,12 +26,6 @@ Global
 		{9E5E0E94-7CE6-4EE8-9399-DC8A800578DC}.Release|x64.Build.0 = Release|Any CPU
 		{9E5E0E94-7CE6-4EE8-9399-DC8A800578DC}.Release|x86.ActiveCfg = Release|x86
 		{9E5E0E94-7CE6-4EE8-9399-DC8A800578DC}.Release|x86.Build.0 = Release|x86
-		{67FBF488-6408-4383-B820-07ED81705B0E}.Debug|Any CPU.ActiveCfg = Debug
-		{67FBF488-6408-4383-B820-07ED81705B0E}.Debug|x64.ActiveCfg = Debug
-		{67FBF488-6408-4383-B820-07ED81705B0E}.Debug|x86.ActiveCfg = Debug
-		{67FBF488-6408-4383-B820-07ED81705B0E}.Release|Any CPU.ActiveCfg = Release
-		{67FBF488-6408-4383-B820-07ED81705B0E}.Release|x64.ActiveCfg = Release
-		{67FBF488-6408-4383-B820-07ED81705B0E}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
