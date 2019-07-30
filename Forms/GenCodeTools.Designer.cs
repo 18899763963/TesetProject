@@ -43,7 +43,6 @@ namespace MasterDetailSample
             this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.ViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ChineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,8 +153,7 @@ namespace MasterDetailSample
             this.CutToolStripMenuItem,
             this.CopyToolStripMenuItem,
             this.PasteToolStripMenuItem,
-            this.DeleteToolStripMenuItem,
-            this.toolStripSeparator7});
+            this.DeleteToolStripMenuItem});
             this.EditToolStripMenuItem.Name = "EditToolStripMenuItem";
             this.EditToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.EditToolStripMenuItem.Text = "±‡º≠";
@@ -163,35 +161,30 @@ namespace MasterDetailSample
             // CutToolStripMenuItem
             // 
             this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
-            this.CutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.CutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CutToolStripMenuItem.Text = "ºÙ«–";
             this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
             // 
             // CopyToolStripMenuItem
             // 
             this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CopyToolStripMenuItem.Text = "∏¥÷∆";
             this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // PasteToolStripMenuItem
             // 
             this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
-            this.PasteToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.PasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.PasteToolStripMenuItem.Text = "’≥Ã˘";
             this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
             // 
             // DeleteToolStripMenuItem
             // 
             this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.DeleteToolStripMenuItem.Text = "…æ≥˝    ";
             this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(113, 6);
             // 
             // ViewToolStripMenuItem
             // 
@@ -208,29 +201,29 @@ namespace MasterDetailSample
             this.EnglishToolStripMenuItem,
             this.DataToolStripMenuItem});
             this.LanguageToolStripMenuItem.Name = "LanguageToolStripMenuItem";
-            this.LanguageToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.LanguageToolStripMenuItem.Text = "≈‰÷√¥∞";
+            this.LanguageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.LanguageToolStripMenuItem.Text = "”Ô—‘≈‰÷√";
             // 
             // ChineseToolStripMenuItem
             // 
             this.ChineseToolStripMenuItem.Checked = true;
             this.ChineseToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ChineseToolStripMenuItem.Name = "ChineseToolStripMenuItem";
-            this.ChineseToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.ChineseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ChineseToolStripMenuItem.Text = "÷–Œƒ";
             this.ChineseToolStripMenuItem.Click += new System.EventHandler(this.ChineseToolStripMenuItem_Click);
             // 
             // EnglishToolStripMenuItem
             // 
             this.EnglishToolStripMenuItem.Name = "EnglishToolStripMenuItem";
-            this.EnglishToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.EnglishToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.EnglishToolStripMenuItem.Text = "”¢Œƒ";
             this.EnglishToolStripMenuItem.Click += new System.EventHandler(this.EnglishToolStripMenuItem_Click);
             // 
             // DataToolStripMenuItem
             // 
             this.DataToolStripMenuItem.Name = "DataToolStripMenuItem";
-            this.DataToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.DataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.DataToolStripMenuItem.Text = " ˝æ›";
             this.DataToolStripMenuItem.Click += new System.EventHandler(this.DataToolStripMenuItem_Click);
             // 
@@ -251,7 +244,7 @@ namespace MasterDetailSample
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.AboutToolStripMenuItem.Text = "πÿ”⁄";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -510,7 +503,6 @@ namespace MasterDetailSample
         private ToolStripMenuItem ChineseToolStripMenuItem;
         private ToolStripMenuItem EnglishToolStripMenuItem;
         private ToolStripMenuItem DataToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator7;
         private SaveFileDialog saveFileDialog1;
     }
 	

@@ -232,7 +232,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx" />
     <EmbeddedResource Include="obj\Debug\MasterDetailSample.frmMain.resources" />
-    <EmbeddedResource Include="obj\Debug\SmallManagerSpace.Forms.SendFileToDiskMessageBoxcs.resources" />
     <EmbeddedResource Include="obj\Debug\SmallManagerSpace.Forms.TipMessageBoxcs.resources" />
     <EmbeddedResource Include="obj\Debug\SmallManagerSpace.My_Project.Resources.resources" />
     <EmbeddedResource Include="obj\Debug\SmallManagerSpace.Properties.Resources.resources" />
