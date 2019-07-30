@@ -165,18 +165,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\PropertySettingBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PropertySettingBox.Designer.cs">
-      <DependentUpon>PropertySettingBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SendFileToDiskMessageBoxcs.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SendFileToDiskMessageBoxcs.Designer.cs">
-      <DependentUpon>SendFileToDiskMessageBoxcs.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\TipMessageBoxcs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,8 +211,6 @@
     <Compile Include="Resources\EntityVsXml\EntityToXml.cs" />
     <Compile Include="Resources\FileStringADU\FileStringADU.cs" />
     <Compile Include="Resources\GUIModels\ComBoxObj.cs" />
-    <Compile Include="Resources\GUIModels\PropertyGridObj.cs" />
-    <Compile Include="Resources\GUIModels\TabalControlObj.cs" />
     <Compile Include="Resources\GUIModels\AdvTreeObj.cs" />
     <Compile Include="Resources\GUIVsEntity\AdvTreeToEntity.cs" />
     <Compile Include="Resources\GUIVsEntity\EntityToAdvTree.cs" />
@@ -234,20 +220,12 @@
     <Compile Include="Resources\EventLog\EventLogClass.cs" />
     <Compile Include="Resources\EntityVsXls\EntityVsXls.cs" />
     <Compile Include="Resources\EntityVsFile\EntityVsFile.cs" />
-    <Compile Include="Resources\PropertyGrid\PropertyGridClass.cs" />
     <Compile Include="Resources\StringOperation\StringOperation.cs" />
-    <Compile Include="Resources\PathStringADU\TransformFileInterface.cs" />
     <Compile Include="Resources\XmlToXls\XmlToXls.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\SendFileToDiskMessageBoxcs.resx">
-      <DependentUpon>SendFileToDiskMessageBoxcs.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GenCodeTools.resx">
       <DependentUpon>GenCodeTools.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PropertySettingBox.resx">
-      <DependentUpon>PropertySettingBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TipMessageBoxcs.resx">
       <DependentUpon>TipMessageBoxcs.cs</DependentUpon>
