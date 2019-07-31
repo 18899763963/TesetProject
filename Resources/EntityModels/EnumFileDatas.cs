@@ -7,34 +7,51 @@ using System.Xml.Serialization;
 namespace SmallManagerSpace.Resources
 {
     [XmlRootAttribute("schema", IsNullable = false)]
-    public class EnumOfSourceFileDatas
+    public class EnumEntity
     {
         [XmlArrayAttribute("simpleTypes")]
         public List<simpleType> simpleTypes { get; set; }
     }
 
-    public class EnumOfSourceFileDataOperation
+    public class EnumFunction
     {
         public  void CreatesimpleTypeInfo()
         {
             //创建simpleTypeInfo信息
-            ComRunDatas.EnumOfSourceFileEntity = new EnumOfSourceFileDatas();
-            ComRunDatas.EnumOfSourceFileEntity.simpleTypes = new List<simpleType>();
+            ComRunDatas.enumEntity = new EnumEntity();
+            ComRunDatas.enumEntity.simpleTypes = new List<simpleType>();
         }
         /// <summary>
         ///  将对象数据序列化
         /// </summary>
         public void XmlSerializeToEnumFile(string WorkPath, string EnumItemsFileName)
         {
-            if (ComRunDatas.StructOfSourceFileEntity != null)
+            if (ComRunDatas.structEntity != null)
             {
                 string FileName = WorkPath + EnumItemsFileName;
-                EntitySerializeHelper.XmlSerializeOnString(ComRunDatas.EnumOfSourceFileEntity, FileName);
+                EntitySerializeHelper.XmlSerializeOnString(ComRunDatas.enumEntity, FileName);
             }
         }
+
+        /// <summary>
+        ///  将xml文件化为对象数据序列
+        /// </summary>
+        /// <param name="Path"></param>
+        /// <param name="EnumItemsFileName"></param>
+        /// <returns></returns>
+        public EnumEntity XmlDeSerializeToStructObj(string Path, string EnumItemsFileName)
+        {            
+            return EntitySerializeHelper.DESerializerOnFile<EnumEntity>(Path + EnumItemsFileName);
+        }
+        /// <summary>
+        /// 添加子项目到对象实体中
+        /// </summary>
+        /// <param name="enValue"></param>
+        /// <param name="cnValue"></param>
+        /// <param name="valueValue"></param>
         public void addValueOfEnumOfsimpleTypeItem(string enValue, string cnValue, string valueValue)
         {
-            simpleType simpleTypeItem = ComRunDatas.EnumOfSourceFileEntity.simpleTypes.LastOrDefault();
+            simpleType simpleTypeItem = ComRunDatas.enumEntity.simpleTypes.LastOrDefault();
             enumerationValue simpleTypeValueItem = new enumerationValue();
             simpleTypeValueItem.cn = enValue;
             simpleTypeValueItem.en = cnValue;
@@ -52,7 +69,7 @@ namespace SmallManagerSpace.Resources
             simpleTypeItem.length = lengthValue;
             List<enumerationValue> simpleTypeValues = new List<enumerationValue>();
             simpleTypeItem.enumerationValues = simpleTypeValues;
-            ComRunDatas.EnumOfSourceFileEntity.simpleTypes.Add(simpleTypeItem);
+            ComRunDatas.enumEntity.simpleTypes.Add(simpleTypeItem);
         }
 
         /// <summary>
@@ -60,7 +77,7 @@ namespace SmallManagerSpace.Resources
         /// </summary>
         public void updateValueOfsimpleTypeItem(string key, string value)
         {
-            simpleType simpleTypeItem = ComRunDatas.EnumOfSourceFileEntity.simpleTypes.LastOrDefault();
+            simpleType simpleTypeItem = ComRunDatas.enumEntity.simpleTypes.LastOrDefault();
             if (key.Equals("name"))
             {
                 simpleTypeItem.name = value;

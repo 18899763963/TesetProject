@@ -119,7 +119,7 @@ namespace SmallManagerSpace.Resources
             ParameterDataList.Add(CommStr.BraceBracketClose);
             return ParameterDataList;
         }
-        private static Dictionary<string, FormatEntity> GetFormatEntityData(StructOfSourceFileDatas StructEntity)
+        private static Dictionary<string, FormatEntity> GetFormatEntityData(StructEntity StructEntity)
         {
             Dictionary<string, FormatEntity> keyValuePairs = new Dictionary<string, FormatEntity>();
             foreach (StructItem structItem in StructEntity.structItemList)
@@ -183,7 +183,7 @@ namespace SmallManagerSpace.Resources
                             node = " ";
                             CapturedType = "isStruct";
                             //添加structitem数据到列表中
-                            ComRunDatas.structOfSourceFileDataOperation.AddValueOfStructItem(Cid.ToString().PadLeft(4, '0'), type, name, preinput, node);
+                            ComRunDatas.structFunction.AddValueOfStructItem(Cid.ToString().PadLeft(4, '0'), type, name, preinput, node);
                             ProcessStep++;
                             Cid++;
                         }
@@ -194,7 +194,7 @@ namespace SmallManagerSpace.Resources
                             string lengthValue = "1";
                             string valueValue = "1";
                             //添加simpleTypeItem数据到列表中
-                            ComRunDatas.enumOfSourceFileDataOperation.addValueOfsimpleTypeItemWithout(baseValue, lengthValue, valueValue);
+                            ComRunDatas.enumFunction.addValueOfsimpleTypeItemWithout(baseValue, lengthValue, valueValue);
                             CapturedType = "isEnum";
                             ProcessStep++;
                         }
@@ -222,9 +222,9 @@ namespace SmallManagerSpace.Resources
                             Console.WriteLine("structname:{0}", matc.Groups["structname"].ToString());
                             structname = matc.Groups["structname"].ToString();
                             //修改structitem数据到列表中
-                            ComRunDatas.structOfSourceFileDataOperation.UpdateValueOfStructItem("name", structname);
+                            ComRunDatas.structFunction.UpdateValueOfStructItem("name", structname);
                             //修改parametertitem数据到列表中
-                            ComRunDatas.structOfSourceFileDataOperation.UpdateValueOfParameterItem("preinput", "entry");
+                            ComRunDatas.structFunction.UpdateValueOfParameterItem("preinput", "entry");
                             ProcessStep = 0;
                             CapturedType = "";
                         }     //4.匹配字符串{内容}
@@ -289,7 +289,7 @@ namespace SmallManagerSpace.Resources
                                 name = lineItem;
                             }
                             if (name.Equals("board_num") && isStartCapture.Equals(true)) { isCaptured = true; CapturedData = "board_num"; }
-                            ComRunDatas.structOfSourceFileDataOperation.AddValueOfParameterItem(Cid.ToString().PadLeft(4, '0'), type, preinput, name, range, value, length, note);
+                            ComRunDatas.structFunction.AddValueOfParameterItem(Cid.ToString().PadLeft(4, '0'), type, preinput, name, range, value, length, note);
                             Cid++;
                         }
                     }
@@ -315,7 +315,7 @@ namespace SmallManagerSpace.Resources
                             string RegexStr1 = @"}[\s]*(?<nameValue>[\S]+)[\s]*;";
                             Match matc = Regex.Match(line, RegexStr1);
                             nameValue = matc.Groups["nameValue"].ToString();
-                            ComRunDatas.enumOfSourceFileDataOperation.updateValueOfsimpleTypeItem("name", nameValue);
+                            ComRunDatas.enumFunction.updateValueOfsimpleTypeItem("name", nameValue);
                             ProcessStep = 0;
                             CapturedType = "";
                         }
@@ -340,7 +340,7 @@ namespace SmallManagerSpace.Resources
                                 {
                                     enumAutoStep++;
                                 }
-                                ComRunDatas.enumOfSourceFileDataOperation.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
+                                ComRunDatas.enumFunction.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
                             }//(2)结构如OTN_USER_PORT_RATE_2G5,
                             else
                             {
@@ -350,7 +350,7 @@ namespace SmallManagerSpace.Resources
                                 enValue = matc1.Groups["enValue"].ToString();
                                 cnValue = matc1.Groups["enValue"].ToString();
                                 valueValue = enumAutoStep.ToString().PadLeft(2, '0');
-                                ComRunDatas.enumOfSourceFileDataOperation.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
+                                ComRunDatas.enumFunction.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
                                 enumAutoStep++;
                             }
                         }
@@ -361,11 +361,11 @@ namespace SmallManagerSpace.Resources
         }
         public static void GetFileFromEntity(string GenFileFullName)
         {
-            if (ComRunDatas.SourceWorkPath == null && ComRunDatas.HeadSourceFileName == null && ComRunDatas.StructOfSourceFileEntity == null) return;
+            if (ComRunDatas.sourceWorkPath == null && ComRunDatas.eadSourceFileName == null && ComRunDatas.structEntity == null) return;
             //1.将数据同类数据合并到字典中
-            Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComRunDatas.StructOfSourceFileEntity);
+            Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComRunDatas.structEntity);
             //2.复制源文件到新文件中，并且将生成数据放入到其中
-            File.Copy(ComRunDatas.SourceWorkPath + ComRunDatas.HeadSourceFileName, GenFileFullName, true);
+            File.Copy(ComRunDatas.sourceWorkPath + ComRunDatas.eadSourceFileName, GenFileFullName, true);
             //3.得到文件流,将数据添加到文件后面
             FileStream fileStream = new FileStream(GenFileFullName, FileMode.Append);
             StreamWriter stringWriter = new StreamWriter(fileStream);

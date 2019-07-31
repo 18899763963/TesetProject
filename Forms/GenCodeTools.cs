@@ -52,67 +52,69 @@ namespace MasterDetailSample
             defaultInstance = null;
         }
 
-        delegate void BusnissGenerationEntityFromHeader(string n);
-        delegate void BusnissGenerationEntityFromXml(string n);
-        delegate void BusnissDisplayDataGuiViaString(string n);
-        delegate void BusnissDisplayDataGuiViaEntity(string n);
-        delegate void BusnissGenerationXlsFromXml(string n);
-        delegate void BusnissGenerationXmlFromEntity(string WorkSpace,string FileName);
-        delegate void BusnissInitCommonData(TabControl tabControlInstance, string n);
-        delegate void BusnissMainProcess(string n);
-        public void BusnissMainProcessInstance(string PathFileName)
+        delegate void GenerationEntityFromHeader(string n);
+        delegate void GenerationEntityFromXml(string n);
+        delegate void DisplayDataGuiViaString(string n);
+        delegate void DisplayDataGuiViaEntity(string n);
+        delegate void GenerationXlsFromXml(string n);
+        delegate void GenerationXmlFromEntity(string WorkSpace,string StructFileName,string EnumFileName);
+        delegate void InitCommonData(TabControl tabControlInstance, string n);
+        delegate void MainProcess(string n);
+        public void MainProcessInstance(string PathFileName)
         {
-            // tabControl2.SelectedIndexChanged -= new System.EventHandler(this.TabControl2_SelectedIndexChanged);
-            //1.加载base文件的数据
-            if (ComRunDatas.StepNow.Equals(StepProcess.InitComm))
+            //1.加载base文件,初始化AdvTree,TabControl,路径字符等公共变量
+            if (ComRunDatas.stepNow.Equals(StepProcess.InitComm))
             {
-                BusnissInitCommonData busnissInitCommonData = new BusnissInitCommonData(ComRunDatas.BussnessInitCommonData);
-                busnissInitCommonData(tabControl1, PathFileName);
-                ComRunDatas.StepNow = StepProcess.ParserFileToEntity;
-            }    //2.如果是H/XML文件，则转化OBJ对象
-            if (ComRunDatas.StepNow.Equals(StepProcess.ParserFileToEntity))
-            {   //如果是H头文件->Obj
+                InitCommonData InitCommonData = new InitCommonData(ComRunDatas.InitCommonData);
+                InitCommonData(tabControl1, PathFileName);
+                ComRunDatas.stepNow = StepProcess.ParserFileToEntity;
+            }    
+            //2.如果是H/XML文件，则转化OBJ对象
+            if (ComRunDatas.stepNow.Equals(StepProcess.ParserFileToEntity))
+            {   //a.如果是H头文件->Obj
                 if (PathFileName.Contains(".h"))
                 {
-                    BusnissGenerationEntityFromHeader busnissGenerationEntityFromHeader = new BusnissGenerationEntityFromHeader(BussnessGetEntityFromHeaderFile);
-                    busnissGenerationEntityFromHeader(PathFileName);
-                    ComRunDatas.StepNow = StepProcess.EntityToGUI;
+                    GenerationEntityFromHeader GenerationEntityFromHeader = new GenerationEntityFromHeader(GetEntityFromHeaderFile);
+                    GenerationEntityFromHeader(PathFileName);
+                    //将obj对象的数据序列化到xml文件中
+                    GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialStructEnumEntityToXml);
+                    GenerationXmlFromEntity(ComRunDatas.programStartPath, ComRunDatas.structItemsFileName, ComRunDatas.enumItemsFileName);
+                    ComRunDatas.stepNow = StepProcess.EntityToGUI;
                 }
-                //如果是XML头文件->Obj
+                //b.如果是XML头文件->OBJ
                 else if (PathFileName.Contains(".xml"))
                 {
-                    BusnissGenerationEntityFromXml busnissGenerationEntityFromXml = new BusnissGenerationEntityFromXml(BussnessGetEntityFromXmlFile);
-                    busnissGenerationEntityFromXml(PathFileName);
-                    ComRunDatas.StepNow = StepProcess.EntityToGUI;
+                    GenerationEntityFromXml GenerationEntityFromXml = new GenerationEntityFromXml(GetEntityFromXmlFile);
+                    GenerationEntityFromXml(PathFileName);
+                    ComRunDatas.stepNow = StepProcess.EntityToGUI;
                 }
             }
             //3.OBJ对象生成界面
-            if (ComRunDatas.StepNow.Equals(StepProcess.EntityToGUI))
+            if (ComRunDatas.stepNow.Equals(StepProcess.EntityToGUI))
             {
-                BusnissDisplayDataGuiViaEntity busnissDisplayDataGuiViaOBJ = new BusnissDisplayDataGuiViaEntity(BusnissDisplayDataGuiViaOBJ);
-                busnissDisplayDataGuiViaOBJ(PathFileName);
+                DisplayDataGuiViaEntity displayDataGuiViaOBJ = new DisplayDataGuiViaEntity(DisplayDataGuiViaOBJ);
+                displayDataGuiViaOBJ(PathFileName);
             }
-            ComRunDatas.StepNow = StepProcess.InitComm;
+            ComRunDatas.stepNow = StepProcess.InitComm;
         }
 
 
-        private void BussnessGetEntityFromHeaderFile(string InputFilePath)
+        private void GetEntityFromHeaderFile(string InputFilePath)
         {
             //1.解析文件内容
             EntityVsFile.GetEntityFromFile(InputFilePath);
         }
-        private void BussnessGetEntityFromXmlFile(string InputFilePath)
+        private void GetEntityFromXmlFile(string InputFilePath)
         {
             //1.解析XML文件内容到Entity
-            ComRunDatas.StructOfSourceFileEntity = ComRunDatas.structOfSourceFileDataOperation.XmlDeSerializeToStructObj(ComRunDatas.SourceWorkPath, ComRunDatas.StructItemsOfSourceFileName);
+            ComRunDatas.structEntity = ComRunDatas.structFunction.XmlDeSerializeToStructObj(ComRunDatas.sourceWorkPath, ComRunDatas.structItemsFileName);
         }
-        private void BussnessSerialEntityToXml(string WorkSpace,String FileName)
+        private void SerialStructEnumEntityToXml(string WorkSpace, string StructFileName,string EnumFileName)
         {
-             ComRunDatas.structOfSourceFileDataOperation.XmlSerializeToStructFile(WorkSpace, FileName);
-            // ComRunDatas.CommonStructDataOperation.XmlSerializeToStructFile(ComRunDatas.WorkPath, ComRunDatas.StructItemsFileName);
-            ComRunDatas.enumOfSourceFileDataOperation.XmlSerializeToEnumFile(WorkSpace, ComRunDatas.EnumItemsOfSourceFileName);
+             ComRunDatas.structFunction.XmlSerializeToStructFile(WorkSpace, StructFileName);
+             ComRunDatas.enumFunction.XmlSerializeToEnumFile(WorkSpace,EnumFileName);
         }
-        private void BusnissDisplayDataGuiViaOBJ(string InputFilePath)
+        private void DisplayDataGuiViaOBJ(string InputFilePath)
         {
             EntityToAdvTree entityToAdvTree = new EntityToAdvTree();
             entityToAdvTree.FullDataToAdvTreeFromXMLObj();
@@ -132,8 +134,8 @@ namespace MasterDetailSample
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         string SelectedPathSource = openFileDialog.FileName;
-                        BusnissMainProcess busnissMainProcess = new BusnissMainProcess(BusnissMainProcessInstance);
-                        busnissMainProcess(SelectedPathSource);
+                        MainProcess MainProcess = new MainProcess(MainProcessInstance);
+                        MainProcess(SelectedPathSource);
                     }
                 }
             }
@@ -168,22 +170,23 @@ namespace MasterDetailSample
                     if(saveFileDialog1.FileName.ToLower().Contains(".c"))
                     {
                         FileStringOperation pathFileStringADU = new FileStringOperation();
-                        ComRunDatas.SinkWorkPath = pathFileStringADU.GetDirectionNameString(saveFileDialog1.FileName);
-                        ComRunDatas.SinkCFileName = pathFileStringADU.GetFileNameString(saveFileDialog1.FileName); //获取文件名，不带路径;
+                        ComRunDatas.saveWorkPath = pathFileStringADU.GetDirectionNameString(saveFileDialog1.FileName);
+                        ComRunDatas.saveCFileName = pathFileStringADU.GetFileNameString(saveFileDialog1.FileName); //获取文件名，不带路径;
                         AdvTree CurrentAdvTree = ComRunDatas.advTree;
                         if (CurrentAdvTree != null)
                         {   //1.将当前树的数据转换为对象
                             AdvTreeToEntity advTreeToEntity = new AdvTreeToEntity();
                             advTreeToEntity.GetEntityByAdvTreeNode(CurrentAdvTree);
                             //2.将当前树的数据放入header文件中                            
-                            string GenFileFullName = ComRunDatas.SinkWorkPath +@"\"+ ComRunDatas.SinkCFileName;
+                            string GenFileFullName = ComRunDatas.saveWorkPath +@"\"+ ComRunDatas.saveCFileName;
                             EntityVsFile.GetFileFromEntity(GenFileFullName);
                             //3.将文件结构体中的数组变量用数组值替换
                             FileStringOperation fileStringADU = new FileStringOperation();
-                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComRunDatas.RegisterPreinput);
-                            //4.将对象的数据序列化到xml文件中
-                            BusnissGenerationXmlFromEntity busnissGenerationXmlFromEntity = new BusnissGenerationXmlFromEntity(BussnessSerialEntityToXml);
-                            busnissGenerationXmlFromEntity(ComRunDatas.SinkWorkPath, ComRunDatas.StructItemsOfSourceFileName);
+                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComRunDatas.registerPreinput);
+                            //4.将obj对象的数据序列化到xml文件中
+                            GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialStructEnumEntityToXml);
+                            GenerationXmlFromEntity(ComRunDatas.programStartPath, ComRunDatas.structItemsFileName, ComRunDatas.enumItemsFileName);
+
                         }
                     }
                 }

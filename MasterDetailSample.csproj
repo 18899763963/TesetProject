@@ -203,15 +203,14 @@
     <Compile Include="Resources\Resource.designer\Resource.Designer.cs" />
     <Compile Include="Resources\ComRunDatas\ComRunDatas.cs" />
     <Compile Include="Resources\EntityModels\BaseDatas.cs" />
-    <Compile Include="Resources\EntityModels\StructDatas.cs" />
-    <Compile Include="Resources\EntityModels\EnumDatas.cs" />
+    <Compile Include="Resources\EntityModels\StructProgramDatas.cs" />
     <Compile Include="Resources\StringOperation\FileStringOperation.cs" />
     <Compile Include="Resources\GUIModels\ComBoxObj.cs" />
     <Compile Include="Resources\GUIModels\AdvTreeObj.cs" />
     <Compile Include="Resources\GUIVsEntity\AdvTreeToEntity.cs" />
     <Compile Include="Resources\GUIVsEntity\EntityToAdvTree.cs" />
     <Compile Include="Resources\SerializeModel\EntitySerializeHelper.cs" />
-    <Compile Include="Resources\EntityModels\EnumUserDatas.cs" />
+    <Compile Include="Resources\EntityModels\EnumFileDatas.cs" />
     <Compile Include="Resources\EventLog\EventLogClass.cs" />
     <Compile Include="Resources\EntityVsFile\EntityVsFile.cs" />
     <Compile Include="Resources\StringOperation\StringOperation.cs" />
@@ -373,6 +372,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\DevComponents.DotNetBar2.dll" />
+    <Content Include="bin\Debug\DevComponents.DotNetBar2.xml" />
     <Content Include="bin\Debug\IrisSkin4.dll" />
     <Content Include="bin\Debug\MasterDetailSample.xml" />
     <Content Include="bin\Debug\SmallManager.exe" />

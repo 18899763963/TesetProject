@@ -122,7 +122,7 @@ namespace SmallManagerSpace.Resources
             workbook.DocumentProperties.Keywords = "H文件生成的XlS ";   //关键词
             workbook.DocumentProperties.CreatedTime = DateTime.Now; //创建时间
         }
-        public static void GenerateToObjFromXls(StructOfSourceFileDatas structfileObj, string WorkPath, string XlsxFileName)
+        public static void GenerateToObjFromXls(StructEntity structfileObj, string WorkPath, string XlsxFileName)
         {
             Workbook workbook = new Workbook();
             workbook.LoadFromFile(WorkPath + XlsxFileName);
@@ -130,7 +130,7 @@ namespace SmallManagerSpace.Resources
             //保存到物理路径
             workbook.SaveToFile(WorkPath + XlsxFileName, ExcelVersion.Version2013);
         }
-        public static void GenerateToXlsFromObj(StructOfSourceFileDatas structfileObj, string WorkPath, string XlsxFileName)
+        public static void GenerateToXlsFromObj(StructEntity structfileObj, string WorkPath, string XlsxFileName)
         {
             //新建Workbook
             Workbook workbook = new Workbook();

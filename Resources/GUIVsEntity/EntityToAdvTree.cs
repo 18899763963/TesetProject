@@ -14,25 +14,25 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
     {
         public void FullDataToAdvTreeFromXMLObj()
         {
-            if (ComRunDatas.advTree == null && ComRunDatas.StructOfSourceFileEntity == null && ComRunDatas.NodeElementStyle == null) return;
+            if (ComRunDatas.advTree == null && ComRunDatas.structEntity == null && ComRunDatas.nodeElementStyle == null) return;
             ComRunDatas.advTree.BeginUpdate();
             Node NewTreeNode = null;
-            NewTreeNode = CreateNode(ComRunDatas.StructBody, ComRunDatas.NodeElementStyle["BlockStyle"], 0);
-            FillDataToTreeByTraversvalObj(ComRunDatas.StructOfSourceFileEntity, NewTreeNode);
+            NewTreeNode = CreateNode(ComRunDatas.structBody, ComRunDatas.nodeElementStyle["BlockStyle"], 0);
+            FillDataToTreeByTraversvalObj(ComRunDatas.structEntity, NewTreeNode);
             NewTreeNode.Expanded = true;
             ComRunDatas.advTree.Nodes.Add(NewTreeNode);
             ComRunDatas.advTree.EndUpdate();
         }
-        public void FillDataToTreeByTraversvalObj(StructOfSourceFileDatas StructEntity, Node RreeNode)
+        public void FillDataToTreeByTraversvalObj(StructEntity StructEntity, Node RreeNode)
         {
             foreach (StructItem structitemObj in StructEntity.structItemList)
             {
                 //1.将structItemObj数据添加到节点中
-                Node StructitemNode = GetNodeByObjOfStructitem(structitemObj, ComRunDatas.NodeElementStyle["BlockStyle"], 0);
+                Node StructitemNode = GetNodeByObjOfStructitem(structitemObj, ComRunDatas.nodeElementStyle["BlockStyle"], 0);
                 //2.将structItemObj. List<parameter> 添加到节点中
                 foreach (Parameter parameterObj in structitemObj.parameterList)
                 {
-                    Node ParameterNode = GetNodeByObjOfParameter(parameterObj, ComRunDatas.NodeElementStyle["ParameterStyle"], 2);
+                    Node ParameterNode = GetNodeByObjOfParameter(parameterObj, ComRunDatas.nodeElementStyle["ParameterStyle"], 2);
                     StructitemNode.Nodes.Add(ParameterNode);
                 }
                 RreeNode.Nodes.Add(StructitemNode);
@@ -98,7 +98,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 int Result = 1;
                 if (int.TryParse(paremeterObj.value, out Result))
                 {
-                    ComRunDatas.RegisterPreinput[paremeterObj.name] = Result;
+                    ComRunDatas.registerPreinput[paremeterObj.name] = Result;
                 }
             }
             return newTreeNode;

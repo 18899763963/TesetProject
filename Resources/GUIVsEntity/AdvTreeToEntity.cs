@@ -12,10 +12,10 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
 
         public void GetEntityByAdvTreeNode(AdvTree advTree)
         {
-            if (advTree == null && ComRunDatas.StructOfSourceFileEntity == null) return;
+            if (advTree == null && ComRunDatas.structEntity == null) return;
             int CID = 1;
             //1.重新得到ComRunDatas.StructEntity对象
-            StructOfSourceFileDataOperation structDataOperation = new StructOfSourceFileDataOperation();
+            StructFunction structDataOperation = new StructFunction();
             structDataOperation.CreateConfigFileInfo();
             foreach (Node RootNode in advTree.Nodes)
             {
@@ -32,7 +32,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                             structItem.parameterList.Add(parameter);
                         }
                         //4.添加数据到Parameter对象
-                        ComRunDatas.StructOfSourceFileEntity.structItemList.Add(structItem);
+                        ComRunDatas.structEntity.structItemList.Add(structItem);
                     }
                 }
             }

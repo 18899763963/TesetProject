@@ -40,33 +40,33 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
         public void ElementStyleSetting()
         {
-            ComRunDatas.NodeElementStyle.Clear();
+            ComRunDatas.nodeElementStyle.Clear();
             //  Define node style
             ElementStyle BlockStyle = new ElementStyle();
             BlockStyle.TextColor = Color.SeaGreen;
             BlockStyle.Font = new Font("宋体", 10.5f);
             BlockStyle.Name = "BlockStyle";
-            ComRunDatas.NodeElementStyle.Add("BlockStyle", BlockStyle);
+            ComRunDatas.nodeElementStyle.Add("BlockStyle", BlockStyle);
             ElementStyle PathStyle = new ElementStyle();
             PathStyle.TextColor = Color.Navy;
             PathStyle.Font = new Font("宋体", 10.5f);
             PathStyle.Name = "PathStyle";
-            ComRunDatas.NodeElementStyle.Add("PathStyle", PathStyle);
+            ComRunDatas.nodeElementStyle.Add("PathStyle", PathStyle);
             ElementStyle ParameterStyle = new ElementStyle();
             ParameterStyle.TextColor = Color.Navy;
             ParameterStyle.Font = new Font("宋体", 10.5f);
             ParameterStyle.Name = "ParameterStyle";
-            ComRunDatas.NodeElementStyle.Add("ParameterStyle", ParameterStyle);
+            ComRunDatas.nodeElementStyle.Add("ParameterStyle", ParameterStyle);
             ElementStyle SpanStyle = new ElementStyle();
             ParameterStyle.TextColor = Color.Navy;
             ParameterStyle.Font = new Font("宋体", 10.5f);
             ParameterStyle.Name = "SpanStyle";
-            ComRunDatas.NodeElementStyle.Add("SpanStyle", ParameterStyle);
+            ComRunDatas.nodeElementStyle.Add("SpanStyle", ParameterStyle);
             ElementStyle ValueStyle = new ElementStyle();
             ParameterStyle.TextColor = Color.Navy;
             ParameterStyle.Font = new Font("宋体", 10.5f);
             ParameterStyle.Name = "ValueStyle";
-            ComRunDatas.NodeElementStyle.Add("ValueStyle", ParameterStyle);
+            ComRunDatas.nodeElementStyle.Add("ValueStyle", ParameterStyle);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     //4. 根据变量的范围统一设定为节点的父节点内     
                     int CountOfProcess = GetStateOfProcessNode(selectedNode, SelectedNodeData["name"], SelectedNodeData["value"]);
                     //5.判断是否为PublicPreinput
-                    if ((SelectedNodeData["name"]).Equals(ComRunDatas.PublicPreinputName) && CountOfProcess != 0)
+                    if ((SelectedNodeData["name"]).Equals(ComRunDatas.publicPreinputName) && CountOfProcess != 0)
                     {
                         Dictionary<string, List<Node>> ListNode = GetMatchNodeOnAncestorTree(selectedNode, SelectedTagData["name"]);
                         if (CountOfProcess > 0)
@@ -436,7 +436,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         private void UpdateRegisterPreinputValue(string name, int value)
         {
             //1.注册entry变量的新值
-            ComRunDatas.RegisterPreinput[name] = value;
+            ComRunDatas.registerPreinput[name] = value;
 
         }
         /// <summary>
@@ -501,7 +501,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
         private bool IsMatchedEntryVar(string inputName)
         {
-            if (ComRunDatas.RegisterPreinput.ContainsKey(inputName))
+            if (ComRunDatas.registerPreinput.ContainsKey(inputName))
             {
                 return true;
             }
