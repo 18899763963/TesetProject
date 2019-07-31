@@ -11,7 +11,7 @@ namespace SmallManagerSpace.Resources
     /// <summary>
     /// XML序列化公共处理类
     /// </summary>
-    public static class EntitySerializeHelper
+    public static class EntitySerialize
     {
         /// <summary>
         /// 将实体对象转换成XML文件

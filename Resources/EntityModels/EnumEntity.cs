@@ -29,7 +29,7 @@ namespace SmallManagerSpace.Resources
             if (ComRunDatas.structEntity != null)
             {
                 string FileName = WorkPath + EnumItemsFileName;
-                EntitySerializeHelper.XmlSerializeOnString(ComRunDatas.enumEntity, FileName);
+                EntitySerialize.XmlSerializeOnString(ComRunDatas.enumEntity, FileName);
             }
         }
 
@@ -41,7 +41,7 @@ namespace SmallManagerSpace.Resources
         /// <returns></returns>
         public EnumEntity XmlDeSerializeToStructObj(string Path, string EnumItemsFileName)
         {            
-            return EntitySerializeHelper.DESerializerOnFile<EnumEntity>(Path + EnumItemsFileName);
+            return EntitySerialize.DESerializerOnFile<EnumEntity>(Path + EnumItemsFileName);
         }
         /// <summary>
         /// 添加子项目到对象实体中

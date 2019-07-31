@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace SmallManagerSpace.Resources.FileStringADU
 {
-    class FileStringOperation
+    class FileStringFunction
     {
         public string GetDirectionNameString(string inputFullPath)
         {

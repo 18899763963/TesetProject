@@ -32,7 +32,7 @@ namespace SmallManagerSpace.Resources
             if (ComRunDatas.structEntity != null)
             {
                 string FileName = WorkPath + StructItemsFileName;
-                EntitySerializeHelper.XmlSerializeOnString(ComRunDatas.structEntity, FileName);
+                EntitySerialize.XmlSerializeOnString(ComRunDatas.structEntity, FileName);
             }
         }
         /// <summary>
@@ -44,7 +44,7 @@ namespace SmallManagerSpace.Resources
         /// <returns></returns>
         public StructEntity XmlDeSerializeToStructObj(string Path, string StructItemsFileName)
         {
-            return EntitySerializeHelper.DESerializerOnFile<StructEntity>(Path + StructItemsFileName);
+            return EntitySerialize.DESerializerOnFile<StructEntity>(Path + StructItemsFileName);
         }
         /// <summary>
         ///  修改StructItem中数据

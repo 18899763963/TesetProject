@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SmallManagerSpace.Resources.GUIModels
@@ -28,22 +25,20 @@ namespace SmallManagerSpace.Resources.GUIModels
 
     class ComBoxObj
     {
-
-
         public Control CreateEnbedCombox(List<ComBoxEnumChild> enumrationList)
         {
             Control controlObj = null;
             ComboBox comboBox = new ComboBox();
-            comboBox.DropDownStyle = ComboBoxStyle.DropDownList;         
-            
+            comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+
             foreach (ComBoxEnumChild enumrationItem in enumrationList)
             {
                 comboBox.Items.Add(enumrationItem);
                 comboBox.DisplayMember = "en";
                 comboBox.ValueMember = "value";
-              
+
             }
-            
+
             comboBox.SelectedIndex = 0;
             comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             controlObj = comboBox;

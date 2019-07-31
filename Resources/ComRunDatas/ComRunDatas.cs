@@ -68,7 +68,7 @@ namespace SmallManagerSpace.Resources
         static public void InitPathAndFileData(string PathFileName)
         {
             //1.解析xml文件路径
-            FileStringOperation pathFileString = new FileStringOperation();
+            FileStringFunction pathFileString = new FileStringFunction();
             sourceWorkPath = pathFileString.GetDirectionNameString(PathFileName);
             eadSourceFileName = pathFileString.GetFileNameString(PathFileName);
             structItemsFileName = "StructItems.xml";

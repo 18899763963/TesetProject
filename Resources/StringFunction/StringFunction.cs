@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace SmallManagerSpace.Resources
 {
-    class StringOperation
+    class StringFunction
     {
         XNamespace w3Space = "http://www.w3.org/2001/XMLSchema";
         XNamespace FiberHomeSpace = "http://www.fiberhome.com.cn/board/control";

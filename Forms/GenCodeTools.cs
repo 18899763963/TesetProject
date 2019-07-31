@@ -169,7 +169,7 @@ namespace MasterDetailSample
                 {
                     if(saveFileDialog1.FileName.ToLower().Contains(".c"))
                     {
-                        FileStringOperation pathFileStringADU = new FileStringOperation();
+                        FileStringFunction pathFileStringADU = new FileStringFunction();
                         ComRunDatas.saveWorkPath = pathFileStringADU.GetDirectionNameString(saveFileDialog1.FileName);
                         ComRunDatas.saveCFileName = pathFileStringADU.GetFileNameString(saveFileDialog1.FileName); //获取文件名，不带路径;
                         AdvTree CurrentAdvTree = ComRunDatas.advTree;
@@ -181,7 +181,7 @@ namespace MasterDetailSample
                             string GenFileFullName = ComRunDatas.saveWorkPath +@"\"+ ComRunDatas.saveCFileName;
                             EntityVsFile.GetFileFromEntity(GenFileFullName);
                             //3.将文件结构体中的数组变量用数组值替换
-                            FileStringOperation fileStringADU = new FileStringOperation();
+                            FileStringFunction fileStringADU = new FileStringFunction();
                             fileStringADU.ReplaceStringOnFile(GenFileFullName, ComRunDatas.registerPreinput);
                             //4.将obj对象的数据序列化到xml文件中
                             GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialStructEnumEntityToXml);
