@@ -1,6 +1,7 @@
 ﻿using DevComponents.AdvTree;
 using DevComponents.DotNetBar;
 using SmallManagerSpace.Resources.FileStringADU;
+using SmallManagerSpace.Resources.GUIModels;
 using SmallManagerSpace.Resources.GUIVsEntity;
 using SmallManagerSpace.Resources.XmlVsEntity;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace SmallManagerSpace.Resources
     public enum StepProcess { InitComm = 1, ParserFileToEntity, EntityToXML, EntityToXLS, EntityToGUI }
     public static class ComRunDatas
     {
-        static public Dictionary<string, BaseData> commonBaseDictonary = null;
-        //static public Dictionary<string, EnumProgramData> CommonEnumDictonary = null;
+        static public Dictionary<string, BaseEntity> baseDictonary = null;
+        static public Dictionary<string, ComBoxEnum> comBoxEnumDictonary = null;
         static public EnumFunction enumFunction = null;
         static public StructFunction structFunction = null;
         static public StructEntity structEntity = null;
@@ -52,7 +53,7 @@ namespace SmallManagerSpace.Resources
             //1从文件中得到base中各个元素的值
             XmlVsBase bassDataOperation = new XmlVsBase();
             XElement BaseElement = bassDataOperation.GetBaseRootElement();
-            commonBaseDictonary = bassDataOperation.GetBaseElementString(BaseElement);
+            baseDictonary = bassDataOperation.GetBaseElementString(BaseElement);
         }
         /// <summary>
         /// Enum Struct 公共数据建立数据容器对象

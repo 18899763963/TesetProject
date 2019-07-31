@@ -22,7 +22,7 @@ namespace SmallManagerSpace.Resources.XmlVsEntity
         /// </summary>
         /// <param name="xRootElements">文件根节点</param>
         /// <returns>返回数据列表</returns>
-        public Dictionary<string, BaseData> GetBaseElementString(XElement xRootElements)
+        public Dictionary<string, BaseEntity> GetBaseElementString(XElement xRootElements)
         {
             XNamespace xsd = "http://www.w3.org/2001/XMLSchema";
             XNamespace xdo = "urn:pxp";
@@ -31,14 +31,14 @@ namespace SmallManagerSpace.Resources.XmlVsEntity
             XNamespace xdb = "http://xmlns.oracle.com/xdb";
             XNamespace w = "http://www.fiberhome.com.cn/board/control";
 
-            Dictionary<string, BaseData> BaseDictionary = new Dictionary<string, BaseData>();
+            Dictionary<string, BaseEntity> BaseDictionary = new Dictionary<string, BaseEntity>();
             if (xRootElements != null)
             {
                 if (xRootElements.HasElements)
                 {
                     foreach (XElement elementLevelOne in xRootElements.Elements())
                     {
-                        BaseData basedata = new BaseData();
+                        BaseEntity basedata = new BaseEntity();
 
                         XAttribute xAttributeOne = elementLevelOne.Attribute("name");
                         basedata.name = xAttributeOne.Value;

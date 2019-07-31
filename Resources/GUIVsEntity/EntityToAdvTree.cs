@@ -75,7 +75,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             if (IsMatchedEnumName(paremeterObj.type))
             {
                 ComBoxObj comBoxObj = new ComBoxObj();
-                List<Enumration> enumrationList = GetEnumrationList(paremeterObj.type);
+                List<ComBoxEnumChild> enumrationList = GetEnumrationList(paremeterObj.type);
                 Control control = comBoxObj.CreateEnbedCombox(enumrationList);
                 Cell cell = new Cell();
                 cell.HostedControl = control;
@@ -105,16 +105,16 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
         public bool IsMatchedEnumName(string inputName)
         {
-            if (ComRunDatas.CommonEnumDictonary == null) return false;
-            if (ComRunDatas.CommonEnumDictonary.ContainsKey(inputName))
+            if (ComRunDatas.comBoxEnumDictonary == null) return false;
+            if (ComRunDatas.comBoxEnumDictonary.ContainsKey(inputName))
             {
                 return true;
             }
             return false;
         }
-        public List<Enumration> GetEnumrationList(string inputName)
+        public List<ComBoxEnumChild> GetEnumrationList(string inputName)
         {
-            List<Enumration> enumrationList = ComRunDatas.CommonEnumDictonary[inputName].EnumrationList;
+            List<ComBoxEnumChild> enumrationList = ComRunDatas.comBoxEnumDictonary[inputName].comBoxEnumChild;
             return enumrationList;
         }
     }

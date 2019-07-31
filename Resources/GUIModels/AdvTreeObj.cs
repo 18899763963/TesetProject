@@ -300,7 +300,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                             if (columnHeader.Name.Equals("value"))
                             {
                                 ComBoxObj comBoxObj = new ComBoxObj();
-                                List<Enumration> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
+                                List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
                                 Control control = comBoxObj.CreateEnbedCombox(enumrationList);
                                 CloneChildNode.Cells[indexOfCells].HostedControl = control;
                                 CaptureName = null;
@@ -359,7 +359,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     if (columnHeader.Name.Equals("value"))
                     {
                         ComBoxObj comBoxObj = new ComBoxObj();
-                        List<Enumration> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
+                        List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
                         Control control = comBoxObj.CreateEnbedCombox(enumrationList);
                         CloneNode.Cells[indexOfCells].HostedControl = control;
                         CaptureName = null;

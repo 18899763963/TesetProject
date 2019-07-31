@@ -7,30 +7,36 @@ using System.Windows.Forms;
 
 namespace SmallManagerSpace.Resources.GUIModels
 {
+
+    public class ComBoxEnumChild
+    {
+        public string en { get; set; }
+        public string cn { get; set; }
+        public string value { get; set; }
+        public override string ToString()
+        {
+            return this.value;
+        }
+    }
+    public class ComBoxEnum
+    {
+        public string name { get; set; }
+        public string type { get; set; }
+        public int length { get; set; }
+        public List<ComBoxEnumChild> comBoxEnumChild = null;
+    }
+
     class ComBoxObj
     {
-        DataTable GetDataTable(List<Enumration> enumrationList)
-        {
-            DataTable dt = new DataTable();
-            foreach (Enumration enumrationItem in enumrationList)
-            {
-                DataRow dr = dt.NewRow();
-                dr[0] = enumrationItem.value;
-                dr[1] = enumrationItem.en;
-                dr[2] = enumrationItem.cn;
-                dt.Rows.Add(dr);
-            }
-            return dt;
 
-        }
 
-        public Control CreateEnbedCombox(List<Enumration> enumrationList)
+        public Control CreateEnbedCombox(List<ComBoxEnumChild> enumrationList)
         {
             Control controlObj = null;
             ComboBox comboBox = new ComboBox();
             comboBox.DropDownStyle = ComboBoxStyle.DropDownList;         
             
-            foreach (Enumration enumrationItem in enumrationList)
+            foreach (ComBoxEnumChild enumrationItem in enumrationList)
             {
                 comboBox.Items.Add(enumrationItem);
                 comboBox.DisplayMember = "en";
