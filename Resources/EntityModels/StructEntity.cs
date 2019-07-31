@@ -57,6 +57,11 @@ namespace SmallManagerSpace.Resources
             {//由于实际上是一个引用值，即指针，因此修改的值会回传到源
                 structitemlast.name = value;
             }
+            if(key.Equals("type"))
+            {
+                //由于实际上是一个引用值，即指针，因此修改的值会回传到源
+                structitemlast.type = value;
+            }
         }
 
 

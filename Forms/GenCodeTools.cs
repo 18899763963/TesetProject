@@ -109,10 +109,10 @@ namespace MasterDetailSample
             //1.解析XML文件内容到Entity
             ComRunDatas.structEntity = ComRunDatas.structFunction.XmlDeSerializeToStructObj(ComRunDatas.sourceWorkPath, ComRunDatas.structItemsFileName);
         }
-        private void SerialStructEnumEntityToXml(string WorkSpace, string StructFileName,string EnumFileName)
+        private void SerialStructEnumEntityToXml(string Space, string StructFileName,string EnumFileName)
         {
-             ComRunDatas.structFunction.XmlSerializeToStructFile(WorkSpace, StructFileName);
-             ComRunDatas.enumFunction.XmlSerializeToEnumFile(WorkSpace,EnumFileName);
+             ComRunDatas.structFunction.XmlSerializeToStructFile(Space, StructFileName);
+             ComRunDatas.enumFunction.XmlSerializeToEnumFile(Space,EnumFileName);
         }
         private void DisplayDataGuiViaOBJ(string InputFilePath)
         {

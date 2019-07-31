@@ -25,7 +25,7 @@ namespace SmallManagerSpace.Resources
         static public string saveCFileName = null;
         static public string saveWorkPath = null;
         static public string sourceWorkPath = null;
-        static public string programStartPath = System.Windows.Forms.Application.StartupPath;
+        static public string programStartPath = System.Windows.Forms.Application.StartupPath+"\\";
         static public bool isSuccessdLoadFile = false;
         static public TabControl tabControl1 = null;
         static public AdvTree advTree = null;

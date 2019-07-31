@@ -118,7 +118,7 @@
             Enum Struct 公共数据建立数据容器对象
             </summary>
         </member>
-        <member name="T:SmallManagerSpace.Resources.BaseData">
+        <member name="T:SmallManagerSpace.Resources.BaseEntity">
             <summary>
             用于存储base文件中的数据
             </summary>
@@ -183,19 +183,19 @@
             <returns>小于0:需要删除树的节点</returns>
             <returns>大于0:需要添加树的节点</returns>
         </member>
-        <member name="T:SmallManagerSpace.Resources.EntitySerializeHelper">
+        <member name="T:SmallManagerSpace.Resources.EntitySerialize">
             <summary>
             XML序列化公共处理类
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.XmlSerializeOnFile``1(``0)">
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.XmlSerializeOnFile``1(``0)">
             <summary>
             将实体对象转换成XML文件
             </summary>
             <typeparam name="T">实体类型</typeparam>
             <param name="obj">实体对象</param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.XmlSerializeOnString``1(``0,System.String)">
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.XmlSerializeOnString``1(``0,System.String)">
             <summary>
             将实体对象转换成XML
             </summary>
@@ -203,13 +203,13 @@
             <param name="obj">实体对象</param>
             <param name="fileName">文件路径</param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.DESerializerOnFile``1(System.String)">
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.DESerializerOnFile``1(System.String)">
             <summary>
             将XML文件转换成实体对象
             </summary>
             <typeparam name="T">实体类型</typeparam>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerializeHelper.DESerializerOnString``1(System.String)">
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.DESerializerOnString``1(System.String)">
             <summary>
             将XML转换成实体对象
             </summary>
@@ -252,7 +252,7 @@
         </member>
         <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetLengthOfType(System.String)">
             <summary>
-            得到Type类型的长度
+            得到匹配的基本类型，enum类型的长度
             </summary>
             <param name="Type"></param>
             <returns></returns>

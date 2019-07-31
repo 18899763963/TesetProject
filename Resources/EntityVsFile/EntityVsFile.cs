@@ -59,14 +59,34 @@ namespace SmallManagerSpace.Resources
             return arrayName;
         }
         /// <summary>
-        /// 得到Type类型的长度
+        /// 得到匹配的基本类型，enum类型的长度
         /// </summary>
         /// <param name="Type"></param>
         /// <returns></returns>
-        private static string GetLengthOfType(string Type)
+        private static int GetLengthOfType(string Type)
         {
-            string Length="";
-
+            int Length = 0;
+            //匹配基本类型的长度
+            if ((ComRunDatas.baseDictonary != null) && (ComRunDatas.baseDictonary.ContainsKey(Type)))
+            {
+                Length = ComRunDatas.baseDictonary[Type].length;
+            }
+            //匹配enum类型的长度
+            else if ((ComRunDatas.enumEntity != null) && (ComRunDatas.enumEntity.simpleTypes.Where(x => x.name == Type).Count() != 0))
+            {
+                simpleType matchSimpleType = ComRunDatas.enumEntity.simpleTypes.Where(x => x.name == Type).First();
+                Length = int.Parse(matchSimpleType.length);
+            }
+            //匹配struct类型的长度
+            else if ((ComRunDatas.structEntity != null) && (ComRunDatas.structEntity.structItemList.Where(x => x.type == Type).Count() != 0))
+            {
+                StructItem matchStructItem = ComRunDatas.structEntity.structItemList.Where(x => x.type == Type).First();
+                foreach (Parameter parameter in matchStructItem.parameterList)
+                {
+                    string paraType = parameter.type;
+                    Length += GetLengthOfType(paraType);
+                }
+            }
             return Length;
         }
         private static List<string> GeParamterDataList(List<Parameter> ParameterList)
@@ -216,13 +236,14 @@ namespace SmallManagerSpace.Resources
                         if (Regex.IsMatch(line, @"}"))
                         {
 
-                            string RegexStr3 = @"}[\s]*(?<structname>[\S]+)[\s]*;";
-                            string structname = "";
+                            string RegexStr3 = @"}[\s]*(?<structType>[\S]+)[\s]*;";
+                            string structType = "";
                             Match matc = Regex.Match(line, RegexStr3);
-                            Console.WriteLine("structname:{0}", matc.Groups["structname"].ToString());
-                            structname = matc.Groups["structname"].ToString();
+                            Console.WriteLine("structType:{0}", matc.Groups["structType"].ToString());
+                            structType = matc.Groups["structType"].ToString();
                             //修改structitem数据到列表中
-                            ComRunDatas.structFunction.UpdateValueOfStructItem("name", structname);
+                            ComRunDatas.structFunction.UpdateValueOfStructItem("type", structType);
+                            ComRunDatas.structFunction.UpdateValueOfStructItem("name", structType+"_VAR");
                             //修改parametertitem数据到列表中
                             ComRunDatas.structFunction.UpdateValueOfParameterItem("preinput", "entry");
                             ProcessStep = 0;
@@ -242,7 +263,7 @@ namespace SmallManagerSpace.Resources
                             Match matchStr = Regex.Match(line, RegexStr3);
                             type = matchStr.Groups["parametertype"].ToString();
                             note = matchStr.Groups["parameternote"].ToString();
-                            length = GetLengthOfType(type);
+                            length = GetLengthOfType(type).ToString();
 
                             string lineItem = matchStr.Groups["parametername"].ToString();
                             //(1)结构如*cfg_buf[switch_cfg_num]
@@ -265,7 +286,7 @@ namespace SmallManagerSpace.Resources
                                 name = "*" + matchString.Groups["parametername"].ToString();
                                 if (type == "AAL_UINT8")
                                 {
-                                    value = "defaultString";
+                                    value = "DefaultString";
                                 }
                                 //else
                                 //{                                  
@@ -405,10 +426,10 @@ namespace SmallManagerSpace.Resources
             foreach (string keyName in FormatEntityData.Keys)
             {
                 //1.添加 OTN_USER_B_TYPE_INFO  GetOTN_USER_B_TYPE_INFO(int index)
-                string defineString = keyName + " * Get" + keyName + "(int index)"+"\r\n";
+                string defineString = keyName + " * Get" + keyName + "(int index)" + "\r\n";
                 stringWriter.Write(defineString);
                 stringWriter.Write("{\r\n");
-                defineString = CommStr.Space+"if(index < (sizeof(" + keyName.ToLower() + ")/sizeof("+keyName.ToLower()+"[0]" + ")))" + "\r\n";
+                defineString = CommStr.Space + "if(index < (sizeof(" + keyName.ToLower() + ")/sizeof(" + keyName.ToLower() + "[0]" + ")))" + "\r\n";
                 stringWriter.Write(defineString);
                 stringWriter.Write(CommStr.Space + "{\r\n");
                 defineString = CommStr.Space + CommStr.Space + "return &" + keyName.ToLower() + "[index];" + "\r\n";
