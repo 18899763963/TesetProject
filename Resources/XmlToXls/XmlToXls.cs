@@ -142,7 +142,7 @@ namespace SmallManagerSpace.Resources
             int column = 1;
             //int startRow = 1;
             //int lastRow = 1;
-            foreach (StructItem structitemObj in structfileObj.structItemList)
+            foreach (StructItem structitemObj in structfileObj.nodeList)
             {
                 //1.将structItemObj数据添加到节点中
                 FullDataToXlsByStructitem(structitemObj, sheet, row, column);

@@ -40,33 +40,33 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
         public void ElementStyleSetting()
         {
-            ComRunDatas.nodeElementStyle.Clear();
+            ComData.nodeElementStyle.Clear();
             //  Define node style
             ElementStyle BlockStyle = new ElementStyle();
             BlockStyle.TextColor = Color.SeaGreen;
             BlockStyle.Font = new Font("宋体", 10.5f);
             BlockStyle.Name = "BlockStyle";
-            ComRunDatas.nodeElementStyle.Add("BlockStyle", BlockStyle);
+            ComData.nodeElementStyle.Add("BlockStyle", BlockStyle);
             ElementStyle PathStyle = new ElementStyle();
             PathStyle.TextColor = Color.Navy;
             PathStyle.Font = new Font("宋体", 10.5f);
             PathStyle.Name = "PathStyle";
-            ComRunDatas.nodeElementStyle.Add("PathStyle", PathStyle);
+            ComData.nodeElementStyle.Add("PathStyle", PathStyle);
             ElementStyle ParameterStyle = new ElementStyle();
             ParameterStyle.TextColor = Color.Navy;
             ParameterStyle.Font = new Font("宋体", 10.5f);
             ParameterStyle.Name = "ParameterStyle";
-            ComRunDatas.nodeElementStyle.Add("ParameterStyle", ParameterStyle);
+            ComData.nodeElementStyle.Add("ParameterStyle", ParameterStyle);
             ElementStyle SpanStyle = new ElementStyle();
             ParameterStyle.TextColor = Color.Navy;
             ParameterStyle.Font = new Font("宋体", 10.5f);
             ParameterStyle.Name = "SpanStyle";
-            ComRunDatas.nodeElementStyle.Add("SpanStyle", ParameterStyle);
+            ComData.nodeElementStyle.Add("SpanStyle", ParameterStyle);
             ElementStyle ValueStyle = new ElementStyle();
             ParameterStyle.TextColor = Color.Navy;
             ParameterStyle.Font = new Font("宋体", 10.5f);
             ParameterStyle.Name = "ValueStyle";
-            ComRunDatas.nodeElementStyle.Add("ValueStyle", ParameterStyle);
+            ComData.nodeElementStyle.Add("ValueStyle", ParameterStyle);
         }
 
         /// <summary>
@@ -74,15 +74,15 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// </summary>
         private void AdvTreeSetting()
         {
-            ComRunDatas.advTree.Nodes.Clear();
-            ComRunDatas.advTree.View = eView.Tree;
-            ComRunDatas.advTree.ImageList = new ImageList();
-            ComRunDatas.advTree.ImageList.Images.Add("BlockImage", SmallManagerSpace.Raws.Resource.BlockIco);
-            ComRunDatas.advTree.ImageList.Images.Add("PathImage", SmallManagerSpace.Raws.Resource.PathIco);
-            ComRunDatas.advTree.ImageList.Images.Add("ParameterImage", SmallManagerSpace.Raws.Resource.ParameterIco);
-            ComRunDatas.advTree.AllowExternalDrop = false;
-            ComRunDatas.advTree.EnableDataPositionChange = false;
-            ComRunDatas.advTree.DragDropEnabled = false;
+            ComData.advTree.Nodes.Clear();
+            ComData.advTree.View = eView.Tree;
+            ComData.advTree.ImageList = new ImageList();
+            ComData.advTree.ImageList.Images.Add("BlockImage", SmallManagerSpace.Raws.Resource.BlockIco);
+            ComData.advTree.ImageList.Images.Add("PathImage", SmallManagerSpace.Raws.Resource.PathIco);
+            ComData.advTree.ImageList.Images.Add("ParameterImage", SmallManagerSpace.Raws.Resource.ParameterIco);
+            ComData.advTree.AllowExternalDrop = false;
+            ComData.advTree.EnableDataPositionChange = false;
+            ComData.advTree.DragDropEnabled = false;
             //列设置
             DevComponents.AdvTree.ColumnHeader columnHeader1 = new DevComponents.AdvTree.ColumnHeader("类型名称");
             columnHeader1.Name = "type";
@@ -109,23 +109,23 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             columnHeader4.Width.Relative = 10;
             columnHeader5.Width.Relative = 10;
             columnHeader6.StretchToFill = true;
-            ComRunDatas.advTree.Columns.Add(columnHeader1);
-            ComRunDatas.advTree.Columns.Add(columnHeader2);
-            ComRunDatas.advTree.Columns.Add(columnHeader3);
-            ComRunDatas.advTree.Columns.Add(columnHeader4);
-            ComRunDatas.advTree.Columns.Add(columnHeader5);
-            ComRunDatas.advTree.Columns.Add(columnHeader6);
-            ComRunDatas.advTree.CellEdit = true;
-            ComRunDatas.advTree.BeforeCellEdit += new CellEditEventHandler(this.AdvTreeBeforeCellEdit);
-            ComRunDatas.advTree.AfterCellEditComplete += new CellEditEventHandler(this.AdvTreeAfterCellEditComplete);
+            ComData.advTree.Columns.Add(columnHeader1);
+            ComData.advTree.Columns.Add(columnHeader2);
+            ComData.advTree.Columns.Add(columnHeader3);
+            ComData.advTree.Columns.Add(columnHeader4);
+            ComData.advTree.Columns.Add(columnHeader5);
+            ComData.advTree.Columns.Add(columnHeader6);
+            ComData.advTree.CellEdit = true;
+            ComData.advTree.BeforeCellEdit += new CellEditEventHandler(this.AdvTreeBeforeCellEdit);
+            ComData.advTree.AfterCellEditComplete += new CellEditEventHandler(this.AdvTreeAfterCellEditComplete);
 
-            ComRunDatas.advTree.GridColumnLineResizeEnabled = true;
-            ComRunDatas.advTree.AlternateRowColor = Color.AntiqueWhite;
-            ComRunDatas.advTree.Dock = DockStyle.Fill;
+            ComData.advTree.GridColumnLineResizeEnabled = true;
+            ComData.advTree.AlternateRowColor = Color.AntiqueWhite;
+            ComData.advTree.Dock = DockStyle.Fill;
 
 
-            TabItem tim = ComRunDatas.tabControl1.CreateTab("配置项");
-            tim.AttachedControl.Controls.Add(ComRunDatas.advTree);
+            TabItem tim = ComData.tabControl1.CreateTab("配置项");
+            tim.AttachedControl.Controls.Add(ComData.advTree);
         }
 
 
@@ -170,7 +170,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     //4. 根据变量的范围统一设定为节点的父节点内     
                     int CountOfProcess = GetStateOfProcessNode(selectedNode, SelectedNodeData["name"], SelectedNodeData["value"]);
                     //5.判断是否为PublicPreinput
-                    if ((SelectedNodeData["name"]).Equals(ComRunDatas.publicPreinputName) && CountOfProcess != 0)
+                    if ((SelectedNodeData["name"]).Equals(ComData.publicPreinputName) && CountOfProcess != 0)
                     {
                         Dictionary<string, List<Node>> ListNode = GetMatchNodeOnAncestorTree(selectedNode, SelectedTagData["name"]);
                         if (CountOfProcess > 0)
@@ -290,7 +290,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                         //1.匹配Enum，并调价嵌入下拉列表控件                
                         if (CaptureName == null)
                         {
-                            if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
+                           // if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
                             {
                                 CaptureName = cellItem.Text;
                             }
@@ -300,9 +300,9 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                             if (columnHeader.Name.Equals("value"))
                             {
                                 ComBoxObj comBoxObj = new ComBoxObj();
-                                List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
-                                Control control = comBoxObj.CreateEnbedCombox(enumrationList);
-                                CloneChildNode.Cells[indexOfCells].HostedControl = control;
+                                //List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
+                               // Control control = comBoxObj.CreateEnbedCombox(enumrationList);
+                                //CloneChildNode.Cells[indexOfCells].HostedControl = control;
                                 CaptureName = null;
                             }
                         }
@@ -349,7 +349,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 //2.匹配Enum，并调价嵌入下拉列表控件 
                 if (CaptureName == null)
                 {
-                    if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
+                   // if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
                     {
                         CaptureName = cellItem.Text;
                     }
@@ -359,9 +359,9 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     if (columnHeader.Name.Equals("value"))
                     {
                         ComBoxObj comBoxObj = new ComBoxObj();
-                        List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
-                        Control control = comBoxObj.CreateEnbedCombox(enumrationList);
-                        CloneNode.Cells[indexOfCells].HostedControl = control;
+                       // List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
+                       // Control control = comBoxObj.CreateEnbedCombox(enumrationList);
+                       // CloneNode.Cells[indexOfCells].HostedControl = control;
                         CaptureName = null;
                     }
                 }
@@ -436,7 +436,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         private void UpdateRegisterPreinputValue(string name, int value)
         {
             //1.注册entry变量的新值
-            ComRunDatas.registerPreinput[name] = value;
+            ComData.registerPreinput[name] = value;
 
         }
         /// <summary>
@@ -501,7 +501,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
         private bool IsMatchedEntryVar(string inputName)
         {
-            if (ComRunDatas.registerPreinput.ContainsKey(inputName))
+            if (ComData.registerPreinput.ContainsKey(inputName))
             {
                 return true;
             }

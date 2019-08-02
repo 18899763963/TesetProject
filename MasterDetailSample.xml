@@ -21,6 +21,182 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:SmallManagerSpace.Resources.DefineEntity">
+            <summary>
+            存放用户自定义数据
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.ComData.InitCommonData(DevComponents.DotNetBar.TabControl,System.String)">
+            <summary>
+            初始化程序运行的公共数据
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.ComData.InitBaseData">
+            <summary>
+            初始化程序运行的Base
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.ComData.InitEnumSturctContainer">
+            <summary>
+            Enum Struct 公共数据建立数据容器对象
+            </summary>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.BaseEntity">
+            <summary>
+            用于存储base文件中的数据
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.CreateStructEntity">
+            <summary>
+             创建对象
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.GetRealNodeType(System.String)">
+            <summary>
+            得到类型
+            </summary>
+            <param name="typeString"></param>
+            <returns>"base","enum","struct","undefine"</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.CreateCustomStruct(System.Collections.Generic.List{SmallManagerSpace.Resources.DefineEntity})">
+            <summary>
+            创建customStruct对象
+            </summary>
+            <param name="defineEntitys"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.TraversalAddItem(System.Collections.Generic.List{System.Object},System.Collections.Generic.List{System.Object})">
+            <summary>
+            填充customStruct对象的数据
+            </summary>
+            <param name="destList"></param>
+            <param name="sourceList"></param>
+        </member>
+        <!-- 对于成员“M:SmallManagerSpace.Resources.StructFunction.XmlDeSerializeToStructObj(System.String,System.String)”忽略有格式错误的 XML 注释 -->
+        <member name="M:SmallManagerSpace.Resources.StructFunction.UpdateValueOfStructItem(SmallManagerSpace.Resources.StructItem,System.String,System.String)">
+            <summary>
+             修改StructItem中数据
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.UpdateValueOfParameterItem(SmallManagerSpace.Resources.StructItem,System.String,System.String)">
+            <summary>
+             修改ParameterItem中数据
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfStructItem(System.Collections.Generic.List{System.Object},System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            增加StructItem
+            </summary>
+            <param name="CID"></param>
+            <param name="type"></param>
+            <param name="name"></param>
+            <param name="preinput"></param>
+            <param name="note"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfParameterItem(SmallManagerSpace.Resources.StructItem,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            增加ParameterItem
+            </summary>
+            <param name="CID"></param>
+            <param name="type"></param>
+            <param name="preinput"></param>
+            <param name="name"></param>
+            <param name="range"></param>
+            <param name="value"></param>
+            <param name="length"></param>
+            <param name="note"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeSetting">
+            <summary>
+            设置该页的名称，树的列，图片，字体等
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetStateOfProcessNode(DevComponents.AdvTree.Node,System.String,System.String)">
+            <summary>
+            判断是否需要变更树的节点
+            </summary>
+            <param name="selectedNode">选择的节点</param>
+            <param name="PreinputName">匹配变量名称</param>
+            <param name="NowSelectedValue">选择的节点值</param>
+            <returns>等于0:不需要更新树的节点</returns>
+            <returns>小于0:需要删除树的节点</returns>
+            <returns>大于0:需要添加树的节点</returns>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.EntitySerialize">
+            <summary>
+            XML序列化公共处理类
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.XmlSerializeOnFile``1(``0)">
+            <summary>
+            将实体对象转换成XML文件
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+            <param name="obj">实体对象</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.XmlSerializeOnString``1(``0,System.String)">
+            <summary>
+            将实体对象转换成XML
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+            <param name="obj">实体对象</param>
+            <param name="fileFullName">文件路径</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.DESerializerOnFile``1(System.String)">
+            <summary>
+            将XML文件转换成实体对象
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntitySerialize.DESerializerOnString``1(System.String)">
+            <summary>
+            将XML转换成实体对象
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+            <param name="strXML">XML</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EnumFunction.XmlDeSerializeToStructObj(System.String,System.String)">
+            <summary>
+             将xml文件化为对象数据序列
+            </summary>
+            <param name="Path"></param>
+            <param name="EnumItemsFileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EnumFunction.addValueOfEnumOfsimpleTypeItem(System.String,System.String,System.String)">
+            <summary>
+            添加子项目到对象实体中
+            </summary>
+            <param name="enValue"></param>
+            <param name="cnValue"></param>
+            <param name="valueValue"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EnumFunction.addValueOfsimpleTypeItemWithout(System.String,System.String,System.String)">
+            <summary>
+             添加数据到simpleType，除enumeration部分
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EnumFunction.updateValueOfsimpleTypeItem(System.String,System.String)">
+            <summary>
+             修改simpleTypeItem数据
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EventLogClass.SaveErrorEventLog(System.String,System.String,System.String)">
+            *****第二种*******/
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetLengthOfType(System.String)">
+            <summary>
+            得到匹配的基本类型，enum类型的长度
+            </summary>
+            <param name="Type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.XmlVsEntity.XmlVsBase.GetBaseElementString(System.Xml.Linq.XElement)">
+            <summary>
+            通过文件根节点得到数据
+            </summary>
+            <param name="xRootElements">文件根节点</param>
+            <returns>返回数据列表</returns>
+        </member>
         <member name="T:SmallManagerSpace.Raws.Resource">
             <summary>
               一个强类型的资源类，用于查找本地化的字符串等。
@@ -103,167 +279,6 @@
                   &lt;xsl:apply-template [字符串的其余部分被截断]&quot;; 的本地化字符串。
              </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.ComRunDatas.InitCommonData(DevComponents.DotNetBar.TabControl,System.String)">
-            <summary>
-            初始化程序运行的公共数据
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.ComRunDatas.InitBaseData">
-            <summary>
-            初始化程序运行的Base
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.ComRunDatas.InitEnumSturctContainer">
-            <summary>
-            Enum Struct 公共数据建立数据容器对象
-            </summary>
-        </member>
-        <member name="T:SmallManagerSpace.Resources.BaseEntity">
-            <summary>
-            用于存储base文件中的数据
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.CreateConfigFileInfo">
-            <summary>
-             创建对象configfile
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.XmlSerializeToStructFile(System.String,System.String)">
-            <summary>
-             将对象数据序列化为xml文件
-            </summary>
-        </member>
-        <!-- 对于成员“M:SmallManagerSpace.Resources.StructFunction.XmlDeSerializeToStructObj(System.String,System.String)”忽略有格式错误的 XML 注释 -->
-        <member name="M:SmallManagerSpace.Resources.StructFunction.UpdateValueOfStructItem(System.String,System.String)">
-            <summary>
-             修改StructItem中数据
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.UpdateValueOfParameterItem(System.String,System.String)">
-            <summary>
-             修改ParameterItem中数据
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfStructItem(System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            增加StructItem
-            </summary>
-            <param name="CID"></param>
-            <param name="type"></param>
-            <param name="name"></param>
-            <param name="preinput"></param>
-            <param name="note"></param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfParameterItem(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            增加ParameterItem
-            </summary>
-            <param name="CID"></param>
-            <param name="type"></param>
-            <param name="preinput"></param>
-            <param name="name"></param>
-            <param name="range"></param>
-            <param name="value"></param>
-            <param name="length"></param>
-            <param name="note"></param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeSetting">
-            <summary>
-            设置该页的名称，树的列，图片，字体等
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetStateOfProcessNode(DevComponents.AdvTree.Node,System.String,System.String)">
-            <summary>
-            判断是否需要变更树的节点
-            </summary>
-            <param name="selectedNode">选择的节点</param>
-            <param name="PreinputName">匹配变量名称</param>
-            <param name="NowSelectedValue">选择的节点值</param>
-            <returns>等于0:不需要更新树的节点</returns>
-            <returns>小于0:需要删除树的节点</returns>
-            <returns>大于0:需要添加树的节点</returns>
-        </member>
-        <member name="T:SmallManagerSpace.Resources.EntitySerialize">
-            <summary>
-            XML序列化公共处理类
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerialize.XmlSerializeOnFile``1(``0)">
-            <summary>
-            将实体对象转换成XML文件
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="obj">实体对象</param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerialize.XmlSerializeOnString``1(``0,System.String)">
-            <summary>
-            将实体对象转换成XML
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="obj">实体对象</param>
-            <param name="fileName">文件路径</param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerialize.DESerializerOnFile``1(System.String)">
-            <summary>
-            将XML文件转换成实体对象
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntitySerialize.DESerializerOnString``1(System.String)">
-            <summary>
-            将XML转换成实体对象
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="strXML">XML</param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumFunction.XmlSerializeToEnumFile(System.String,System.String)">
-            <summary>
-             将对象数据序列化
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumFunction.XmlDeSerializeToStructObj(System.String,System.String)">
-            <summary>
-             将xml文件化为对象数据序列
-            </summary>
-            <param name="Path"></param>
-            <param name="EnumItemsFileName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumFunction.addValueOfEnumOfsimpleTypeItem(System.String,System.String,System.String)">
-            <summary>
-            添加子项目到对象实体中
-            </summary>
-            <param name="enValue"></param>
-            <param name="cnValue"></param>
-            <param name="valueValue"></param>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumFunction.addValueOfsimpleTypeItemWithout(System.String,System.String,System.String)">
-            <summary>
-             添加数据到simpleType，除enumeration部分
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EnumFunction.updateValueOfsimpleTypeItem(System.String,System.String)">
-            <summary>
-             修改simpleTypeItem数据
-            </summary>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EventLogClass.SaveErrorEventLog(System.String,System.String,System.String)">
-            *****第二种*******/
-        </member>
-        <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetLengthOfType(System.String)">
-            <summary>
-            得到匹配的基本类型，enum类型的长度
-            </summary>
-            <param name="Type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:SmallManagerSpace.Resources.XmlVsEntity.XmlVsBase.GetBaseElementString(System.Xml.Linq.XElement)">
-            <summary>
-            通过文件根节点得到数据
-            </summary>
-            <param name="xRootElements">文件根节点</param>
-            <returns>返回数据列表</returns>
-        </member>
         <member name="F:MasterDetailSample.LoadDataBox.components">
             <summary>
             Required designer variable.
@@ -280,6 +295,13 @@
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.SerialEntityToXml(System.String,System.String)">
+            <summary>
+            序列化对象到xml文件中
+            </summary>
+            <param name="Type">对象类型</param>
+            <param name="FileFullName">存放文件地址</param>
         </member>
         <member name="M:MasterDetailSample.frmMain.SaveFileToolStripMenuItem_Click(System.Object,System.EventArgs)">
             <summary>

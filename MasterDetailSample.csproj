@@ -200,6 +200,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Resources\EntityModels\DefineEntity.cs" />
     <Compile Include="Resources\Resource.designer\Resource.Designer.cs" />
     <Compile Include="Resources\ComRunDatas\ComRunDatas.cs" />
     <Compile Include="Resources\EntityModels\BaseEntity.cs" />
@@ -256,10 +257,7 @@
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="app.config" />
-    <None Include="bin\Debug\base.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="bin\Debug\enum.xsd">
+    <None Include="bin\Debug\BaseItems.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="bin\Debug\Skins\Calmness.ssk" />
@@ -372,10 +370,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\CustomItems.xml" />
     <Content Include="bin\Debug\DevComponents.DotNetBar2.dll" />
     <Content Include="bin\Debug\DevComponents.DotNetBar2.xml" />
+    <Content Include="bin\Debug\EnumItems.xml" />
     <Content Include="bin\Debug\IrisSkin4.dll" />
     <Content Include="bin\Debug\MasterDetailSample.xml" />
+    <Content Include="bin\Debug\Microsoft.mshtml.dll" />
     <Content Include="bin\Debug\SmallManager.exe" />
     <Content Include="bin\Debug\SmallManager.pdb" />
     <Content Include="bin\Debug\Spire.Common.dll" />
@@ -385,6 +386,7 @@
     <Content Include="bin\Debug\Spire.Pdf.xml" />
     <Content Include="bin\Debug\Spire.XLS.dll" />
     <Content Include="bin\Debug\Spire.XLS.xml" />
+    <Content Include="bin\Debug\StructItems.xml" />
     <Content Include="Install_Project\AutoGenTools\Debug\setup.exe" />
     <Content Include="Install_Project\AutoGenTools\Release\setup.exe" />
     <Content Include="MasterDetailSample.xml" />

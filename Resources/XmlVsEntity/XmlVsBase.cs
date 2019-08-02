@@ -6,11 +6,11 @@ namespace SmallManagerSpace.Resources.XmlVsEntity
 {
     class XmlVsBase
     {
-        string baseFileName= Application.StartupPath + "\\" + "base.xsd";
-        public XElement GetBaseRootElement()
+    
+        public XElement GetBaseRootElement(string FileFullName)
         {
             //Linq导入
-            XDocument xDoc = XDocument.Load(baseFileName);
+            XDocument xDoc = XDocument.Load(FileFullName);
             //获取根节点
             XElement root = xDoc.Root;
             return root;

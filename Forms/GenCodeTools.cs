@@ -55,47 +55,61 @@ namespace MasterDetailSample
         delegate void GenerationEntityFromHeader(string n);
         delegate void GenerationEntityFromXml(string n);
         delegate void DisplayDataGuiViaString(string n);
-        delegate void DisplayDataGuiViaEntity(string n);
+        delegate void DisplayDataGuiViaEntity(StructEntity structEntity);
         delegate void GenerationXlsFromXml(string n);
-        delegate void GenerationXmlFromEntity(string WorkSpace,string StructFileName,string EnumFileName);
+        delegate void GenerationXmlFromEntity(string Type,string FileFullName);
         delegate void InitCommonData(TabControl tabControlInstance, string n);
         delegate void MainProcess(string n);
         public void MainProcessInstance(string PathFileName)
         {
+         
             //1.加载base文件,初始化AdvTree,TabControl,路径字符等公共变量
-            if (ComRunDatas.stepNow.Equals(StepProcess.InitComm))
+            if (ComData.stepNow.Equals(StepProcess.InitComm))
             {
-                InitCommonData InitCommonData = new InitCommonData(ComRunDatas.InitCommonData);
+                InitCommonData InitCommonData = new InitCommonData(ComData.InitCommonData);
                 InitCommonData(tabControl1, PathFileName);
-                ComRunDatas.stepNow = StepProcess.ParserFileToEntity;
+                ComData.stepNow = StepProcess.ParserFileToEntity;
             }    
             //2.如果是H/XML文件，则转化OBJ对象
-            if (ComRunDatas.stepNow.Equals(StepProcess.ParserFileToEntity))
+            if (ComData.stepNow.Equals(StepProcess.ParserFileToEntity))
             {   //a.如果是H头文件->Obj
                 if (PathFileName.Contains(".h"))
                 {
                     GenerationEntityFromHeader GenerationEntityFromHeader = new GenerationEntityFromHeader(GetEntityFromHeaderFile);
                     GenerationEntityFromHeader(PathFileName);
                     //将obj对象的数据序列化到xml文件中
-                    GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialStructEnumEntityToXml);
-                    GenerationXmlFromEntity(ComRunDatas.programStartPath, ComRunDatas.structItemsFileName, ComRunDatas.enumItemsFileName);
-                    ComRunDatas.stepNow = StepProcess.EntityToGUI;
+                    GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
+                    GenerationXmlFromEntity("enum", ComData.programStartPath+ComData.enumItemsFileName);
+                    GenerationXmlFromEntity("sturct", ComData.programStartPath+ComData.structItemsFileName);
+                    ComData.stepNow = StepProcess.EntityToCustomEntity;
                 }
                 //b.如果是XML头文件->OBJ
                 else if (PathFileName.Contains(".xml"))
                 {
                     GenerationEntityFromXml GenerationEntityFromXml = new GenerationEntityFromXml(GetEntityFromXmlFile);
                     GenerationEntityFromXml(PathFileName);
-                    ComRunDatas.stepNow = StepProcess.EntityToGUI;
+                    ComData.stepNow = StepProcess.EntityToCustomEntity;
                 }
             }
-            //3.OBJ对象生成界面
-            if (ComRunDatas.stepNow.Equals(StepProcess.EntityToGUI))
+            //3.Entity转换CustomEntity
+            if (ComData.stepNow.Equals(StepProcess.EntityToCustomEntity))
+            {
+                DefineEntityFuncion defineEntityFuncion = new DefineEntityFuncion();
+                List<DefineEntity> defineEntitys = defineEntityFuncion.CreateDefineEntity();
+                StructFunction structFunction = new StructFunction();
+                structFunction.CreateCustomStruct(defineEntitys);
+                //将obj对象的数据序列化到xml文件中
+                GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
+                GenerationXmlFromEntity("customstruct", ComData.programStartPath + ComData.customItemsFileName);
+                ComData.stepNow = StepProcess.EntityToGUI;
+            }
+            //4.CustomEntity对象生成界面
+            if (ComData.stepNow.Equals(StepProcess.EntityToGUI))
             {
                 DisplayDataGuiViaEntity displayDataGuiViaOBJ = new DisplayDataGuiViaEntity(DisplayDataGuiViaOBJ);
-                displayDataGuiViaOBJ(PathFileName);
+                displayDataGuiViaOBJ(ComData.customStruct);
             }
-            ComRunDatas.stepNow = StepProcess.InitComm;
+            ComData.stepNow = StepProcess.InitComm;
         }
 
 
@@ -107,17 +121,36 @@ namespace MasterDetailSample
         private void GetEntityFromXmlFile(string InputFilePath)
         {
             //1.解析XML文件内容到Entity
-            ComRunDatas.structEntity = ComRunDatas.structFunction.XmlDeSerializeToStructObj(ComRunDatas.sourceWorkPath, ComRunDatas.structItemsFileName);
+            ComData.structEntity = ComData.structFunction.XmlDeSerializeToStructObj(ComData.sourceWorkPath, ComData.structItemsFileName);
         }
-        private void SerialStructEnumEntityToXml(string Space, string StructFileName,string EnumFileName)
+        /// <summary>
+        /// 序列化对象到xml文件中
+        /// </summary>
+        /// <param name="Type">对象类型</param>
+        /// <param name="FileFullName">存放文件地址</param>
+        private void SerialEntityToXml(string Type, string FileFullName)
         {
-             ComRunDatas.structFunction.XmlSerializeToStructFile(Space, StructFileName);
-             ComRunDatas.enumFunction.XmlSerializeToEnumFile(Space,EnumFileName);
+            switch (Type)
+            {
+                case "enum":
+                    EntitySerialize.XmlSerializeOnString(ComData.enumEntity, FileFullName);
+                    break;
+                case "struct":
+                    EntitySerialize.XmlSerializeOnString(ComData.structEntity, FileFullName);
+                    break;
+                case "customstruct":
+                    EntitySerialize.XmlSerializeOnString(ComData.customStruct, FileFullName);
+                    break;
+                default:
+                    break;
+            }      
         }
-        private void DisplayDataGuiViaOBJ(string InputFilePath)
+
+
+        private void DisplayDataGuiViaOBJ(StructEntity inputEntity)
         {
             EntityToAdvTree entityToAdvTree = new EntityToAdvTree();
-            entityToAdvTree.FullDataToAdvTreeFromXMLObj();
+            entityToAdvTree.FullDataToAdvTreeFromXMLObj(inputEntity);
         }
 
         private void OpenFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -170,22 +203,22 @@ namespace MasterDetailSample
                     if(saveFileDialog1.FileName.ToLower().Contains(".c"))
                     {
                         FileStringFunction pathFileStringADU = new FileStringFunction();
-                        ComRunDatas.saveWorkPath = pathFileStringADU.GetDirectionNameString(saveFileDialog1.FileName);
-                        ComRunDatas.saveCFileName = pathFileStringADU.GetFileNameString(saveFileDialog1.FileName); //获取文件名，不带路径;
-                        AdvTree CurrentAdvTree = ComRunDatas.advTree;
+                        ComData.saveWorkPath = pathFileStringADU.GetDirectionNameString(saveFileDialog1.FileName);
+                        ComData.saveCFileName = pathFileStringADU.GetFileNameString(saveFileDialog1.FileName); //获取文件名，不带路径;
+                        AdvTree CurrentAdvTree = ComData.advTree;
                         if (CurrentAdvTree != null)
                         {   //1.将当前树的数据转换为对象
                             AdvTreeToEntity advTreeToEntity = new AdvTreeToEntity();
                             advTreeToEntity.GetEntityByAdvTreeNode(CurrentAdvTree);
                             //2.将当前树的数据放入header文件中                            
-                            string GenFileFullName = ComRunDatas.saveWorkPath +@"\"+ ComRunDatas.saveCFileName;
+                            string GenFileFullName = ComData.saveWorkPath +@"\"+ ComData.saveCFileName;
                             EntityVsFile.GetFileFromEntity(GenFileFullName);
                             //3.将文件结构体中的数组变量用数组值替换
                             FileStringFunction fileStringADU = new FileStringFunction();
-                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComRunDatas.registerPreinput);
+                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComData.registerPreinput);
                             //4.将obj对象的数据序列化到xml文件中
-                            GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialStructEnumEntityToXml);
-                            GenerationXmlFromEntity(ComRunDatas.programStartPath, ComRunDatas.structItemsFileName, ComRunDatas.enumItemsFileName);
+                            GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
+                            GenerationXmlFromEntity("customstruct", ComData.programStartPath+ComData.customItemsFileName);
 
                         }
                     }
@@ -323,7 +356,6 @@ namespace MasterDetailSample
         }
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-
             Process.GetCurrentProcess().CloseMainWindow();
         }
         private void ExitMainToolStripMenuItem_Click(object sender, EventArgs e)

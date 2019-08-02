@@ -42,13 +42,13 @@ namespace SmallManagerSpace.Resources
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="obj">实体对象</param>
-        /// <param name="fileName">文件路径</param>
-        public static void XmlSerializeOnString<T>(T obj, string fileName)
+        /// <param name="fileFullName">文件路径</param>
+        public static void XmlSerializeOnString<T>(T obj, string fileFullName)
         {
             try
             {
                 // Create an XmlTextWriter using a FileStream.
-                Stream fs = new FileStream(fileName, FileMode.Create);
+                Stream fs = new FileStream(fileFullName, FileMode.Create);
                 XmlSerializer serializer = new XmlSerializer(obj.GetType());
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;

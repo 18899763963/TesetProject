@@ -67,26 +67,26 @@ namespace SmallManagerSpace.Resources
         {
             int Length = 0;
             //匹配基本类型的长度
-            if ((ComRunDatas.baseDictonary != null) && (ComRunDatas.baseDictonary.ContainsKey(Type)))
+            if ((ComData.baseDictonary != null) && (ComData.baseDictonary.ContainsKey(Type)))
             {
-                Length = ComRunDatas.baseDictonary[Type].length;
+                Length = ComData.baseDictonary[Type].length;
             }
             //匹配enum类型的长度
-            else if ((ComRunDatas.enumEntity != null) && (ComRunDatas.enumEntity.simpleTypes.Where(x => x.name == Type).Count() != 0))
+            else if ((ComData.enumEntity != null) && (ComData.enumEntity.simpleTypes.Where(x => x.name == Type).Count() != 0))
             {
-                simpleType matchSimpleType = ComRunDatas.enumEntity.simpleTypes.Where(x => x.name == Type).First();
+                simpleType matchSimpleType = ComData.enumEntity.simpleTypes.Where(x => x.name == Type).First();
                 Length = int.Parse(matchSimpleType.length);
             }
-            //匹配struct类型的长度
-            else if ((ComRunDatas.structEntity != null) && (ComRunDatas.structEntity.structItemList.Where(x => x.type == Type).Count() != 0))
-            {
-                StructItem matchStructItem = ComRunDatas.structEntity.structItemList.Where(x => x.type == Type).First();
-                foreach (Parameter parameter in matchStructItem.parameterList)
-                {
-                    string paraType = parameter.type;
-                    Length += GetLengthOfType(paraType);
-                }
-            }
+            ////匹配struct类型的长度
+            //else if ((ComRunDatas.structEntity != null) && (ComRunDatas.structEntity.nodeList.Where(x => x.type == Type).Count() != 0))
+            //{
+            //    StructItem matchStructItem = ComRunDatas.structEntity.nodeList.Where(x => x.type == Type).First();
+            //    foreach (Parameter parameter in matchStructItem.parameterList)
+            //    {
+            //        string paraType = parameter.type;
+            //        Length += GetLengthOfType(paraType);
+            //    }
+            //}
             return Length;
         }
         private static List<string> GeParamterDataList(List<Parameter> ParameterList)
@@ -142,28 +142,28 @@ namespace SmallManagerSpace.Resources
         private static Dictionary<string, FormatEntity> GetFormatEntityData(StructEntity StructEntity)
         {
             Dictionary<string, FormatEntity> keyValuePairs = new Dictionary<string, FormatEntity>();
-            foreach (StructItem structItem in StructEntity.structItemList)
-            {
-                //1.如果字典不包含该元素,则添加该元素到字典
-                if (!keyValuePairs.ContainsKey(structItem.name))
-                {
-                    //1初始化结构体变量
-                    keyValuePairs[structItem.name] = new FormatEntity();
-                    keyValuePairs[structItem.name].StructData = new List<string>();
-                    keyValuePairs[structItem.name].count = 0;
-                    //2.将parameter中的value值添加到
-                    List<string> ParamterDataList = GeParamterDataList(structItem.parameterList);
-                    keyValuePairs[structItem.name].StructData.AddRange(ParamterDataList);
-                    keyValuePairs[structItem.name].count++;
-                }  //2.如果字典包含该元素,则添加该元素的数据到字典
-                else
-                {
-                    //1.将parameter中的value值添加到
-                    List<string> ParamterDataList = GeParamterDataList(structItem.parameterList);
-                    keyValuePairs[structItem.name].StructData.AddRange(ParamterDataList);
-                    keyValuePairs[structItem.name].count++;
-                }
-            }
+            //foreach (StructItem structItem in StructEntity.structItemList)
+            //{
+            //    //1.如果字典不包含该元素,则添加该元素到字典
+            //    if (!keyValuePairs.ContainsKey(structItem.name))
+            //    {
+            //        //1初始化结构体变量
+            //        keyValuePairs[structItem.name] = new FormatEntity();
+            //        keyValuePairs[structItem.name].StructData = new List<string>();
+            //        keyValuePairs[structItem.name].count = 0;
+            //        //2.将parameter中的value值添加到
+            //        List<string> ParamterDataList = GeParamterDataList(structItem.parameterList);
+            //        keyValuePairs[structItem.name].StructData.AddRange(ParamterDataList);
+            //        keyValuePairs[structItem.name].count++;
+            //    }  //2.如果字典包含该元素,则添加该元素的数据到字典
+            //    else
+            //    {
+            //        //1.将parameter中的value值添加到
+            //        List<string> ParamterDataList = GeParamterDataList(structItem.parameterList);
+            //        keyValuePairs[structItem.name].StructData.AddRange(ParamterDataList);
+            //        keyValuePairs[structItem.name].count++;
+            //    }
+            //}
             return keyValuePairs;
         }
         public static void GetEntityFromFile(string FilePath)
@@ -192,6 +192,7 @@ namespace SmallManagerSpace.Resources
                             string name = "";
                             string preinput = "";
                             string node = "";
+                            string nodetype = "sturct";
                             string RegexStr3 = @"struct[\s]+(?<structtype>[\S]+)";
                             Match matc = Regex.Match(line, RegexStr3);
                             type = matc.Groups["structtype"].ToString();
@@ -203,7 +204,8 @@ namespace SmallManagerSpace.Resources
                             node = " ";
                             CapturedType = "isStruct";
                             //添加structitem数据到列表中
-                            ComRunDatas.structFunction.AddValueOfStructItem(Cid.ToString().PadLeft(4, '0'), type, name, preinput, node);
+
+                            ComData.structFunction.AddValueOfStructItem(ComData.structEntity.nodeList, Cid.ToString().PadLeft(4, '0'), type, name, preinput, node, nodetype);
                             ProcessStep++;
                             Cid++;
                         }
@@ -214,7 +216,7 @@ namespace SmallManagerSpace.Resources
                             string lengthValue = "1";
                             string valueValue = "1";
                             //添加simpleTypeItem数据到列表中
-                            ComRunDatas.enumFunction.addValueOfsimpleTypeItemWithout(baseValue, lengthValue, valueValue);
+                            ComData.enumFunction.addValueOfsimpleTypeItemWithout(baseValue, lengthValue, valueValue);
                             CapturedType = "isEnum";
                             ProcessStep++;
                         }
@@ -242,10 +244,10 @@ namespace SmallManagerSpace.Resources
                             Console.WriteLine("structType:{0}", matc.Groups["structType"].ToString());
                             structType = matc.Groups["structType"].ToString();
                             //修改structitem数据到列表中
-                            ComRunDatas.structFunction.UpdateValueOfStructItem("type", structType);
-                            ComRunDatas.structFunction.UpdateValueOfStructItem("name", structType+"_VAR");
+                            ComData.structFunction.UpdateValueOfStructItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "type", structType);
+                            ComData.structFunction.UpdateValueOfStructItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "name", structType+"_VAR");
                             //修改parametertitem数据到列表中
-                            ComRunDatas.structFunction.UpdateValueOfParameterItem("preinput", "entry");
+                            ComData.structFunction.UpdateValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "preinput", "entry");
                             ProcessStep = 0;
                             CapturedType = "";
                         }     //4.匹配字符串{内容}
@@ -259,6 +261,7 @@ namespace SmallManagerSpace.Resources
                             string value = "1";
                             string length = "1";
                             string note = "";
+                            string nodetype = "base";
                             string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;[\s]*/+(?<parameternote>[\S]+)";
                             Match matchStr = Regex.Match(line, RegexStr3);
                             type = matchStr.Groups["parametertype"].ToString();
@@ -288,11 +291,7 @@ namespace SmallManagerSpace.Resources
                                 {
                                     value = "DefaultString";
                                 }
-                                //else
-                                //{                                  
-                                //    value = "{"+value + "}";
-                                //}
-                                // vartype = "pointer *";
+
                             }
                             //(3)结构如cfg_buf[switch_cfg_num]
                             else if (!lineItem.Contains("*") && lineItem.Contains("[") && lineItem.Contains("]"))
@@ -310,7 +309,7 @@ namespace SmallManagerSpace.Resources
                                 name = lineItem;
                             }
                             if (name.Equals("board_num") && isStartCapture.Equals(true)) { isCaptured = true; CapturedData = "board_num"; }
-                            ComRunDatas.structFunction.AddValueOfParameterItem(Cid.ToString().PadLeft(4, '0'), type, preinput, name, range, value, length, note);
+                            ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem,Cid.ToString().PadLeft(4, '0'), type, preinput, name, range, value, length, note, nodetype);
                             Cid++;
                         }
                     }
@@ -336,7 +335,7 @@ namespace SmallManagerSpace.Resources
                             string RegexStr1 = @"}[\s]*(?<nameValue>[\S]+)[\s]*;";
                             Match matc = Regex.Match(line, RegexStr1);
                             nameValue = matc.Groups["nameValue"].ToString();
-                            ComRunDatas.enumFunction.updateValueOfsimpleTypeItem("name", nameValue);
+                            ComData.enumFunction.updateValueOfsimpleTypeItem("name", nameValue);
                             ProcessStep = 0;
                             CapturedType = "";
                         }
@@ -361,7 +360,7 @@ namespace SmallManagerSpace.Resources
                                 {
                                     enumAutoStep++;
                                 }
-                                ComRunDatas.enumFunction.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
+                                ComData.enumFunction.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
                             }//(2)结构如OTN_USER_PORT_RATE_2G5,
                             else
                             {
@@ -371,7 +370,7 @@ namespace SmallManagerSpace.Resources
                                 enValue = matc1.Groups["enValue"].ToString();
                                 cnValue = matc1.Groups["enValue"].ToString();
                                 valueValue = enumAutoStep.ToString().PadLeft(2, '0');
-                                ComRunDatas.enumFunction.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
+                                ComData.enumFunction.addValueOfEnumOfsimpleTypeItem(enValue, cnValue, valueValue);
                                 enumAutoStep++;
                             }
                         }
@@ -380,13 +379,14 @@ namespace SmallManagerSpace.Resources
             }
             sr.Close();
         }
+
         public static void GetFileFromEntity(string GenFileFullName)
         {
-            if (ComRunDatas.sourceWorkPath == null && ComRunDatas.eadSourceFileName == null && ComRunDatas.structEntity == null) return;
+            if (ComData.sourceWorkPath == null && ComData.headSourceFileName == null && ComData.structEntity == null) return;
             //1.将数据同类数据合并到字典中
-            Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComRunDatas.structEntity);
+            Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComData.customStruct);
             //2.复制源文件到新文件中，并且将生成数据放入到其中
-            File.Copy(ComRunDatas.sourceWorkPath + ComRunDatas.eadSourceFileName, GenFileFullName, true);
+            File.Copy(ComData.sourceWorkPath + ComData.headSourceFileName, GenFileFullName, true);
             //3.得到文件流,将数据添加到文件后面
             FileStream fileStream = new FileStream(GenFileFullName, FileMode.Append);
             StreamWriter stringWriter = new StreamWriter(fileStream);

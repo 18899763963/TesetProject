@@ -12,11 +12,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
 
         public void GetEntityByAdvTreeNode(AdvTree advTree)
         {
-            if (advTree == null && ComRunDatas.structEntity == null) return;
+            if (advTree == null && ComData.structEntity == null) return;
             int CID = 1;
             //1.重新得到ComRunDatas.StructEntity对象
             StructFunction structDataOperation = new StructFunction();
-            structDataOperation.CreateConfigFileInfo();
+            structDataOperation.CreateStructEntity();
             foreach (Node RootNode in advTree.Nodes)
             {
                 foreach (Node node in RootNode.Nodes)
@@ -32,7 +32,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                             structItem.parameterList.Add(parameter);
                         }
                         //4.添加数据到Parameter对象
-                        ComRunDatas.structEntity.structItemList.Add(structItem);
+                        ComData.structEntity.nodeList.Add(structItem);
                     }
                 }
             }
@@ -47,7 +47,8 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             structItem.name = NodeDictinary.ContainsKey("name") ? NodeDictinary["name"] : "";
             structItem.preinput = NodeDictinary.ContainsKey("preinput") ? NodeDictinary["preinput"] : "";
             structItem.note = NodeDictinary.ContainsKey("note") ? NodeDictinary["note"] : "";
-            structItem.parameterList = new List<Parameter>();
+           // structItem.parameterList = new List<Parameter>();
+           // structItem.structList = new List<StructItem>();
             return structItem;
         }
         public Parameter GetParameterEntity(Node node, int CID)

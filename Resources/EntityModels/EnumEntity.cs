@@ -18,19 +18,8 @@ namespace SmallManagerSpace.Resources
         public  void CreatesimpleTypeInfo()
         {
             //创建simpleTypeInfo信息
-            ComRunDatas.enumEntity = new EnumEntity();
-            ComRunDatas.enumEntity.simpleTypes = new List<simpleType>();
-        }
-        /// <summary>
-        ///  将对象数据序列化
-        /// </summary>
-        public void XmlSerializeToEnumFile(string WorkPath, string EnumItemsFileName)
-        {
-            if (ComRunDatas.structEntity != null)
-            {
-                string FileName = WorkPath + EnumItemsFileName;
-                EntitySerialize.XmlSerializeOnString(ComRunDatas.enumEntity, FileName);
-            }
+            ComData.enumEntity = new EnumEntity();
+            ComData.enumEntity.simpleTypes = new List<simpleType>();
         }
 
         /// <summary>
@@ -51,12 +40,12 @@ namespace SmallManagerSpace.Resources
         /// <param name="valueValue"></param>
         public void addValueOfEnumOfsimpleTypeItem(string enValue, string cnValue, string valueValue)
         {
-            simpleType simpleTypeItem = ComRunDatas.enumEntity.simpleTypes.LastOrDefault();
-            enumerationValue simpleTypeValueItem = new enumerationValue();
+            simpleType simpleTypeItem = ComData.enumEntity.simpleTypes.LastOrDefault();
+            EnumValue simpleTypeValueItem = new EnumValue();
             simpleTypeValueItem.cn = enValue;
             simpleTypeValueItem.en = cnValue;
             simpleTypeValueItem.value = valueValue;
-            simpleTypeItem.enumerationValues.Add(simpleTypeValueItem);
+            simpleTypeItem.EnumValues.Add(simpleTypeValueItem);
         }
         /// <summary>
         ///  添加数据到simpleType，除enumeration部分
@@ -67,9 +56,9 @@ namespace SmallManagerSpace.Resources
             //初始化类成员
             simpleTypeItem.baseType = baseValue;
             simpleTypeItem.length = lengthValue;
-            List<enumerationValue> simpleTypeValues = new List<enumerationValue>();
-            simpleTypeItem.enumerationValues = simpleTypeValues;
-            ComRunDatas.enumEntity.simpleTypes.Add(simpleTypeItem);
+            List<EnumValue> simpleTypeValues = new List<EnumValue>();
+            simpleTypeItem.EnumValues = simpleTypeValues;
+            ComData.enumEntity.simpleTypes.Add(simpleTypeItem);
         }
 
         /// <summary>
@@ -77,7 +66,7 @@ namespace SmallManagerSpace.Resources
         /// </summary>
         public void updateValueOfsimpleTypeItem(string key, string value)
         {
-            simpleType simpleTypeItem = ComRunDatas.enumEntity.simpleTypes.LastOrDefault();
+            simpleType simpleTypeItem = ComData.enumEntity.simpleTypes.LastOrDefault();
             if (key.Equals("name"))
             {
                 simpleTypeItem.name = value;
@@ -93,10 +82,10 @@ namespace SmallManagerSpace.Resources
         public string baseType { get; set; }
         [XmlAttribute("length")]
         public string length { get; set; }
-        [XmlArrayAttribute("enumerationItems")]
-        public List<enumerationValue> enumerationValues { get; set; }
+        [XmlElement("enumvalue")]
+        public List<EnumValue> EnumValues { get; set; }
     }
-    public class enumerationValue
+    public class EnumValue
     {
         [XmlAttribute("en")]
         public string en { get; set; }
