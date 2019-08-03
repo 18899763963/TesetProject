@@ -15,6 +15,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
     {
 
         public string SelectedCellOriginValue;
+        public Dictionary<string, string> BeforeSelectedColumnData = new Dictionary<string, string>();
 
         public void InitAdvTreeDatas()
         {
@@ -113,7 +114,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             TabItem tim = ComData.tabControl1.CreateTab("配置项");
             tim.AttachedControl.Controls.Add(ComData.advTree);
         }
-        Dictionary<string, string> BeforeSelectedColumnData = new Dictionary<string, string>();
         /// <summary>
         /// 保存选中节点的数据
         /// </summary>

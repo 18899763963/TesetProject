@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 
@@ -107,9 +108,24 @@ namespace SmallManagerSpace.Resources
             ComData.customStruct = new StructEntity();
             foreach (DefineEntity defineEntity in defineEntitys)
             {
-                StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
-                ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, preinput = ob.preinput, note = ob.note,nodetype=ob.nodetype });
-                TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+
+                //string RegexStr4 = @"(?<parameterpointer>[\*]*)[\s]*(?<parametername>[\S]+)[\s]*[\[]+(?<parameterarray>[\S]*)[\]]+";
+                string RegexStr4 = @"(?<varName>[\S]+)[\s]*[\[]+(?<varVal>[\S]*)[\]]+";
+                Match matc = Regex.Match(defineEntity.name, RegexStr4);
+                string varName = matc.Groups["varName"].ToString();
+                string varVal = matc.Groups["varVal"].ToString();
+                if(varVal=="")
+                {
+                    StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
+                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
+                    TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+                }
+                else
+                {
+                    StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
+                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName + "[0]", preinput = varVal, note = ob.note, nodetype = ob.nodetype });
+                    TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+                }
             }
         }
         /// <summary>
