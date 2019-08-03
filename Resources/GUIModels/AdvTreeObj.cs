@@ -15,29 +15,15 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
     {
 
         public string SelectedCellOriginValue;
-        //class NodeType
-        //{
-        //    public string CID;
-        //    public string NodeLength;
-        //    public NodeType(string _CID, string _NodeLength)
-        //    {
-        //        CID = _CID;
-        //        NodeLength = _NodeLength;
-        //    }
-        //}
-        //class UpdateRecord : NodeType
-        //{
-        //    public string NodeValue;
-        //    public UpdateRecord(string _CID, string _NodeLength, string _NodeValue) : base(_CID, _NodeLength)
-        //    {
-        //        NodeValue = _NodeValue;
-        //    }
-        //}
+
         public void InitAdvTreeDatas()
         {
             ElementStyleSetting();
             AdvTreeSetting();
         }
+        /// <summary>
+        /// 初始化节点和元素风格
+        /// </summary>
         public void ElementStyleSetting()
         {
             ComData.nodeElementStyle.Clear();
@@ -127,52 +113,45 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             TabItem tim = ComData.tabControl1.CreateTab("配置项");
             tim.AttachedControl.Controls.Add(ComData.advTree);
         }
-
-
+        Dictionary<string, string> BeforeSelectedColumnData = new Dictionary<string, string>();
+        /// <summary>
+        /// 保存选中节点的数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AdvTreeBeforeCellEdit(object sender, EventArgs e)
         {
             //1.得到选中节点的数据
             AdvTree CurrentAdvTree = (AdvTree)sender;
             Node selectedNode = CurrentAdvTree.SelectedNode;
             SelectedCellOriginValue = selectedNode.SelectedCell.Text;
-
-            if (selectedNode.Tag != null)
-            {
-                Dictionary<string, string> SelectedTagData = (Dictionary<string, string>)selectedNode.Tag;
-                Dictionary<string, string> SelectedNodeData = GetSelectedNodeData(selectedNode);
-                string type_space_name = SelectedNodeData["type"] + " " + SelectedNodeData["name"];
-                //2.判断节点类型是否为 *var[] 或者*var[]类型
-                //if (IsMatchedPointerVar(type_space_name))
-                //{
-                //    //3.打开数据导入窗口
-                //    LoadDataBox loadDataBox = new LoadDataBox(SelectedCellOriginValue);
-                //    loadDataBox.ShowDialog();
-                //    selectedNode.SelectedCell.Text = loadDataBox.InputTextData;
-                //    //PropertySettingBox propertySettingBox = new PropertySettingBox();
-                //    //propertySettingBox.ShowDialog();
-                //}
-            }
+            BeforeSelectedColumnData = GetSelectedColumnData(selectedNode);
+            string type_space_name = BeforeSelectedColumnData["type"] + " " + BeforeSelectedColumnData["name"];
         }
 
+        /// <summary>
+        /// 处理Value列变更后的操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AdvTreeAfterCellEditComplete(object sender, EventArgs e)
         {
-            //1.得到选中节点的数据
+            //得到选中节点的数据
             AdvTree CurrentAdvTree = (AdvTree)sender;
             Node selectedNode = CurrentAdvTree.SelectedNode;
-            if (selectedNode.Tag != null)
+            Dictionary<string, string> SelectedColumnData = GetSelectedColumnData(selectedNode);
+            //判断ColumnHeader[value]是否有改变,如果值有变，则进入内部处理
+            if (!SelectedColumnData["value"].Equals(BeforeSelectedColumnData["value"]))
             {
-                //2.得到选中节点的文本
-                Dictionary<string, string> SelectedTagData = (Dictionary<string, string>)selectedNode.Tag;
-                Dictionary<string, string> SelectedNodeData = GetSelectedNodeData(selectedNode);
-                //3.判断选中节点的数据是否含有preinput=entry 变量
-                if (IsMatchedEntryVar(SelectedNodeData["name"]))
+                //判断选中节点的数据是否含有preinput=entry 变量
+                if (IsEntryVar(SelectedColumnData["name"]))
                 {
-                    //4. 根据变量的范围统一设定为节点的父节点内     
-                    int CountOfProcess = GetStateOfProcessNode(selectedNode, SelectedNodeData["name"], SelectedNodeData["value"]);
-                    //5.判断是否为PublicPreinput
-                    if ((SelectedNodeData["name"]).Equals(ComData.publicPreinputName) && CountOfProcess != 0)
+                    //根据变量的范围统一设定为节点的父节点内     
+                    int CountOfProcess = GetStateOfProcessNode(selectedNode, SelectedColumnData["name"], SelectedColumnData["value"]);
+                    //判断是否为PublicPreinput
+                    if ((SelectedColumnData["name"]).Equals(ComData.publicPreinputName) && CountOfProcess != 0)
                     {
-                        Dictionary<string, List<Node>> ListNode = GetMatchNodeOnAncestorTree(selectedNode, SelectedTagData["name"]);
+                        Dictionary<string, List<Node>> ListNode = GetMatchNodeOnAncestorTree(selectedNode, SelectedColumnData["name"]);
                         if (CountOfProcess > 0)
                         {
                             //增加节点
@@ -186,7 +165,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     }
                     else
                     {
-                        Dictionary<string, List<Node>> ListNode = GetMatchNodeOnParentTree(selectedNode, SelectedTagData["name"]);
+                        Dictionary<string, List<Node>> ListNode = GetMatchNodeOnParentTree(selectedNode, SelectedColumnData["name"]);
                         if (CountOfProcess > 0)
                         {
                             //增加节点
@@ -251,7 +230,24 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 }
             }
         }
-
+        /// <summary>
+        /// 得到选中节点列名的元胞
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="ColumnName"></param>
+        /// <returns></returns>
+        public Cell GetSelectedNodeCell(Node node, string ColumnName)
+        {
+            Cell cell = null;
+            foreach (Cell cellItem in node.Cells)
+            {
+                if (cellItem.ColumnHeader.Name.Equals(ColumnName))
+                {
+                    return cell = cellItem;
+                }
+            }
+            return cell;
+        }
         private void AddNodeOnParentTree(Dictionary<string, List<Node>> ListNode, int Count)
         {
             foreach (string KeyName in ListNode.Keys)
@@ -287,10 +283,10 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     foreach (Cell cellItem in ChildNode.Cells)
                     {
                         columnHeader = cellItem.ColumnHeader;
-                        //1.匹配Enum，并调价嵌入下拉列表控件                
+                        //1.匹配Enum，并添加嵌入下拉列表控件                
                         if (CaptureName == null)
                         {
-                           // if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
+                            // if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
                             {
                                 CaptureName = cellItem.Text;
                             }
@@ -301,7 +297,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                             {
                                 ComBoxObj comBoxObj = new ComBoxObj();
                                 //List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
-                               // Control control = comBoxObj.CreateEnbedCombox(enumrationList);
+                                // Control control = comBoxObj.CreateEnbedCombox(enumrationList);
                                 //CloneChildNode.Cells[indexOfCells].HostedControl = control;
                                 CaptureName = null;
                             }
@@ -314,7 +310,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             {
                 int indexOfCells = 1;
                 //1.修改[index]
-                Dictionary<string, string> SelectedNodeData = GetSelectedNodeData(OriginNode);
+                Dictionary<string, string> SelectedNodeData = GetSelectedColumnData(OriginNode);
                 if (SelectedNodeData["name"].Contains("[") && SelectedNodeData["name"].Contains("]"))
                 {
                     string subString = SelectedNodeData["name"].Substring(0, SelectedNodeData["name"].IndexOf('['));
@@ -349,7 +345,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 //2.匹配Enum，并调价嵌入下拉列表控件 
                 if (CaptureName == null)
                 {
-                   // if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
+                    // if (entityToAdvTreeOBJ.IsMatchedEnumName(cellItem.Text))
                     {
                         CaptureName = cellItem.Text;
                     }
@@ -359,9 +355,9 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     if (columnHeader.Name.Equals("value"))
                     {
                         ComBoxObj comBoxObj = new ComBoxObj();
-                       // List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
-                       // Control control = comBoxObj.CreateEnbedCombox(enumrationList);
-                       // CloneNode.Cells[indexOfCells].HostedControl = control;
+                        // List<ComBoxEnumChild> enumrationList = entityToAdvTreeOBJ.GetEnumrationList(CaptureName);
+                        // Control control = comBoxObj.CreateEnbedCombox(enumrationList);
+                        // CloneNode.Cells[indexOfCells].HostedControl = control;
                         CaptureName = null;
                     }
                 }
@@ -433,11 +429,31 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 }
             }
         }
-        private void UpdateRegisterPreinputValue(string name, int value)
-        {
-            //1.注册entry变量的新值
-            ComData.registerPreinput[name] = value;
 
+        /// <summary>
+        /// 更新entry变量的新值
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        private void UpdateEntryVarValue(string name, int value)
+        {
+            //1.更新entry变量的新值
+            ComData.entryVar[name] = value;
+
+        }
+        /// <summary>
+        /// 注册entry变量的新值
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        public void AddEntryVar(string name, string value)
+        {
+            int valueInt = 1;
+            if (int.TryParse(value, out valueInt))
+            {
+
+                ComData.entryVar[name] = valueInt;
+            }
         }
         /// <summary>
         /// 判断是否需要变更树的节点
@@ -448,7 +464,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// <returns>等于0:不需要更新树的节点</returns>
         /// <returns>小于0:需要删除树的节点</returns>
         /// <returns>大于0:需要添加树的节点</returns>
-        private int GetStateOfProcessNode(Node selectedNode,string PreinputName, string NowSelectedValue)
+        private int GetStateOfProcessNode(Node selectedNode, string PreinputName, string NowSelectedValue)
         {
             int stateProcess = 0;
             //值相同：返回0
@@ -463,7 +479,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     if (NowValueInt > 0 && BeforeValueInt > 0)
                     {
                         stateProcess = NowValueInt - BeforeValueInt;
-                        UpdateRegisterPreinputValue(PreinputName,NowValueInt);
+                        UpdateEntryVarValue(PreinputName, NowValueInt);
                         return stateProcess;
                     }
                     else
@@ -480,8 +496,14 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             }
 
         }
-        private Dictionary<string, string> GetSelectedNodeData(Node node)
+        /// <summary>
+        /// 得到选择节点的列名称和数据
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private Dictionary<string, string> GetSelectedColumnData(Node node)
         {
+            Dictionary<string, string> SelectedTagData = (Dictionary<string, string>)node.Tag;
             Dictionary<string, string> TempKeyValuePairs = new Dictionary<string, string>();
             foreach (Cell cellItem in node.Cells)
             {
@@ -489,6 +511,8 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 string HeaderName = cellItem.ColumnHeader == null ? "" : cellItem.ColumnHeader.Name;
                 TempKeyValuePairs[HeaderName] = stringText;
             }
+
+            TempKeyValuePairs = TempKeyValuePairs.Union(SelectedTagData).ToDictionary(k => k.Key, v => v.Value);
             return TempKeyValuePairs;
         }
         private bool IsMatchedPointerVar(string inputName)
@@ -499,662 +523,15 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             }
             return false;
         }
-        private bool IsMatchedEntryVar(string inputName)
+        private bool IsEntryVar(string inputName)
         {
-            if (ComData.registerPreinput.ContainsKey(inputName))
+            if (ComData.entryVar.ContainsKey(inputName))
             {
                 return true;
             }
             return false;
 
         }
-        ////private void GetSpecElement(string xmlpathSource, string StartElementName, string StartElementChildName)
-        ////{
-        ////    //1.合并文件XML文件，并生成新的XML
-        ////    xmlFileClass = new TransformFileClass();
-        ////    //2.得到文件指定节点元素
-        ////    xElementStartPublic = xmlFileClass.GetStartElement(StartElementName, xmlpathSource);
-        ////}
-        //private void ExpandNodeChild(Node nodeFather)
-        //{
-        //    if (nodeFather.Expanded != true)
-        //    {
-        //        nodeFather.Expanded = true;
-        //    }
-        //    if (nodeFather.HasChildNodes == true)
-        //    {
-        //        foreach (Node node in nodeFather.Nodes)
-        //        {
-        //            ExpandNodeChild(node);
-        //        }
-        //    }
-        //}
-
-        //private string GetNodeCellColumnName(Node node, string ColumnName)
-        //{
-        //    string ReturnText = null;
-        //    foreach (Cell cell in node.Cells)
-        //    {
-        //        string CellColumnName = cell.ColumnHeader.Name;
-        //        if (CellColumnName == ColumnName)
-        //        {
-        //            ReturnText = cell.Text;
-        //            return ReturnText;
-        //        }
-        //    }
-        //    return ReturnText;
-        //}
-        //private string GetTagDataByName(Node node, string name)
-        //{
-        //    if (node == null) return "";
-        //    Dictionary<string, string> TagDict = (Dictionary<string, string>)node.Tag;
-        //    if (TagDict != null && TagDict.ContainsKey(name))
-        //    {
-        //        return TagDict[name];
-        //    }
-        //    return "";
-
-        //}
-
-
-
-        //private Dictionary<string, string> GetNodeValueWithName(Dictionary<string, string> InputDic, Node node, string matchPreinput, int ListNodeCount)
-        //{
-        //    if (node == null || ListNodeCount == 0) { return null; }
-        //    //在枚举过程中，字典不能修改
-        //    Dictionary<string, string> ReturnDic = new Dictionary<string, string>(InputDic);
-        //    //1.填充数据到字典
-        //    foreach (Cell cellItem in node.Cells)
-        //    {
-        //        string cellName = cellItem.ColumnHeader == null ? "" : cellItem.ColumnHeader.Name;
-        //        string cellText = cellItem.Text;
-        //        ReturnDic[cellName] = cellText;
-        //    }
-        //    //2.更新vartype="array[i]"中的数据
-        //    if (ReturnDic["vartype"].Contains("array"))
-        //    {
-        //        ReturnDic["vartype"] = "array" + "[" + ListNodeCount + "]";
-        //    }
-        //    //3.更新preinput="*"中的数据
-        //    if (ReturnDic.ContainsKey("preinput"))
-        //    {
-        //        ReturnDic["preinput"] = matchPreinput;
-        //    }
-        //    return ReturnDic;
-        //}
-        //private Dictionary<string, string> GetElementValueWithName(Dictionary<string, string> inputLocalDic, XElement xElement)
-        //{
-        //    //在枚举过程中，字典不能修改
-        //    Dictionary<string, string> ReturnDic = new Dictionary<string, string>();
-        //    foreach (string item in inputLocalDic.Keys)
-        //    {
-        //        //重新得到字典的值      
-        //        ReturnDic[item] = xElement.Attribute(item) == null ? "Null" : xElement.Attribute(item).Value;
-        //    }
-        //    //如果是入口变量，则存储该变量的value值
-        //    if (ReturnDic.ContainsKey("preinput"))
-        //    {
-        //        if (ReturnDic["preinput"] == "entry")
-        //        {
-        //            int Result = 0;
-        //            int.TryParse(ReturnDic["value"], out Result);
-        //            registerPreinput[ReturnDic["name"]] = Result;
-        //        }
-        //    }
-        //    return ReturnDic;
-        //}
-        //// newTreeNode = CreateNode(ReturnDic["CID"], ReturnDic["name"], NodeElementStyle["BlockStyle"], 0);
-        //private Node GetStructitemNodeByDictionay(Dictionary<string, string> inputLocalDic, int pageIndex)
-        //{
-        //    Node newTreeNode = new Node();
-        //    int step = 1;
-        //    if (step == 1)
-        //    {
-        //        string tempString1 = inputLocalDic.ContainsKey("CID") == true ? inputLocalDic["CID"] : " ";
-        //        string tempString2 = inputLocalDic.ContainsKey("type") == true ? inputLocalDic["type"] : " ";
-        //        newTreeNode = CreateNode(tempString2, NodeElementStyle["BlockStyle"], 0);
-        //        step++;
-        //    }
-        //    if (step == 2)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("vartype") == true ? inputLocalDic["vartype"] : " ";
-        //        newTreeNode.Cells.Add(new Cell(tempString, NodeElementStyle["BlockStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 3)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("name") == true ? inputLocalDic["name"] : " ";
-        //        newTreeNode.Cells.Add(new Cell(tempString, NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 4)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("length") == true ? inputLocalDic["length"] : " ";
-        //        newTreeNode.Cells.Add(new Cell(tempString, NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 5)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("range") == true ? inputLocalDic["range"] : " ";
-        //        newTreeNode.Cells.Add(new Cell(tempString, NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 6)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("value") == true ? inputLocalDic["value"] : " ";
-        //        newTreeNode.Cells.Add(new Cell(tempString, NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 7)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("nate") == true ? inputLocalDic["note"] : " ";
-        //        newTreeNode.Cells.Add(new Cell(tempString, NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 8 && inputLocalDic.ContainsKey("preinput") && inputLocalDic.ContainsKey("preinputarea") && inputLocalDic.ContainsKey("name"))
-        //    {
-        //        Dictionary<string, string> TagDict = new Dictionary<string, string>();
-        //        TagDict["preinput"] = inputLocalDic["preinput"];
-        //        TagDict["preinputarea"] = inputLocalDic["preinputarea"];
-        //        TagDict["name"] = inputLocalDic["name"];
-        //        newTreeNode.Tag = TagDict;
-        //        step++;
-        //    }
-        //    return newTreeNode;
-        //}
-
-        //private Node GetParameterNodeByDictionay(Dictionary<string, string> inputLocalDic, int pageIndex)
-        //{
-        //    Node newTreeNode = new Node();
-        //    int step = 1;
-        //    if (step == 1 && inputLocalDic.ContainsKey("CID") && inputLocalDic.ContainsKey("type"))
-        //    {
-        //        newTreeNode = CreateNode(inputLocalDic["type"], NodeElementStyle["ParameterStyle"], 2);
-        //        step++;
-        //    }
-        //    if (step == 2 && inputLocalDic.ContainsKey("vartype"))
-        //    {
-        //        newTreeNode.Cells.Add(new Cell(inputLocalDic["vartype"], NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 3 && inputLocalDic.ContainsKey("name"))
-        //    {
-        //        newTreeNode.Cells.Add(new Cell(inputLocalDic["name"], NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 4 && inputLocalDic.ContainsKey("length"))
-        //    {
-        //        newTreeNode.Cells.Add(new Cell(inputLocalDic["length"], NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 5 && inputLocalDic.ContainsKey("range"))
-        //    {
-        //        newTreeNode.Cells.Add(new Cell(inputLocalDic["range"], NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 6 && inputLocalDic.ContainsKey("value"))
-        //    {
-
-        //        Cell cell = new Cell(inputLocalDic["value"], NodeElementStyle["ParameterStyle"]);
-        //        cell.EditorType = eCellEditorType.Default;
-        //        newTreeNode.Cells.Add(cell);
-        //        step++;
-        //    }
-        //    if (step == 7 && inputLocalDic.ContainsKey("note"))
-        //    {
-        //        newTreeNode.Cells.Add(new Cell(inputLocalDic["note"], NodeElementStyle["ParameterStyle"]));
-        //        step++;
-        //    }
-        //    if (step == 8 && inputLocalDic.ContainsKey("preinput") && inputLocalDic.ContainsKey("preinputarea") && inputLocalDic.ContainsKey("name"))
-        //    {
-
-        //        Dictionary<string, string> TagDict = new Dictionary<string, string>();
-        //        TagDict["preinput"] = inputLocalDic["preinput"];
-        //        TagDict["preinputarea"] = inputLocalDic["preinputarea"];
-        //        TagDict["name"] = inputLocalDic["name"];
-        //        newTreeNode.Tag = TagDict;
-        //        step++;
-        //    }
-        //    return newTreeNode;
-
-        //}
-
-
-        //private Node GetNodeByDictionay(Dictionary<string, string> inputLocalDic, ElementStyle elementStyle, int imageIndex, int pageIndex)
-        //{
-        //    Node newTreeNode = new Node();
-        //    int step = 1;
-        //    if (step == 1)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("type") == true ? inputLocalDic["type"] : "";
-        //        newTreeNode = CreateNode(tempString, elementStyle, imageIndex);
-        //        step++;
-        //    }
-        //    if (step == 2)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("vartype") == true ? inputLocalDic["vartype"] : "";
-        //        newTreeNode.Cells.Add(new Cell(tempString, elementStyle));
-        //        step++;
-        //    }
-        //    if (step == 3)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("name") == true ? inputLocalDic["name"] : "";
-        //        newTreeNode.Cells.Add(new Cell(tempString, elementStyle));
-        //        step++;
-
-        //    }
-        //    if (step == 4)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("length") == true ? inputLocalDic["length"] : "";
-        //        newTreeNode.Cells.Add(new Cell(tempString, elementStyle));
-        //        step++;
-        //    }
-        //    if (step == 5)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("range") == true ? inputLocalDic["range"] : "";
-        //        newTreeNode.Cells.Add(new Cell(tempString, elementStyle));
-        //        step++;
-        //    }
-        //    if (step == 6)
-        //    {
-        //        string tempString = inputLocalDic.ContainsKey("value") == true ? inputLocalDic["value"] : "";
-        //        newTreeNode.Cells.Add(new Cell(tempString, elementStyle));
-        //        step++;
-        //    }
-        //    if (step == 7 && inputLocalDic.ContainsKey("note"))
-        //    {
-
-        //        string tempString = inputLocalDic.ContainsKey("note") == true ? inputLocalDic["note"] : "";
-        //        newTreeNode.Cells.Add(new Cell(tempString, elementStyle));
-        //        step++;
-        //    }
-        //    if (step == 8)
-        //    {
-        //        Dictionary<string, string> TagDict = new Dictionary<string, string>();
-        //        TagDict["preinput"] = inputLocalDic.ContainsKey("preinput") == true ? inputLocalDic["preinput"] : "";
-        //        TagDict["preinputarea"] = inputLocalDic.ContainsKey("preinputarea") == true ? inputLocalDic["preinputarea"] : "";
-        //        TagDict["name"] = inputLocalDic.ContainsKey("name") == true ? inputLocalDic["name"] : "";
-        //        TagDict["CID"] = inputLocalDic.ContainsKey("CID") == true ? inputLocalDic["CID"] : "";
-        //        newTreeNode.Tag = TagDict;
-        //        step++;
-        //    }
-        //    return newTreeNode;
-        //}
-        //private void FillDataToTreeByTraversvalXML(XElement inputElement, Node treeNode, int pageIndex)
-        //{
-        //    foreach (XElement xElementChild in inputElement.Elements())
-        //    {
-        //        //创建一个新的treenode，将xmlnode中信息存到treenode中。
-        //        Node newTreeNode = null;
-        //        if (xElementChild.Name == "configfile" || xElementChild.Name == "parameters" || xElementChild.Name == "structitems")
-        //        {
-        //            FillDataToTreeByTraversvalXML(xElementChild, treeNode, pageIndex);
-        //            return;
-        //        }
-        //        if (xElementChild.Name == "structitem")
-        //        {
-        //            //根据preinput参数设置
-        //            //1.取出字典指定的数据
-        //            Dictionary<string, string> ReturnDic = GetElementValueWithName(structblockDic, xElementChild);
-        //            newTreeNode = GetNodeByDictionay(ReturnDic, NodeElementStyle["BlockStyle"], 0, pageIndex);
-        //            treeNode.Nodes.Add(newTreeNode);
-        //        }
-        //        else if (xElementChild.Name == "parameter")
-        //        {
-        //            //1.取出字典指定的数据
-        //            Dictionary<string, string> ReturnDic = GetElementValueWithName(parameterDic, xElementChild);
-        //            //2.根据字典的数据生成节点
-        //            newTreeNode = GetNodeByDictionay(ReturnDic, NodeElementStyle["ParameterStyle"], 2, pageIndex);
-        //            treeNode.Nodes.Add(newTreeNode);
-        //        }
-        //        if (xElementChild.Elements().Count() != 0)
-        //        {
-        //            FillDataToTreeByTraversvalXML(xElementChild, newTreeNode, pageIndex);
-        //        }
-        //    }
-        //}
-        //private void CheckDictionaryItemLen()
-        //{
-        //    foreach (var item in UpdateRecords)
-        //    {
-        //        //int NodeLength = Convert.ToInt32(item.Value.NodeLength);
-        //        int NodeLength = item.Value.NodeLength.ToString().Length;
-        //        item.Value.NodeValue = item.Value.NodeValue.PadLeft(NodeLength, '0');
-        //    }
-
-        //}
-        ////private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        ////{
-        ////    ComboBox comboBox = (ComboBox)sender;
-        ////    if (comboBox.Tag != null)
-        ////    {
-        ////        NodeType nodeType = (NodeType)comboBox.Tag;
-        ////        UpdateRecords[nodeType.CID] = new UpdateRecord(nodeType.CID, nodeType.NodeLength, ((ComboxItem)comboBox.SelectedItem).Values);
-        ////    }
-        ////}
-
-
-        //private Dictionary<string, List<Node>> GetMatchNodeOnAllTree(AdvTree advtree, string MatchName)
-        //{
-        //    Dictionary<string, List<Node>> ListNodeDic = new Dictionary<string, List<Node>>();
-        //    //1.判断目前树中有多少个Preinput依赖节点
-        //    foreach (Node nodeItem in advtree.Nodes)
-        //    {
-        //        TraverslOnAllTree(nodeItem, MatchName, ListNodeDic);
-        //    }
-        //    return ListNodeDic;
-        //}
-
-
-
-
-
-        //private void AddMinusNodeOnChildTree(Dictionary<string, List<Node>> ListNode, string matchName, int preinputNumber)
-        //{
-        //    //3.比较Preinput依赖节点数目，根据结果来做出删除和增加操作
-        //    foreach (List<Node> listnode in ListNode.Values)
-        //    {
-        //        //1.增加节点
-        //        int listcount = listnode.Count();
-        //        if (preinputNumber > listcount)
-        //        {
-        //            for (int count = 0; count < (preinputNumber - listcount); count++)
-        //            {
-        //                //1.复制节点最后一个内容
-        //                Node OriginNode = listnode.LastOrDefault<Node>();
-        //                Node LastNode = OriginNode.DeepCopy();
-        //                //2.修改复制的节点内容 isRealChildNode ,NodeCount,ReviseName=preinput,
-        //                GetRevisedNode(LastNode, matchName, listcount + count);
-        //                //3.插入节点
-        //                OriginNode.Parent.Nodes.Insert(OriginNode.Index + count + 1, LastNode);
-        //            }
-        //        }
-        //        //2.删除节点
-        //        else if (preinputNumber < listcount)
-        //        {
-        //            //1.复制节点最后一个内容
-        //            Node OriginNode = listnode.FirstOrDefault<Node>();
-        //            for (int count = 0; count < (listcount - preinputNumber); count++)
-        //            {
-        //                Node node = listnode[listcount - 1 - count];
-        //                OriginNode.Parent.Nodes.Remove(node);
-        //            }
-        //        }
-        //    }
-        //}
-
-
-        //private void TraverslOnAllTree(Node ParentNode, string PreinputMatchName, Dictionary<string, List<Node>> ListNodeDic)
-        //{
-        //    if (ParentNode == null) return;
-        //    foreach (Node ChildNode in ParentNode.Nodes)
-        //    {
-        //        if (ChildNode.Tag != null)
-        //        {
-        //            Dictionary<string, string> TagDict = (Dictionary<string, string>)ChildNode.Tag;
-        //            if (TagDict["preinput"] == PreinputMatchName)
-        //            {
-        //                if (ListNodeDic.ContainsKey(TagDict["name"]) == false)
-        //                {
-        //                    ListNodeDic[TagDict["name"]] = new List<Node>();
-        //                }
-        //                ListNodeDic[TagDict["name"]].Add(ChildNode);
-        //            }
-        //        }
-        //        if (ChildNode.HasChildNodes)
-        //        {
-        //            TraverslOnAllTree(ChildNode, PreinputMatchName, ListNodeDic);
-        //        }
-        //    }
-        //}
-
-        //// private void TraverslAdvTree(Node ParentNode, string PreinputMatchName, Dictionary<string, List<Node>> ListNodeDic)
-        //// {
-        ////     if (ParentNode == null) return;
-        ////     foreach (Node ChildNode in ParentNode.Nodes)
-        ////     {
-        ////         if (ChildNode.Tag != null)
-        ////         {
-        ////             if (ChildNode.Tag.ToString() == PreinputMatchName)
-        ////             {
-        ////                 foreach (Cell cellItem in ChildNode.Cells)
-        ////                 {
-        ////                     if (cellItem.ColumnHeader.Name.Equals("name"))
-        ////                     {
-        ////                         if (ListNodeDic.ContainsKey(cellItem.Text) == false)
-        ////                         {
-        ////                             ListNodeDic[cellItem.Text] = new List<Node>();
-        ////                         }
-        ////                         ListNodeDic[cellItem.Text].Add(ChildNode);
-        ////                     }
-        ////                 }
-        ////             }
-        ////         }
-        ////         if (ChildNode.Nodes.Count > 0)
-        ////         {
-        ////             TraverslAdvTree(ChildNode, PreinputMatchName, ListNodeDic);
-        ////         }
-        ////     }
-        //// }
-
-        ////private void NumericUpDown_ValueChanged(object sender, EventArgs e)
-        ////{
-        ////    NumericUpDown numericUpDown = (NumericUpDown)sender;
-        ////    if (numericUpDown.Tag != null)
-        ////    {
-        ////        AdvTree CurrentAdvTree = numericUpDown.Parent as AdvTree;
-        ////        int SetValue = Convert.ToInt32(numericUpDown.Value);
-        ////        GetAdvTreeSelectedRowData<int>(CurrentAdvTree, SetValue);
-        ////        NodeType nodeType = (NodeType)numericUpDown.Tag;
-        ////        string FormatString = "X" + nodeType.NodeLength;
-        ////        string HexString = SetValue.ToString(FormatString);
-        ////        UpdateRecords[nodeType.CID] = new UpdateRecord(nodeType.CID, nodeType.NodeLength, HexString);
-        ////    }
-        ////}
-        //private void DomainUpDown_SelectedItemChanged(object sender, EventArgs e)
-        //{
-        //    DomainUpDown domainUpDown = (DomainUpDown)sender;
-        //    if (domainUpDown.Tag != null)
-        //    {
-        //        //1.得到设置值和Tag值
-        //        NodeType nodeType = (NodeType)domainUpDown.Tag;
-        //        string selectItemString = domainUpDown.Text.ToString();
-        //        int selectItemLength = selectItemString.Length;
-        //        uint specNodeLength = Convert.ToUInt32(nodeType.NodeLength);
-        //        //2.检查设置值是否长度正确
-        //        if (specNodeLength >= selectItemLength)
-        //        {
-        //            //3.正确，则将数据放入变更记录，同时显示到DomainUpDown中
-        //            byte[] needBytes = System.Text.Encoding.ASCII.GetBytes(selectItemString);
-        //            StringBuilder stringBuilder = new StringBuilder();
-        //            for (int index = 0; index < specNodeLength; index++)
-        //            {
-        //                if (index < needBytes.Count())
-        //                {
-        //                    stringBuilder.Append(needBytes[index].ToString("X2"));
-        //                }
-        //                else
-        //                {
-        //                    stringBuilder.Append("00");
-        //                }
-        //            }
-        //            UpdateRecords[nodeType.CID] = new UpdateRecord(nodeType.CID, nodeType.NodeLength, stringBuilder.ToString());
-        //        }
-        //        else
-        //        {
-        //            //4.不正确，则提示超出长度，显示空值                       
-        //            domainUpDown.Text = selectItemString.Substring(0, (int)specNodeLength);
-        //        }
-        //    }
-        //}
-
-
-
-        //private void FullDataToAdvTreeFromXMLNode(AdvTree advTree, XElement xElement, string BlockName, int pageIndex)
-        //{
-        //    if (xElement != null)
-        //    {
-        //        advTree.BeginUpdate();
-        //        Node newTreeNode = null;
-        //        newTreeNode = CreateNode(BlockName, NodeElementStyle["BlockStyle"], 0);
-        //        FillDataToTreeByTraversvalXML(xElement, newTreeNode, pageIndex);
-        //        newTreeNode.Expanded = true;
-        //        advTree.Nodes.Add(newTreeNode);
-        //        advTree.EndUpdate();
-        //    }
-        //}
-
-        //private AdvTree GetAdvTree(int index)
-        //{
-        //    //得到指定的advTree
-        //    if (tabControl2.TabPages.Count >= 1 && tabControl2.TabPages.Count > index)
-        //    {
-        //        var currentControls = tabControl2.TabPages[index].Controls;
-        //        foreach (Control con in currentControls)
-        //        {
-        //            if (con is AdvTree)
-        //            {
-        //                return (AdvTree)con;
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
-
-
-
-        //private void TraversalAdvTreeToDict(Node node, Dictionary<string, CSoureFormat> CSourceDic)
-        //{
-        //    if (node == null) return;
-        //    //1.node第一次为configfile
-        //    if (node.HasChildNodes)
-        //    {
-        //        //2.StructNode为复合节点
-        //        foreach (Node StructNode in node.Nodes)
-        //        {
-        //            //3.得到父节点名称，作为字典的key,同时添加一个新的字典值
-        //            string StructVarName = GetNodeCellColumnName(StructNode, "name");
-        //            if (StructVarName != null)
-        //            {   //4.如果是第一次建立,初始化变量
-        //                if (CSourceDic.ContainsKey(StructVarName) == false)
-        //                {
-        //                    CSoureFormat cSoureFormat = new CSoureFormat();
-        //                    cSoureFormat.count = 0;
-        //                    cSoureFormat.StructData = new List<string>();
-        //                    CSourceDic[StructVarName] = cSoureFormat;
-        //                }
-        //                //5.如果还有子节点
-        //                if (StructNode.HasChildNodes)
-        //                {
-        //                    //6.次数加一
-        //                    CSourceDic[StructVarName].count++;
-        //                    CSourceDic[StructVarName].StructData.Add(CommStr.BraceBracketOpen);
-        //                    foreach (Node ParameterNode in StructNode.Nodes)
-        //                    {
-
-        //                        #region 1.将同一个结构体中数组[]成员 放到{}中作为嵌套部分 2.将*pointer类型添加""
-        //                        //1.得到name,value,vartype和preinput,preinputarea
-        //                        string nameValue = GetNodeCellColumnName(ParameterNode, "name");
-        //                        string valueValue = GetNodeCellColumnName(ParameterNode, "value");
-        //                        string typeValue = GetNodeCellColumnName(ParameterNode, "type");
-        //                        string vartypeValue = GetNodeCellColumnName(ParameterNode, "vartype");
-        //                        string preinputvalue = string.Empty;
-        //                        string preinputarea = string.Empty;
-        //                        Dictionary<string, string> TagDict = (Dictionary<string, string>)ParameterNode.Tag;
-        //                        if (TagDict != null && TagDict.ContainsKey("name"))
-        //                        {
-        //                            if (TagDict["name"].Equals(nameValue))
-        //                            {
-        //                                preinputvalue = TagDict.ContainsKey("preinput") ? TagDict["preinput"] : "";
-        //                                preinputarea = TagDict.ContainsKey("preinputarea") ? TagDict["preinputarea"] : "";
-        //                            }
-        //                        }
-        //                        //2.判断当前变量preintput是否为注册的输入类型entry变量,或者输出类型变量
-        //                        // 如果是entry 则将数据value存入字典中
-        //                        if (registerPreinput.ContainsKey(nameValue) && preinputvalue.Equals("entry"))
-        //                        {
-        //                            int Result = 1;
-        //                            if (int.TryParse(valueValue, out Result))
-        //                            {
-        //                                registerPreinput[nameValue] = Result;
-        //                            }
-        //                        }// 如果是输出型变量数组，则将数据放入{子集中
-        //                        if (registerPreinput.ContainsKey(preinputvalue) && vartypeValue.Equals("array[0]"))
-        //                        {
-        //                            CSourceDic[StructVarName].StructData.Add(CommStr.BraceBracketOpen);
-        //                        }
-        //                        //如果是字符串指针，添加双""
-        //                        if (typeValue.Equals("AAL_UINT8") && vartypeValue.Equals("pointer *"))
-        //                        {
-        //                            CSourceDic[StructVarName].StructData.Add(CommStr.Quotation + valueValue + CommStr.Quotation);
-        //                        }
-        //                        else
-        //                        {
-        //                            CSourceDic[StructVarName].StructData.Add(valueValue);
-        //                        }
-        //                        // 如果是输出型变量数组，则将数据放入}子集中
-        //                        if (registerPreinput.ContainsKey(preinputvalue) && vartypeValue.Equals("array" + "[" + (registerPreinput[preinputvalue] - 1) + "]"))
-        //                        {
-        //                            CSourceDic[StructVarName].StructData.Add(CommStr.BraceBracketClose);
-        //                        }
-        //                        #endregion
-        //                    }
-        //                    CSourceDic[StructVarName].StructData.Add(CommStr.BraceBracketClose);
-        //                }
-        //                //7.如果没有子节点
-        //                else if (StructNode.HasChildNodes == false)
-        //                {
-        //                    CSourceDic[StructVarName].count++;
-        //                    CSourceDic[StructVarName].StructData.Add(CommStr.BraceBracketOpen);
-        //                    string ChildString = GetNodeCellColumnName(StructNode, "value");
-        //                    CSourceDic[StructVarName].StructData.Add(ChildString);
-        //                    CSourceDic[StructVarName].StructData.Add(CommStr.BraceBracketClose);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void AdvTree_DisplayDataViaObj(string xmlpathSource)
-        //{
-        //    ElementStyleSetting();
-        //    //清空页状态记录
-        //    //清空变更记录
-        //    UpdateRecords.Clear();
-        //    //清空preinput的变量名
-        //    registerPreinput.Clear();
-        //    //初始化显示列字典
-        //    SettingDisplayDictionary();
-        //    //得到节点元素
-        //    xmlFileClass = new TransformFileClass();
-        //    string PathName = fileOperation.GetDirectionNameString(xmlpathSource);
-        //    string FileName = fileOperation.GetFileNameString(xmlpathSource);
-        //    string FileFullName = PathName + FileName;
-        //    xElementStartPublic = xmlFileClass.GetRootElement(FileFullName);
-        //    //得到指定节点下子节点名称
-        //    ListBlockName = xmlFileClass.GetStartElementChildName(xElementStartPublic, "structitems");
-        //    CreatePageAndPageProperty();
-        //    //得到第一页的内容
-        //    string TabPageNameBlock = GetTabPageName(0);
-        //    AdvTree CurrentAdvTree = GetAdvTree(0);
-        //    AdvTreeSetting(CurrentAdvTree, TabPageNameBlock, 0);
-        //    SetTabPageProperty(0, "cn", true);
-        //    //得到反序列化的对象
-        //    StructDatas structfileObj = ObjectToXml.xmlDeSerializeToStructObj(PathName, FileName);
-        //    //填充第一页的内容 用structfileObj 下级 TabPageNameBlock
-        //    FullDataToAdvTreeFromXMLObj(CurrentAdvTree, structfileObj, TabPageNameBlock, 0);
-        //}
-        //void ExpandToolStripButton2_Click(object sender, EventArgs e)
-        //{
-        //    int PageSelectedIndex = tabControl2.SelectedIndex;
-        //    AdvTree CurrentAdvTree = GetAdvTree(PageSelectedIndex);
-        //    if (CurrentAdvTree != null)
-        //    {
-        //        foreach (Node node in CurrentAdvTree.Nodes)
-        //        {
-        //            ExpandNodeChild(node);
-        //        }
-        //    }
-        //}
+     
     }
 }

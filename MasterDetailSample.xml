@@ -105,10 +105,51 @@
             <param name="length"></param>
             <param name="note"></param>
         </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.ElementStyleSetting">
+            <summary>
+            初始化节点和元素风格
+            </summary>
+        </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeSetting">
             <summary>
             设置该页的名称，树的列，图片，字体等
             </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeBeforeCellEdit(System.Object,System.EventArgs)">
+            <summary>
+            保存选中节点的数据
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeAfterCellEditComplete(System.Object,System.EventArgs)">
+            <summary>
+            处理Value列变更后的操作
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetSelectedNodeCell(DevComponents.AdvTree.Node,System.String)">
+            <summary>
+            得到选中节点列名的元胞
+            </summary>
+            <param name="node"></param>
+            <param name="ColumnName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.UpdateEntryVarValue(System.String,System.Int32)">
+            <summary>
+            更新entry变量的新值
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AddEntryVar(System.String,System.String)">
+            <summary>
+            注册entry变量的新值
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetStateOfProcessNode(DevComponents.AdvTree.Node,System.String,System.String)">
             <summary>
@@ -120,6 +161,13 @@
             <returns>等于0:不需要更新树的节点</returns>
             <returns>小于0:需要删除树的节点</returns>
             <returns>大于0:需要添加树的节点</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetSelectedColumnData(DevComponents.AdvTree.Node)">
+            <summary>
+            得到选择节点的列名称和数据
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
         </member>
         <member name="T:SmallManagerSpace.Resources.EntitySerialize">
             <summary>

@@ -33,7 +33,7 @@ namespace SmallManagerSpace.Resources
         static public AdvTree advTree = null;
         static public string structBody = null;
         static public string publicPreinputName = null;
-        static public Dictionary<string, int> registerPreinput = null;
+        static public Dictionary<string, int> entryVar = null;
         static public Dictionary<string, ElementStyle> nodeElementStyle = null;
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace SmallManagerSpace.Resources
         {
             advTree = new AdvTree();
             nodeElementStyle = new Dictionary<string, ElementStyle>();
-            registerPreinput = new Dictionary<string, int>();
+            entryVar = new Dictionary<string, int>();
             structBody = "StructList";
             publicPreinputName = "board_num";
             AdvTreeObj advTreeObj = new AdvTreeObj();

@@ -107,8 +107,8 @@ namespace SmallManagerSpace.Resources
             ComData.customStruct = new StructEntity();
             foreach (DefineEntity defineEntity in defineEntitys)
             {
-                StructItem ob =( ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
-                ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, preinput = ob.preinput, note = ob.note });
+                StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
+                ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, preinput = ob.preinput, note = ob.note,nodetype=ob.nodetype });
                 TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
             }
         }
@@ -124,38 +124,39 @@ namespace SmallManagerSpace.Resources
                 if (obj is StructItem)
                 {
                     StructItem sobj = obj as StructItem;
-                    destList.Add(new StructItem() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note ,nodetype=sobj.nodetype});
+                    destList.Add(new StructItem() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, nodetype = sobj.nodetype });
                     TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, sobj.parameterList);
                 }
                 else if (obj is Parameter)
                 {
                     Parameter sobj = obj as Parameter;
                     Dictionary<string, object> keyValue = GetRealNodeType(sobj.type);
-
-                    switch (keyValue.Keys.First())
+                    if (keyValue.Count != 0)
                     {
-                        case "base":
-                            destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
-                            break;
-                        case "enum":
-                            destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "enum" });
-                            break;
-                        case "struct":
-                            StructItem i = keyValue[keyValue.Keys.First()] as StructItem;
-                            destList.Add(new StructItem() { CID = i.CID, type = i.type, name = i.name, preinput = i.preinput, note = i.note, nodetype = "struct" });
-                            TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, i.parameterList);
-                            break;
-                        default:
-                            break;
+                        switch (keyValue.Keys.First())
+                        {
+                            case "base":
+                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
+                                break;
+                            case "enum":
+                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "enum" });
+                                break;
+                            case "struct":
+                                StructItem i = keyValue[keyValue.Keys.First()] as StructItem;
+                                destList.Add(new StructItem() { CID = i.CID, type = i.type, name = i.name, preinput = i.preinput, note = i.note, nodetype = "struct" });
+                                TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, i.parameterList);
+                                break;
+                            default:
+                                break;
+                        }
                     }
-
                 }
             }
 
         }
 
 
-        
+
         /// <summary>
         ///  将xml文件化为对象数据序列
         /// </summary>
@@ -228,7 +229,7 @@ namespace SmallManagerSpace.Resources
         /// <param name="name"></param>
         /// <param name="preinput"></param>
         /// <param name="note"></param>
-        public void AddValueOfStructItem(List<object> higherNode, string CID, string type, string name, string preinput, string note,string nodetype)
+        public void AddValueOfStructItem(List<object> higherNode, string CID, string type, string name, string preinput, string note, string nodetype)
         {
             //创建structitem信息
             StructItem structitemInfo = new StructItem();

@@ -80,7 +80,7 @@ namespace MasterDetailSample
                     //将obj对象的数据序列化到xml文件中
                     GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
                     GenerationXmlFromEntity("enum", ComData.programStartPath+ComData.enumItemsFileName);
-                    GenerationXmlFromEntity("sturct", ComData.programStartPath+ComData.structItemsFileName);
+                    GenerationXmlFromEntity("struct", ComData.programStartPath+ComData.structItemsFileName);
                     ComData.stepNow = StepProcess.EntityToCustomEntity;
                 }
                 //b.如果是XML头文件->OBJ
@@ -215,7 +215,7 @@ namespace MasterDetailSample
                             EntityVsFile.GetFileFromEntity(GenFileFullName);
                             //3.将文件结构体中的数组变量用数组值替换
                             FileStringFunction fileStringADU = new FileStringFunction();
-                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComData.registerPreinput);
+                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComData.entryVar);
                             //4.将obj对象的数据序列化到xml文件中
                             GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
                             GenerationXmlFromEntity("customstruct", ComData.programStartPath+ComData.customItemsFileName);

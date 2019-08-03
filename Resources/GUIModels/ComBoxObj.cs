@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevComponents.AdvTree;
+using SmallManagerSpace.Resources.GUIVsEntity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -26,7 +28,7 @@ namespace SmallManagerSpace.Resources.GUIModels
 
     class ComBoxObj
     {
-        public Control CreateEnbedCombox(string typeName)
+        public Control CreateEnbedCombox(Cell HostedCell,string typeName)
         {
             Control controlObj = null;
             ComboBox comboBox = new ComboBox();
@@ -45,6 +47,7 @@ namespace SmallManagerSpace.Resources.GUIModels
             }
 
             comboBox.SelectedIndex = 0;
+            HostedCell.Text = selectItem.EnumValues[0].en;
             comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             controlObj = comboBox;
             return controlObj;
@@ -52,9 +55,16 @@ namespace SmallManagerSpace.Resources.GUIModels
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
-            if (comboBox.Tag != null)
+            AdvTree advTree = comboBox.Parent as AdvTree;
+            if (advTree != null)
             {
+                Node selectedNode = advTree.SelectedNode;
+                AdvTreeObj advTreeObj = new AdvTreeObj();
+                Cell selectedCell=advTreeObj.GetSelectedNodeCell(selectedNode, "value");
+                selectedCell.Text = comboBox.Text;
             }
+
+
         }
     }
 }

@@ -61,6 +61,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             TagDict["CID"] = sObj.CID;
             TagDict["nodetype"] = sObj.nodetype ?? "struct";
             newTreeNode.Tag = TagDict;
+        
             return newTreeNode;
         }
         private Node GetNodeByObjOfBase(Parameter pObj, ElementStyle elementStyle, int imageIndex)
@@ -78,6 +79,12 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             TagDict["CID"] = pObj.CID;
             TagDict["nodetype"] = pObj.nodetype ?? "base";
             newTreeNode.Tag = TagDict;
+            //2.注册entry变量
+            if (pObj.preinput.Equals("entry"))
+            {
+                AdvTreeObj advTreeObj = new AdvTreeObj();
+                advTreeObj.AddEntryVar(pObj.name, pObj.value);
+            }
             return newTreeNode;
 
         }
@@ -91,8 +98,8 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             if (pObj.nodetype=="enum")
             {
                 ComBoxObj comBoxObj = new ComBoxObj();
-                Control control = comBoxObj.CreateEnbedCombox(pObj.type);
                 Cell cell = new Cell();
+                Control control = comBoxObj.CreateEnbedCombox(cell,pObj.type);             
                 cell.HostedControl = control;
                 control = cell.HostedControl;
                 newTreeNode.Cells.Add(cell);
@@ -111,11 +118,8 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             //2.注册entry变量
             if (pObj.preinput.Equals("entry"))
             {
-                int Result = 1;
-                if (int.TryParse(pObj.value, out Result))
-                {
-                    ComData.registerPreinput[pObj.name] = Result;
-                }
+                AdvTreeObj advTreeObj = new AdvTreeObj();
+                advTreeObj.AddEntryVar(pObj.name,pObj.value);
             }
             return newTreeNode;
         }

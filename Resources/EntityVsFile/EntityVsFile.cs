@@ -58,6 +58,7 @@ namespace SmallManagerSpace.Resources
             }
             return arrayName;
         }
+     
         /// <summary>
         /// 得到匹配的基本类型，enum类型的长度
         /// </summary>
@@ -192,7 +193,7 @@ namespace SmallManagerSpace.Resources
                             string name = "";
                             string preinput = "";
                             string node = "";
-                            string nodetype = "sturct";
+                            string nodetype = "struct";
                             string RegexStr3 = @"struct[\s]+(?<structtype>[\S]+)";
                             Match matc = Regex.Match(line, RegexStr3);
                             type = matc.Groups["structtype"].ToString();
@@ -203,8 +204,8 @@ namespace SmallManagerSpace.Resources
                             name = "nameValue";
                             node = " ";
                             CapturedType = "isStruct";
-                            //添加structitem数据到列表中
 
+                            //添加structitem数据到列表中
                             ComData.structFunction.AddValueOfStructItem(ComData.structEntity.nodeList, Cid.ToString().PadLeft(4, '0'), type, name, preinput, node, nodetype);
                             ProcessStep++;
                             Cid++;
@@ -265,7 +266,7 @@ namespace SmallManagerSpace.Resources
                             string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;[\s]*/+(?<parameternote>[\S]+)";
                             Match matchStr = Regex.Match(line, RegexStr3);
                             type = matchStr.Groups["parametertype"].ToString();
-                            note = matchStr.Groups["parameternote"].ToString();
+                            note = matchStr.Groups["parameternote"].ToString()??"";
                             length = GetLengthOfType(type).ToString();
 
                             string lineItem = matchStr.Groups["parametername"].ToString();
