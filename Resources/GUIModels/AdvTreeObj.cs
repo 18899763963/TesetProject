@@ -14,7 +14,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
     class AdvTreeObj
     {
 
-        public string SelectedCellOriginValue;
+        public string BeforeValue;
         public Dictionary<string, string> BeforeSelectedColumnData = new Dictionary<string, string>();
 
         public void InitAdvTreeDatas()
@@ -124,7 +124,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             //1.得到选中节点的数据
             AdvTree CurrentAdvTree = (AdvTree)sender;
             Node selectedNode = CurrentAdvTree.SelectedNode;
-            SelectedCellOriginValue = selectedNode.SelectedCell.Text;
+            BeforeValue = selectedNode.SelectedCell.Text;
             BeforeSelectedColumnData = GetSelectedColumnData(selectedNode);
             string type_space_name = BeforeSelectedColumnData["type"] + " " + BeforeSelectedColumnData["name"];
         }
@@ -147,34 +147,34 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 if (IsEntryVar(SelectedColumnData["name"]))
                 {
                     //根据变量的范围统一设定为节点的父节点内     
-                    int CountOfProcess = GetStateOfProcessNode(selectedNode, SelectedColumnData["name"], SelectedColumnData["value"]);
-                    //判断是否为PublicPreinput
-                    if ((SelectedColumnData["name"]).Equals(ComData.publicPreinputName) && CountOfProcess != 0)
+                    int Count = GetAddNodeCount(selectedNode, SelectedColumnData["name"], SelectedColumnData["value"]);
+                    //想处理PublicEntry
+                    if ((SelectedColumnData["name"]).Equals(ComData.publicEntryName) && Count != 0)
                     {
                         Dictionary<string, List<Node>> ListNode = GetMatchNodeOnAncestorTree(selectedNode, SelectedColumnData["name"]);
-                        if (CountOfProcess > 0)
+                        if (Count > 0)
                         {
                             //增加节点
-                            AddNodeOnAncestorTree(ListNode, CountOfProcess);
+                            AddNodeOnAncestorTree(ListNode, Count);
                         }
-                        else if (CountOfProcess < 0)
+                        else if (Count < 0)
                         {
                             //删除节点
-                            SubNodeOnAncestorTree(ListNode, CountOfProcess);
+                            SubNodeOnAncestorTree(ListNode, Count);
                         }
                     }
                     else
                     {
                         Dictionary<string, List<Node>> ListNode = GetMatchNodeOnParentTree(selectedNode, SelectedColumnData["name"]);
-                        if (CountOfProcess > 0)
+                        if (Count > 0)
                         {
                             //增加节点
-                            AddNodeOnParentTree(ListNode, CountOfProcess);
+                            AddNodeOnParentTree(ListNode, Count);
                         }
-                        else if (CountOfProcess < 0)
+                        else if (Count < 0)
                         {
                             //删除节点
-                            SubNodeOnParentTree(ListNode, CountOfProcess);
+                            SubNodeOnParentTree(ListNode, Count);
                         }
                     }
                 }
@@ -381,7 +381,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             TraverslOnAncestorTree(AncestorNode, MatchName, ListNodeDic);
             return ListNodeDic;
         }
-        private void TraverslOnAncestorTree(Node ParentNode, string PreinputMatchName, Dictionary<string, List<Node>> ListNodeDic)
+        private void TraverslOnAncestorTree(Node ParentNode, string EntryName, Dictionary<string, List<Node>> ListNodeDic)
         {
             if (ParentNode == null) return;
             foreach (Node ChildNode in ParentNode.Nodes)
@@ -389,7 +389,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 if (ChildNode.Tag != null)
                 {
                     Dictionary<string, string> TagDict = (Dictionary<string, string>)ChildNode.Tag;
-                    if (TagDict["preinput"] == PreinputMatchName)
+                    if (TagDict["preinput"] == EntryName)
                     {
                         if (ListNodeDic.ContainsKey(TagDict["name"]) == false)
                         {
@@ -400,32 +400,37 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 }
                 if (ChildNode.HasChildNodes)
                 {
-                    TraverslOnParentTree(ChildNode, PreinputMatchName, ListNodeDic);
+                    TraverslOnParentTree(ChildNode, EntryName, ListNodeDic);
                 }
             }
         }
 
-        private void TraverslOnParentTree(Node ParentNode, string PreinputMatchName, Dictionary<string, List<Node>> ListNodeDic)
+        private void TraverslOnParentTree(Node ParentNode, string EntryName, Dictionary<string, List<Node>> ListNodeDic)
         {
             if (ParentNode == null) return;
             foreach (Node ChildNode in ParentNode.Nodes)
             {
                 if (ChildNode.Tag != null)
                 {
-                    Dictionary<string, string> TagDict = (Dictionary<string, string>)ChildNode.Tag;
-                    if (TagDict["preinput"] == PreinputMatchName)
+                    //Dictionary<string, string> TagDict = (Dictionary<string, string>)ChildNode.Tag;
+                    Dictionary<string, string> TagDict = GetSelectedColumnData(ChildNode);
+                    if (TagDict["preinput"] == EntryName)
                     {
-                        string subString = TagDict["name"].Substring(0, TagDict["name"].IndexOf('['));
-                        if (ListNodeDic.ContainsKey(subString) == false)
+                        string subString = "";
+                        if(TagDict["name"].Contains("["))
                         {
-                            ListNodeDic[subString] = new List<Node>();
-                        }
-                        ListNodeDic[subString].Add(ChildNode);
+                            subString = TagDict["name"].Substring(0, TagDict["name"].IndexOf('['));
+                            if (ListNodeDic.ContainsKey(subString) == false)
+                            {
+                                ListNodeDic[subString] = new List<Node>();
+                            }
+                            ListNodeDic[subString].Add(ChildNode);
+                        }   
                     }
                 }
                 if (ChildNode.HasChildNodes)
                 {
-                    TraverslOnParentTree(ChildNode, PreinputMatchName, ListNodeDic);
+                    TraverslOnParentTree(ChildNode, EntryName, ListNodeDic);
                 }
             }
         }
@@ -460,38 +465,38 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// </summary>
         /// <param name="selectedNode">选择的节点</param>
         /// <param name="PreinputName">匹配变量名称</param>
-        /// <param name="NowSelectedValue">选择的节点值</param>
+        /// <param name="CurrentValue">选择的节点值</param>
         /// <returns>等于0:不需要更新树的节点</returns>
         /// <returns>小于0:需要删除树的节点</returns>
         /// <returns>大于0:需要添加树的节点</returns>
-        private int GetStateOfProcessNode(Node selectedNode, string PreinputName, string NowSelectedValue)
+        private int GetAddNodeCount(Node selectedNode, string PreinputName, string CurrentValue)
         {
-            int stateProcess = 0;
+            int Count = 0;
             //值相同：返回0
-            if (NowSelectedValue.Equals(SelectedCellOriginValue)) return stateProcess;
+            if (CurrentValue.Equals(BeforeValue)) return Count;
             else
             {
-                int NowValueInt = 1;
+                int CurrentValueInt = 1;
                 int BeforeValueInt = 1;
-                if (int.TryParse(NowSelectedValue, out NowValueInt) && int.TryParse(SelectedCellOriginValue, out BeforeValueInt))
+                if (int.TryParse(CurrentValue, out CurrentValueInt) && int.TryParse(BeforeValue, out BeforeValueInt))
                 {
                     //输入的值大于0：正常操作
-                    if (NowValueInt > 0 && BeforeValueInt > 0)
+                    if (CurrentValueInt > 0 && BeforeValueInt > 0)
                     {
-                        stateProcess = NowValueInt - BeforeValueInt;
-                        UpdateEntryVarValue(PreinputName, NowValueInt);
-                        return stateProcess;
+                        Count = CurrentValueInt - BeforeValueInt;
+                        UpdateEntryVarValue(PreinputName, CurrentValueInt);
+                        return Count;
                     }
                     else
                     {//输入的值小于0：则恢复之前的值
-                        selectedNode.SelectedCell.Text = SelectedCellOriginValue;
-                        return stateProcess;
+                        selectedNode.SelectedCell.Text = BeforeValue;
+                        return Count;
                     }
                 }
                 else
                 {//如果修改的值不正确：则恢复之前的值
-                    selectedNode.SelectedCell.Text = SelectedCellOriginValue;
-                    return stateProcess;
+                    selectedNode.SelectedCell.Text = BeforeValue;
+                    return Count;
                 }
             }
 
@@ -511,8 +516,14 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 string HeaderName = cellItem.ColumnHeader == null ? "" : cellItem.ColumnHeader.Name;
                 TempKeyValuePairs[HeaderName] = stringText;
             }
-
-            TempKeyValuePairs = TempKeyValuePairs.Union(SelectedTagData).ToDictionary(k => k.Key, v => v.Value);
+            
+            foreach(string key in SelectedTagData.Keys)
+            {
+                if(!TempKeyValuePairs.ContainsKey(key))
+                {
+                    TempKeyValuePairs.Add(key, SelectedTagData[key]);
+                }
+            }
             return TempKeyValuePairs;
         }
         private bool IsMatchedPointerVar(string inputName)

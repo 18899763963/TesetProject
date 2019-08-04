@@ -14,10 +14,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
     {
         public void FullDataToAdvTreeFromXMLObj(StructEntity inputEntity)
         {
+            string structBody = "StructList";
             if (ComData.advTree == null && inputEntity == null && ComData.nodeElementStyle == null) return;
             ComData.advTree.BeginUpdate();
             Node NewTreeNode = null;
-            NewTreeNode = CreateNode(ComData.structBody, ComData.nodeElementStyle["BlockStyle"], 0);
+            NewTreeNode = CreateNode(structBody, ComData.nodeElementStyle["BlockStyle"], 0);
             FillDataToTreeByTraversvalObj(inputEntity, NewTreeNode);
             NewTreeNode.Expanded = true;
             ComData.advTree.Nodes.Add(NewTreeNode);

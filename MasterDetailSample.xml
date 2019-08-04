@@ -151,13 +151,13 @@
             <param name="name"></param>
             <param name="value"></param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetStateOfProcessNode(DevComponents.AdvTree.Node,System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetAddNodeCount(DevComponents.AdvTree.Node,System.String,System.String)">
             <summary>
             判断是否需要变更树的节点
             </summary>
             <param name="selectedNode">选择的节点</param>
             <param name="PreinputName">匹配变量名称</param>
-            <param name="NowSelectedValue">选择的节点值</param>
+            <param name="CurrentValue">选择的节点值</param>
             <returns>等于0:不需要更新树的节点</returns>
             <returns>小于0:需要删除树的节点</returns>
             <returns>大于0:需要添加树的节点</returns>
