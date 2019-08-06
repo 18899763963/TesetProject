@@ -82,7 +82,7 @@
              修改ParameterItem中数据
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfStructItem(System.Collections.Generic.List{System.Object},System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfStructItem(System.Collections.Generic.List{System.Object},System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             增加StructItem
             </summary>
@@ -92,7 +92,7 @@
             <param name="preinput"></param>
             <param name="note"></param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfParameterItem(SmallManagerSpace.Resources.StructItem,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfParameterItem(SmallManagerSpace.Resources.StructItem,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             增加ParameterItem
             </summary>
@@ -137,6 +137,99 @@
             <param name="ColumnName"></param>
             <returns></returns>
         </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.getNodeType(DevComponents.AdvTree.Node)">
+            <summary>
+            得到节点类型
+            </summary>
+            <param name="node"></param>
+            <returns>enum,base,struct</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetTraversalModifiedStructNode(DevComponents.AdvTree.Node,System.Int32)">
+            <summary>
+            修改节点列表的index 和添加嵌入控件combox
+            </summary>
+            <param name="node">节点</param>
+            <param name="setIndex">下标</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetTraversalModifiedBaseEnumNode(DevComponents.AdvTree.Node,System.Int32)">
+            <summary>
+            修改节点列表的index 和添加嵌入控件combox
+            </summary>
+            <param name="node">节点</param>
+            <param name="setIndex">下标</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.DeletetNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+            <summary>
+            遍历删除Struct节点
+            </summary>
+            <param name="RootN">根节点</param>
+            <param name="SelectNode">选择节点</param>
+            <param name="preinputName">预输入名</param>
+            <param name="require">当前数量</param>
+            <param name="diff">需要数量（正数）</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AddStructNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+            <summary>
+            遍历添加Struct节点
+            </summary>
+            <param name="RootN">根节点</param>
+            <param name="SelectNode">选择节点</param>
+            <param name="preinputName">预输入名</param>
+            <param name="require">当前数量</param>
+            <param name="diff">需要数量（正数）</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AddBaseEnumNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+            <summary>
+            添加base,enum节点
+            </summary>
+            <param name="RootN"></param>
+            <param name="selectedNode"></param>
+            <param name="preinputName"></param>
+            <param name="require"></param>
+            <param name="diff"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.TraverslAddBaseEnumNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+            <summary>
+            遍历添加base,enum节点
+            </summary>
+            <param name="RootN"></param>
+            <param name="selectedNode"></param>
+            <param name="preinputName"></param>
+            <param name="require"></param>
+            <param name="diff"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.SelectNodeGruopByType(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{DevComponents.AdvTree.Node}},System.String)">
+            <summary>
+            过滤指定类型的节点
+            </summary>
+            <param name="nodes">原节点列表</param>
+            <param name="nodeType">nodtetype:struct,enum,base</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.SelectNodeGruopByType(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{DevComponents.AdvTree.Node}},System.String[])">
+            <summary>
+            过滤指定类型的节点
+            </summary>
+            <param name="nodes">原节点列表</param>
+            <param name="nodeType">nodtetype:struct,enum,base</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.NodeGroupBySameParent(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{DevComponents.AdvTree.Node}},System.String)">
+            <summary>
+            根据同父分组节点（name,preinput,name,index）都相同则为同父亲
+            </summary>
+            <param name="nodes">原节点列表</param>
+            <param name="selectParentNodeKey">选择节点父节点key</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.NodeGroupByCellHeaderName(DevComponents.AdvTree.Node[],System.String)">
+            <summary>
+            根据列名称分组节点
+            </summary>
+            <param name="nodes">原节点列表</param>
+            <param name="name">列名</param>
+            <returns></returns>
+        </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.UpdateEntryVarValue(System.String,System.Int32)">
             <summary>
             更新entry变量的新值
@@ -167,6 +260,35 @@
             得到选择节点的列名称和数据
             </summary>
             <param name="node"></param>
+            <returns>"D(columnName,value)"</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeToEntity.GetEntityByAdvTreeNode(DevComponents.AdvTree.AdvTree)">
+            <summary>
+            将AdvTree节点数据转换为obj
+            </summary>
+            <param name="advTree">输入树结构</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeToEntity.TraversalTreeNode(System.Collections.Generic.List{System.Object},DevComponents.AdvTree.Node)">
+            <summary>
+            遍历树节点
+            </summary>
+            <param name="nodeList"></param>
+            <param name="inNode"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeToEntity.GetStructItemEntity(DevComponents.AdvTree.Node,System.Int32)">
+            <summary>
+            得到struct Obj
+            </summary>
+            <param name="node"></param>
+            <param name="CID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeToEntity.GetParameterEntity(DevComponents.AdvTree.Node,System.Int32)">
+            <summary>
+            得到parameter Obj
+            </summary>
+            <param name="node"></param>
+            <param name="CID"></param>
             <returns></returns>
         </member>
         <member name="T:SmallManagerSpace.Resources.EntitySerialize">

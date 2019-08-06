@@ -10,51 +10,122 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
     class AdvTreeToEntity
     {
 
+        int cid = 1;
+        /// <summary>
+        /// 将AdvTree节点数据转换为obj
+        /// </summary>
+        /// <param name="advTree">输入树结构</param>
         public void GetEntityByAdvTreeNode(AdvTree advTree)
         {
-            if (advTree == null && ComData.structEntity == null) return;
-            int CID = 1;
-            //1.重新得到ComRunDatas.StructEntity对象
-            StructFunction structDataOperation = new StructFunction();
-            structDataOperation.CreateStructEntity();
-            foreach (Node RootNode in advTree.Nodes)
+            if (advTree == null && ComData.customStruct == null) return;
+            //重置cid
+            int cid = 1;
+            //重开辟空间
+            ComData.customStruct = new StructEntity();
+
+            foreach (Node node in advTree.DisplayRootNode.Nodes)
             {
-                foreach (Node node in RootNode.Nodes)
+                AdvTreeObj advTreeObj = new AdvTreeObj();
+                string nodeType = advTreeObj.getNodeType(node);
+                if (nodeType == "struct" && node.HasChildNodes)
                 {
-                    if (node.HasChildNodes)
-                    {
-                        //2.通过节点数据得到StructItem对象
-                        StructItem structItem = GetStructItemEntity(node, CID++);
-                        foreach (Node childNode in node.Nodes)
-                        {
-                            //3.通过节点数据得到Parameter对象
-                            Parameter parameter = GetParameterEntity(childNode, CID++);
-                            structItem.parameterList.Add(parameter);
-                        }
-                        //4.添加数据到Parameter对象
-                        ComData.structEntity.nodeList.Add(structItem);
-                    }
+                    //2.通过节点数据得到StructItem对象
+                    StructItem structItem = GetStructItemEntity(node, cid++);
+                    ComData.customStruct.nodeList.Add(structItem);
+                    TraversalTreeNode(ComData.customStruct.nodeList, node);
                 }
             }
-        }
 
+        }
+        /// <summary>
+        /// 遍历树节点
+        /// </summary>
+        /// <param name="nodeList"></param>
+        /// <param name="inNode"></param>
+        public void TraversalTreeNode(List<object> nodeList, Node inNode)
+        {
+            AdvTreeObj advTreeObj = new AdvTreeObj();
+            string nodeType = advTreeObj.getNodeType(inNode);
+            switch (nodeType)
+            {
+                case "base":
+                    {
+                        //得到Parameter对象
+                        Parameter parameter = GetParameterEntity(inNode, cid++);
+                        (nodeList.LastOrDefault() as StructItem).parameterList.Add(parameter);
+                        break;
+                    }
+
+                case "enum":
+                    {
+                        //得到Parameter对象
+                        Parameter parameter = GetParameterEntity(inNode, cid++);
+                        (nodeList.LastOrDefault() as StructItem).parameterList.Add(parameter);
+                        break;
+                    }
+                case "struct":
+                    {
+                        //添加struct节点
+                        //2.通过节点数据得到StructItem对象
+                        if (inNode.Parent != ComData.advTree.DisplayRootNode)
+                        {
+                            StructItem structItem = GetStructItemEntity(inNode, cid++);
+                            (nodeList.LastOrDefault() as StructItem).parameterList.Add(structItem);
+                        }
+
+                        //遍历struct子节点
+                        if (inNode.HasChildNodes)
+                        {
+                            foreach (Node nodeChild in inNode.Nodes)
+                            {
+                                if (inNode.Parent == ComData.advTree.DisplayRootNode)
+                                {
+                                    TraversalTreeNode(nodeList, nodeChild);
+
+                                }
+                                else
+                                {
+                                    TraversalTreeNode((nodeList.LastOrDefault() as StructItem).parameterList, nodeChild);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                default: break;
+            }
+        }
+        /// <summary>
+        /// 得到struct Obj
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="CID"></param>
+        /// <returns></returns>
         public StructItem GetStructItemEntity(Node node, int CID)
         {
             StructItem structItem = new StructItem();
-            Dictionary<string, string> NodeDictinary = GetNodeEntireData(node);
+            AdvTreeObj advTreeObj = new AdvTreeObj();
+            Dictionary<string, string> NodeDictinary = advTreeObj.GetSelectedColumnData(node);
             structItem.CID = string.Format("{0:D6}", CID);
             structItem.type = NodeDictinary.ContainsKey("type") ? NodeDictinary["type"] : "";
             structItem.name = NodeDictinary.ContainsKey("name") ? NodeDictinary["name"] : "";
             structItem.preinput = NodeDictinary.ContainsKey("preinput") ? NodeDictinary["preinput"] : "";
             structItem.note = NodeDictinary.ContainsKey("note") ? NodeDictinary["note"] : "";
-           // structItem.parameterList = new List<Parameter>();
-           // structItem.structList = new List<StructItem>();
+            structItem.nodetype = NodeDictinary.ContainsKey("nodetype") ? NodeDictinary["nodetype"] : "";
+            structItem.index = NodeDictinary.ContainsKey("index") ? NodeDictinary["index"] : "";
             return structItem;
         }
+        /// <summary>
+        /// 得到parameter Obj
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="CID"></param>
+        /// <returns></returns>
         public Parameter GetParameterEntity(Node node, int CID)
         {
             Parameter parameter = new Parameter();
-            Dictionary<string, string> NodeDictinary = GetNodeEntireData(node);
+            AdvTreeObj advTreeObj = new AdvTreeObj();
+            Dictionary<string, string> NodeDictinary = advTreeObj.GetSelectedColumnData(node);
             parameter.CID = string.Format("{0:D6}", CID);
             parameter.type = NodeDictinary.ContainsKey("type") ? NodeDictinary["type"] : "";
             parameter.name = NodeDictinary.ContainsKey("name") ? NodeDictinary["name"] : "";
@@ -63,44 +134,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             parameter.value = NodeDictinary.ContainsKey("value") ? NodeDictinary["value"] : "";
             parameter.length = NodeDictinary.ContainsKey("length") ? NodeDictinary["length"] : "";
             parameter.note = NodeDictinary.ContainsKey("note") ? NodeDictinary["note"] : "";
+            parameter.nodetype = NodeDictinary.ContainsKey("nodetype") ? NodeDictinary["nodetype"] : "";
+            parameter.index = NodeDictinary.ContainsKey("index") ? NodeDictinary["index"] : "";
             return parameter;
         }
-        private Dictionary<string, string> GetNodeEntireData(Node node)
-        {
-            Dictionary<string, string> NodeDictinary = new Dictionary<string, string>();
-            foreach (Cell cellItem in node.Cells)
-            {
-                string stringText = cellItem.Text;
-                string HeaderName = cellItem.ColumnHeader == null ? "" : cellItem.ColumnHeader.Name;
-                if (!HeaderName.Equals("value"))
-                {
-                    NodeDictinary[HeaderName] = stringText;
-                }
-                else
-                {
-                    if (cellItem.HostedControl != null)
-                    {
-                        ComboBox comboBox = cellItem.HostedControl as ComboBox;
-                        stringText = comboBox.Text.ToString();
-                        // stringText = comboBox.SelectedItem.ToString();
 
-                    }
-                    NodeDictinary[HeaderName] = stringText;
-                }
-            }
-            if (node.Tag != null)
-            {
-                Dictionary<string, string> TagData = (Dictionary<string, string>)node.Tag;
-                foreach (string key in TagData.Keys)
-                {
-                    if (!NodeDictinary.ContainsKey(key))
-                    {
-                        NodeDictinary[key] = TagData[key];
-                    }
-                }
-            }
-            return NodeDictinary;
-        }
 
     }
 }

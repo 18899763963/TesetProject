@@ -19,8 +19,10 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             ComData.advTree.BeginUpdate();
             Node NewTreeNode = null;
             NewTreeNode = CreateNode(structBody, ComData.nodeElementStyle["BlockStyle"], 0);
+            NewTreeNode.Name = "StructList";
             FillDataToTreeByTraversvalObj(inputEntity, NewTreeNode);
             NewTreeNode.Expanded = true;
+            ComData.advTree.DisplayRootNode = NewTreeNode;
             ComData.advTree.Nodes.Add(NewTreeNode);
             ComData.advTree.EndUpdate();
         }
@@ -49,37 +51,45 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
         private Node GetNodeByObjOfStructitem(StructItem sObj, ElementStyle elementStyle, int imageIndex)
         {
-            Node newTreeNode = new Node();
-            newTreeNode = CreateNode(sObj.type, elementStyle, imageIndex);
+            Node newTreeNode = CreateNode(sObj.type, elementStyle, imageIndex);
+            newTreeNode.Name = sObj.preinput;
+            newTreeNode.Cells.Add(new Cell(sObj.preinput, elementStyle));
             newTreeNode.Cells.Add(new Cell(sObj.name, elementStyle));
+            newTreeNode.Cells.Add(new Cell(sObj.index, elementStyle));
             newTreeNode.Cells.Add(new Cell("", elementStyle));
             newTreeNode.Cells.Add(new Cell("", elementStyle));
-            newTreeNode.Cells.Add(new Cell("", elementStyle));
+            newTreeNode.Cells.Add(new Cell("", elementStyle));           
+            newTreeNode.Cells.Add(new Cell(sObj.nodetype, elementStyle));
+            newTreeNode.Cells.Add(new Cell(sObj.CID, elementStyle));
             newTreeNode.Cells.Add(new Cell(sObj.note, elementStyle));
-            Dictionary<string, string> TagDict = new Dictionary<string, string>();
-            TagDict["preinput"] = sObj.preinput;
-            TagDict["name"] = sObj.name;
-            TagDict["CID"] = sObj.CID;
-            TagDict["nodetype"] = sObj.nodetype ?? "struct";
-            newTreeNode.Tag = TagDict;
-        
+            //Dictionary<string, string> TagDict = new Dictionary<string, string>();
+            //TagDict["preinput"] = sObj.preinput;
+            //TagDict["name"] = sObj.name;
+            //TagDict["CID"] = sObj.CID;
+            //TagDict["nodetype"] = sObj.nodetype ?? "struct";
+            //newTreeNode.Tag = TagDict;
+
             return newTreeNode;
         }
         private Node GetNodeByObjOfBase(Parameter pObj, ElementStyle elementStyle, int imageIndex)
         {
-            Node newTreeNode = new Node();
-            newTreeNode = CreateNode(pObj.type, elementStyle, imageIndex);
+            Node newTreeNode = CreateNode(pObj.type, elementStyle, imageIndex);
+            newTreeNode.Name = pObj.preinput;
+            newTreeNode.Cells.Add(new Cell(pObj.preinput, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.name, elementStyle));
+            newTreeNode.Cells.Add(new Cell(pObj.index, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.length, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.range, elementStyle));
-            newTreeNode.Cells.Add(new Cell(pObj.value, elementStyle));
+            newTreeNode.Cells.Add(new Cell(pObj.value, elementStyle));       
+            newTreeNode.Cells.Add(new Cell(pObj.nodetype, elementStyle));
+            newTreeNode.Cells.Add(new Cell(pObj.CID, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.note, elementStyle));
             Dictionary<string, string> TagDict = new Dictionary<string, string>();
-            TagDict["preinput"] = pObj.preinput;
-            TagDict["name"] = pObj.name;
-            TagDict["CID"] = pObj.CID;
-            TagDict["nodetype"] = pObj.nodetype ?? "base";
-            newTreeNode.Tag = TagDict;
+            //TagDict["preinput"] = pObj.preinput;
+            //TagDict["name"] = pObj.name;
+            //TagDict["CID"] = pObj.CID;
+            //TagDict["nodetype"] = pObj.nodetype ?? "base";
+            //newTreeNode.Tag = TagDict;
             //2.注册entry变量
             if (pObj.preinput.Equals("entry"))
             {
@@ -91,9 +101,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
         private Node GetNodeByObjOfEnum(Parameter pObj, ElementStyle elementStyle, int imageIndex)
         {
-            Node newTreeNode = new Node();
-            newTreeNode = CreateNode(pObj.type, elementStyle, imageIndex);
+            Node newTreeNode = CreateNode(pObj.type, elementStyle, imageIndex);
+            newTreeNode.Name = pObj.preinput;
+            newTreeNode.Cells.Add(new Cell(pObj.preinput, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.name, elementStyle));
+            newTreeNode.Cells.Add(new Cell(pObj.index, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.length, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.range, elementStyle));
             if (pObj.nodetype=="enum")
@@ -109,13 +121,16 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             {
                 newTreeNode.Cells.Add(new Cell(pObj.value, elementStyle));
             }
+           
+            newTreeNode.Cells.Add(new Cell(pObj.nodetype, elementStyle));
+            newTreeNode.Cells.Add(new Cell(pObj.CID, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.note, elementStyle));
-            Dictionary<string, string> TagDict = new Dictionary<string, string>();
-            TagDict["preinput"] = pObj.preinput;
-            TagDict["name"] = pObj.name;
-            TagDict["CID"] = pObj.CID;
-            TagDict["nodetype"] = pObj.nodetype ?? "enum";
-            newTreeNode.Tag = TagDict;
+            //Dictionary<string, string> TagDict = new Dictionary<string, string>();
+            //TagDict["preinput"] = pObj.preinput;
+            //TagDict["name"] = pObj.name;
+            //TagDict["CID"] = pObj.CID;
+            //TagDict["nodetype"] = pObj.nodetype ?? "enum";
+            //newTreeNode.Tag = TagDict;
             //2.注册entry变量
             if (pObj.preinput.Equals("entry"))
             {

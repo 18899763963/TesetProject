@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace SmallManagerSpace.Resources
 {
-    public enum StepProcess { InitComm = 1, ParserFileToEntity, EntityToXML, EntityToXLS, EntityToGUI, EntityToCustomEntity }
+    public enum Step { InitComm = 1, ParserFileToEntity, EntityToXML, EntityToXLS, EntityToGUI, EntityToCustomEntity }
     public static class ComData
     {
         static public Dictionary<string, BaseEntity> baseDictonary = null;
@@ -18,7 +18,7 @@ namespace SmallManagerSpace.Resources
         static public StructEntity structEntity = null;
         static public StructEntity customStruct = null;
         static public EnumEntity enumEntity = null;
-        static public StepProcess stepNow = StepProcess.InitComm;
+        static public Step stepNow = Step.InitComm;
         static public string baseItemsFileName = "BaseItems.xsd";
         static public string structItemsFileName = "StructItems.xml";
         static public string customItemsFileName = "CustomItems.xml";
@@ -32,8 +32,7 @@ namespace SmallManagerSpace.Resources
         static public TabControl tabControl1 = null;
         static public AdvTree advTree = null;
         static public string structBody = null;
-        static public string publicEntryName = null;
-        static public Dictionary<string, int> entryVar = null;
+        static public Dictionary<string, int> EntryVar = null;
         static public Dictionary<string, ElementStyle> nodeElementStyle = null;
 
         /// <summary>
@@ -79,8 +78,8 @@ namespace SmallManagerSpace.Resources
         {
             advTree = new AdvTree();
             nodeElementStyle = new Dictionary<string, ElementStyle>();
-            entryVar = new Dictionary<string, int>();
-            publicEntryName = "board_num";
+
+            EntryVar = new Dictionary<string, int>();
             AdvTreeObj advTreeObj = new AdvTreeObj();
             advTreeObj.InitAdvTreeDatas();
 

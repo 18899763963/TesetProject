@@ -386,6 +386,7 @@
     <Content Include="bin\Debug\Spire.Pdf.xml" />
     <Content Include="bin\Debug\Spire.XLS.dll" />
     <Content Include="bin\Debug\Spire.XLS.xml" />
+    <Content Include="bin\Debug\StructItems.xml" />
     <Content Include="Install_Project\AutoGenTools\Debug\setup.exe" />
     <Content Include="Install_Project\AutoGenTools\Release\setup.exe" />
     <Content Include="MasterDetailSample.xml" />

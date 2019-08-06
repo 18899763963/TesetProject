@@ -27,6 +27,9 @@ namespace SmallManagerSpace.Resources
         [XmlAttribute("name")]
         public string name { get; set; }
 
+        [XmlAttribute("index")]
+        public string index { get; set; }
+
         [XmlAttribute("preinput")]
         public string preinput { get; set; }
 
@@ -50,6 +53,8 @@ namespace SmallManagerSpace.Resources
         public string preinput { get; set; }
         [XmlAttribute("name")]
         public string name { get; set; }
+        [XmlAttribute("index")]
+        public string index { get; set; }
         [XmlAttribute("range")]
         public string range { get; set; }
         [XmlAttribute("value")]
@@ -117,13 +122,18 @@ namespace SmallManagerSpace.Resources
                 if(varVal=="")
                 {
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
-                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
+                    //修改structEntity的index
+                    ob.index = "";
+                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name,index= ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
                 }
                 else
                 {
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
-                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName + "[0]", preinput = varVal, note = ob.note, nodetype = ob.nodetype });
+                    //修改structEntity的index
+                    ob.index = "0";
+                    if (!ComData.EntryVar.ContainsKey(varVal)) { ComData.EntryVar.Add(varVal, 0); }                    
+                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName , index = ob.index, preinput = varVal, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
                 }
             }
@@ -140,7 +150,7 @@ namespace SmallManagerSpace.Resources
                 if (obj is StructItem)
                 {
                     StructItem sobj = obj as StructItem;
-                    destList.Add(new StructItem() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, nodetype = sobj.nodetype });
+                    destList.Add(new StructItem() { CID = sobj.CID, type = sobj.type, name = sobj.name,index=sobj.index, preinput = sobj.preinput, note = sobj.note, nodetype = sobj.nodetype });
                     TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, sobj.parameterList);
                 }
                 else if (obj is Parameter)
@@ -152,14 +162,14 @@ namespace SmallManagerSpace.Resources
                         switch (keyValue.Keys.First())
                         {
                             case "base":
-                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
+                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name,  index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
                                 break;
                             case "enum":
-                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "enum" });
+                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "enum" });
                                 break;
                             case "struct":
                                 StructItem i = keyValue[keyValue.Keys.First()] as StructItem;
-                                destList.Add(new StructItem() { CID = i.CID, type = i.type, name = i.name, preinput = i.preinput, note = i.note, nodetype = "struct" });
+                                destList.Add(new StructItem() { CID = i.CID, type = i.type, name = i.name, index = sobj.index, preinput = sobj.preinput, note = i.note, nodetype = "struct" });
                                 TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, i.parameterList);
                                 break;
                             default:
@@ -245,13 +255,14 @@ namespace SmallManagerSpace.Resources
         /// <param name="name"></param>
         /// <param name="preinput"></param>
         /// <param name="note"></param>
-        public void AddValueOfStructItem(List<object> higherNode, string CID, string type, string name, string preinput, string note, string nodetype)
+        public void AddValueOfStructItem(List<object> higherNode, string CID, string type, string name, string indexS,string preinput, string note, string nodetype)
         {
             //创建structitem信息
             StructItem structitemInfo = new StructItem();
             structitemInfo.CID = CID;
             structitemInfo.type = type;
             structitemInfo.name = name;
+            structitemInfo.index = indexS;
             structitemInfo.preinput = preinput;
             structitemInfo.note = note;
             structitemInfo.nodetype = nodetype;
@@ -272,7 +283,7 @@ namespace SmallManagerSpace.Resources
         /// <param name="value"></param>
         /// <param name="length"></param>
         /// <param name="note"></param>
-        public void AddValueOfParameterItem(StructItem higherNode, string CID, string type, string preinput, string name, string range, string value, string length, string note, string nodetype)
+        public void AddValueOfParameterItem(StructItem higherNode, string CID, string type, string preinput, string name,string indexS, string range, string value, string length, string note, string nodetype)
         {
             //创建parameterInfo信息
             Parameter parameterInfo = new Parameter();
@@ -280,6 +291,7 @@ namespace SmallManagerSpace.Resources
             parameterInfo.type = type;
             parameterInfo.preinput = preinput;
             parameterInfo.name = name;
+            parameterInfo.index = indexS;
             parameterInfo.range = range;
             parameterInfo.value = value;
             parameterInfo.length = length;

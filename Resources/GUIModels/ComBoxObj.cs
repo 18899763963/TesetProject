@@ -28,28 +28,26 @@ namespace SmallManagerSpace.Resources.GUIModels
 
     class ComBoxObj
     {
-        public Control CreateEnbedCombox(Cell HostedCell,string typeName)
+        public Control CreateEnbedCombox(Cell HostedCell, string typeName)
         {
             Control controlObj = null;
             ComboBox comboBox = new ComboBox();
-            simpleType selectItem = ComData.enumEntity.simpleTypes.Where(x => x.name == typeName).First();
-
-            comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            foreach (EnumValue eItem in selectItem.EnumValues)
+            simpleType selectItem = null;
+            if (ComData.enumEntity.simpleTypes.Where(x => x.name == typeName).Count() != 0)
             {
-                comboBox.Items.Add(eItem.en);
-                comboBox.DisplayMember = eItem.en;
-                comboBox.ValueMember = eItem.value;
-                //comboBox.DataSource = selectItem.EnumValues;
-                //comboBox.DisplayMember = "en";
-                //comboBox.ValueMember = "value";
-
+                selectItem = ComData.enumEntity.simpleTypes.Where(x => x.name == typeName).First();
+                comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+                foreach (EnumValue eItem in selectItem.EnumValues)
+                {
+                    comboBox.Items.Add(eItem.en);
+                    comboBox.DisplayMember = eItem.en;
+                    comboBox.ValueMember = eItem.value;
+                }
+                comboBox.SelectedIndex = 0;
+                HostedCell.Text = selectItem.EnumValues[0].en;
+                comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+                controlObj = comboBox;
             }
-
-            comboBox.SelectedIndex = 0;
-            HostedCell.Text = selectItem.EnumValues[0].en;
-            comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
-            controlObj = comboBox;
             return controlObj;
         }
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -60,7 +58,7 @@ namespace SmallManagerSpace.Resources.GUIModels
             {
                 Node selectedNode = advTree.SelectedNode;
                 AdvTreeObj advTreeObj = new AdvTreeObj();
-                Cell selectedCell=advTreeObj.GetSelectedNodeCell(selectedNode, "value");
+                Cell selectedCell = advTreeObj.GetSelectedNodeCell(selectedNode, "value");
                 selectedCell.Text = comboBox.Text;
             }
 
