@@ -27,11 +27,8 @@ namespace SmallManagerSpace.Resources
             public static string AngleBracketClose = ">";
         }
 
-        private class FormatEntity
-        {
-            public int count;
-            public List<string> StructData;
-        }
+        //用于存放读取头文件的输出部分格式
+        static List<string> OutLine = new List<string>();
         private static bool IsString(string InputName)
         {
             bool isString = false;
@@ -141,35 +138,8 @@ namespace SmallManagerSpace.Resources
             ParameterDataList.Add(CommStr.BraceBracketClose);
             return ParameterDataList;
         }
-        private static Dictionary<string, FormatEntity> GetFormatEntityData(StructEntity StructEntity)
-        {
-            Dictionary<string, FormatEntity> keyValuePairs = new Dictionary<string, FormatEntity>();
-            //foreach (StructItem structItem in StructEntity.structItemList)
-            //{
-            //    //1.如果字典不包含该元素,则添加该元素到字典
-            //    if (!keyValuePairs.ContainsKey(structItem.name))
-            //    {
-            //        //1初始化结构体变量
-            //        keyValuePairs[structItem.name] = new FormatEntity();
-            //        keyValuePairs[structItem.name].StructData = new List<string>();
-            //        keyValuePairs[structItem.name].count = 0;
-            //        //2.将parameter中的value值添加到
-            //        List<string> ParamterDataList = GeParamterDataList(structItem.parameterList);
-            //        keyValuePairs[structItem.name].StructData.AddRange(ParamterDataList);
-            //        keyValuePairs[structItem.name].count++;
-            //    }  //2.如果字典包含该元素,则添加该元素的数据到字典
-            //    else
-            //    {
-            //        //1.将parameter中的value值添加到
-            //        List<string> ParamterDataList = GeParamterDataList(structItem.parameterList);
-            //        keyValuePairs[structItem.name].StructData.AddRange(ParamterDataList);
-            //        keyValuePairs[structItem.name].count++;
-            //    }
-            //}
-            return keyValuePairs;
-        }
-        //用于存放读取头文件的输出部分格式
-        static List<string> OutLine = new List<string>();
+
+  
         public static void GetEntityFromFile(string FilePath)
         {
             //读取所有行，若包含AAL_INT32,则添加到集合中
@@ -272,7 +242,7 @@ namespace SmallManagerSpace.Resources
                             string preinput = "";
                             string name = "";
                             string indexS = "";
-                            string range = "[01-05]";
+                            string range = "";
                             string value = "1";
                             string length = "1";
                             string note = "";
@@ -324,6 +294,11 @@ namespace SmallManagerSpace.Resources
                                 name = lineItem;
                             }
                             if (name.Equals("board_num") && isStartCapture.Equals(true)) { isCaptured = true; CapturedData = "board_num"; }
+                            //匹配范围
+                            if(ComData.baseDictonary.ContainsKey(type))
+                            {
+                                range = ComData.baseDictonary[type].range;
+                            }
                             ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem,Cid.ToString().PadLeft(4, '0'), type, preinput, name,indexS, range, value, length, note, nodetype);
                             Cid++;
                         }

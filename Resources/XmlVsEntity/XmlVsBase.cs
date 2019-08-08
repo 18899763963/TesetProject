@@ -24,12 +24,12 @@ namespace SmallManagerSpace.Resources.XmlVsEntity
         /// <returns>返回数据列表</returns>
         public Dictionary<string, BaseEntity> GetBaseElementString(XElement xRootElements)
         {
-            XNamespace xsd = "http://www.w3.org/2001/XMLSchema";
-            XNamespace xdo = "urn:pxp";
-            XNamespace ms = "urn:schemas-microsoft-com:xslt";
-            XNamespace stack = "urn:anything";
-            XNamespace xdb = "http://xmlns.oracle.com/xdb";
-            XNamespace w = "http://www.fiberhome.com.cn/board/control";
+            XNamespace xsd = "http://www.w3.org/2001/XMLSchemaTest";
+            //XNamespace xdo = "urn:pxp";
+            //XNamespace ms = "urn:schemas-microsoft-com:xslt";
+            //XNamespace stack = "urn:anything";
+            //XNamespace xdb = "http://xmlns.oracle.com/xdb";
+            //XNamespace w = "http://www.fiberhome.com.cn/board/control";
 
             Dictionary<string, BaseEntity> BaseDictionary = new Dictionary<string, BaseEntity>();
             if (xRootElements != null)
@@ -53,12 +53,25 @@ namespace SmallManagerSpace.Resources.XmlVsEntity
                                 {
                                     foreach (XElement elementLevelThree in elementLevelTwo.Elements())
                                     {
-                                        XAttribute xAttributeThree = elementLevelThree.Attribute("value");
-                                        int resultInt = 1;
-                                        if (int.TryParse(xAttributeThree.Value, out resultInt))
+                                  
+                                        if (elementLevelThree.Name == xsd+"length")
                                         {
-                                            basedata.length = resultInt;
+                                            XAttribute xAttributeValue = elementLevelThree.Attribute("value");
+                                            int resultInt = 1;
+                                            if (int.TryParse(xAttributeValue.Value, out resultInt))
+                                            {
+                                                basedata.length = resultInt;
+                                            }
                                         }
+                                       else if (elementLevelThree.Name == xsd+"range")
+                                        {
+                                            XAttribute xAttributeRange = elementLevelThree.Attribute("value");
+                                            if (xAttributeRange != null)
+                                            {
+                                                basedata.range = xAttributeRange.Value;
+                                            }
+                                        }
+
                                     }
                                 }
 
