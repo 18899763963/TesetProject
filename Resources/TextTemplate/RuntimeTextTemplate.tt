@@ -32,7 +32,7 @@
 
 AAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info)
 {
-<# GenerateTextToFunction("OTN_USER_B_TYPE_INFO","btype_info->"); #>
+<# GenerateTextToFunction("OTN_USER_B_TYPE_INFO","btype_info->" ,""); #>
 }
 
 AAL_INT32 otn_user_get_btype(AAL_UINT8 *btype)
@@ -43,27 +43,27 @@ AAL_INT32 otn_user_get_btype(AAL_UINT8 *btype)
 AAL_INT32 otn_user_get_board_info(AAL_UINT8 index, OTN_USER_BOARD_INFO *board_info)
 {
 
-<# GenerateTextToFunction("OTN_USER_BOARD_INFO","board_info->"); #>
+<# GenerateTextToFunction("OTN_USER_BOARD_INFO","board_info->","index"); #>
 }
 
 AAL_INT32 otn_user_get_port_info(AAL_UINT8 index, OTN_USER_PORT_INFO *port_info)
 {
-<# GenerateTextToFunction("OTN_USER_PORT_INFO","port_info->"); #>
+<# GenerateTextToFunction("OTN_USER_PORT_INFO","port_info->","index"); #>
 }
 
 AAL_INT32 otn_user_get_fpga_info(AAL_UINT8 index, OTN_USER_FPGA_INFO *fpga_info)
 {
-<# GenerateTextToFunction("OTN_USER_FPGA_INFO","fpga_info->"); #>
+<# GenerateTextToFunction("OTN_USER_FPGA_INFO","fpga_info->","index"); #>
 }
 
 AAL_INT32 otn_user_get_board_alm_info(AAL_UINT8 index, OTN_USER_BOARD_ALM_INFO *board_alm_info)
 {
-<# GenerateTextToFunction("OTN_USER_BOARD_ALM_INFO","board_alm_info->"); #>
+<# GenerateTextToFunction("OTN_USER_BOARD_ALM_INFO","board_alm_info->","index"); #>
 }
 
 AAL_INT32 otn_user_get_ssm_info(AAL_UINT8 index, OTN_USER_SSM_INFO *ssm_info)
 {
-<# GenerateTextToFunction("OTN_USER_SSM_INFO","ssm_info->"); #>
+<# GenerateTextToFunction("OTN_USER_SSM_INFO","ssm_info->","index"); #>
 }
 
 AAL_INT32 otn_user_fpga_read(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 *data)
@@ -121,16 +121,21 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
                         return substring;
 					}
                     ///生成字符串入口函数
-					private void GenerateTextToFunction(string type,string pointer)
+					private void GenerateTextToFunction(string type,string pointer,string indexName)
 					{
 				
 						//分类指定type的数据
 						var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
 						//添加校验项目					
+                        if(indexName!="")
+                         {
                         this.Write("\tif(index>={0})",GetBoardNum());						
-                        this.WriteLine("\t{"+GetPointerName(pointer)+"=null;return -1;}");						
+                        this.WriteLine("\t{"+GetPointerName(pointer)+"=null;return -1;}");	
+                        this.WriteLine("\tswitch({0})","index");
+					     }
 					  //遍历其中的项目		
-					   this.WriteLine("\tswitch({0})","index");
+                        if(indexName==""){this.WriteLine("\tswitch(0)");}
+					  
 					   this.WriteLine("\t{");
 					   int i=0;
 						foreach(var StructItem in StructList)
@@ -196,11 +201,15 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 								//处理parameDic
 							 foreach(string pName in parameDic.Keys)
 							{	
-								//如果不是数组
+								//如果不是数组(根据数量只有一个)
 									List<object> paraList= parameDic[pName];															
 									if(paraList.Count==1)
 									{
-										TraversalStructItem(paraList[0], Prefix,false ,0);
+                                        //如果数量只有一个,但是原来定义为数组类型
+                                        Parameter m= paraList[0] as Parameter;
+                                        if(m.index!="")	{TraversalStructItem(paraList[0], Prefix,true,0);}
+                                        //如果不是数组(根据数量只有一个)
+										else{TraversalStructItem(paraList[0], Prefix,false ,0);}
 									}
 								//如果是数组
 									else if(paraList.Count>1)
@@ -218,9 +227,18 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 									List<object> strucList= structDic[sName];
 									if(strucList.Count==1)
 									{
-										string newPerfix=string.Format("{0}{1}{2}",Prefix ,sName,".");
-										TraversalStructItem(strucList[0], newPerfix,false ,0);
-									}
+                                        //如果数量只有一个,但是原来定义为数组类型
+                                        StructItem m= strucList[0] as StructItem;
+                                        
+                                        if(m.index!="")	{
+                                            string newPerfix=string.Format("{0}{1}[0]{2}",Prefix ,sName,".");
+                                            TraversalStructItem(strucList[0], newPerfix,true ,0);
+                                            }
+                                        //如果不是数组(根据数量只有一个)
+										else{
+                                                string newPerfix=string.Format("{0}{1}{2}",Prefix ,sName,".");
+                                                TraversalStructItem(strucList[0], newPerfix,false ,0);}			
+									         }
 								//如果是数组
 									else if(strucList.Count>1)
 									{

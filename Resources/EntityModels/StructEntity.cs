@@ -169,7 +169,7 @@ namespace SmallManagerSpace.Resources
                                 break;
                             case "struct":
                                 StructItem i = keyValue[keyValue.Keys.First()] as StructItem;
-                                destList.Add(new StructItem() { CID = i.CID, type = i.type, name = i.name, index = sobj.index, preinput = sobj.preinput, note = i.note, nodetype = "struct" });
+                                destList.Add(new StructItem() { CID = i.CID, type = i.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = i.note, nodetype = "struct" });
                                 TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, i.parameterList);
                                 break;
                             default:

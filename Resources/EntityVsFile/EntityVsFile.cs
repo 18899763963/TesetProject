@@ -354,7 +354,7 @@ namespace SmallManagerSpace.Resources
                             }//(2)结构如OTN_USER_PORT_RATE_2G5,
                             else
                             {
-                                string RegexStr1 = @"(?<enValue>[\S]+)[\s]*,?";
+                                string RegexStr1 = @"(?<enValue>[\S]+[^,])[\s]*,?";
                                 Match matc1 = Regex.Match(line, RegexStr1);
                                 Console.WriteLine("parametertype:{0}", matc1.Groups["enValue"].ToString());
                                 enValue = matc1.Groups["enValue"].ToString();

@@ -101,7 +101,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
             this.Write("\"\r\n\r\n\r\nAAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info)\r\n{\r\n");
             
             #line 35 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
- GenerateTextToFunction("OTN_USER_B_TYPE_INFO","btype_info->"); 
+ GenerateTextToFunction("OTN_USER_B_TYPE_INFO","btype_info->" ,""); 
             
             #line default
             #line hidden
@@ -110,7 +110,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
                     "{\r\n\r\n");
             
             #line 46 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
- GenerateTextToFunction("OTN_USER_BOARD_INFO","board_info->"); 
+ GenerateTextToFunction("OTN_USER_BOARD_INFO","board_info->","index"); 
             
             #line default
             #line hidden
@@ -118,7 +118,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
                     "nfo)\r\n{\r\n");
             
             #line 51 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
- GenerateTextToFunction("OTN_USER_PORT_INFO","port_info->"); 
+ GenerateTextToFunction("OTN_USER_PORT_INFO","port_info->","index"); 
             
             #line default
             #line hidden
@@ -126,7 +126,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
                     "nfo)\r\n{\r\n");
             
             #line 56 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
- GenerateTextToFunction("OTN_USER_FPGA_INFO","fpga_info->"); 
+ GenerateTextToFunction("OTN_USER_FPGA_INFO","fpga_info->","index"); 
             
             #line default
             #line hidden
@@ -134,7 +134,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
                     "FO *board_alm_info)\r\n{\r\n");
             
             #line 61 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
- GenerateTextToFunction("OTN_USER_BOARD_ALM_INFO","board_alm_info->"); 
+ GenerateTextToFunction("OTN_USER_BOARD_ALM_INFO","board_alm_info->","index"); 
             
             #line default
             #line hidden
@@ -142,7 +142,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
                     ")\r\n{\r\n");
             
             #line 66 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
- GenerateTextToFunction("OTN_USER_SSM_INFO","ssm_info->"); 
+ GenerateTextToFunction("OTN_USER_SSM_INFO","ssm_info->","index"); 
             
             #line default
             #line hidden
@@ -208,16 +208,21 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
                         return substring;
 					}
                     ///生成字符串入口函数
-					private void GenerateTextToFunction(string type,string pointer)
+					private void GenerateTextToFunction(string type,string pointer,string indexName)
 					{
 				
 						//分类指定type的数据
 						var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
 						//添加校验项目					
+                        if(indexName!="")
+                         {
                         this.Write("\tif(index>={0})",GetBoardNum());						
-                        this.WriteLine("\t{"+GetPointerName(pointer)+"=null;return -1;}");						
+                        this.WriteLine("\t{"+GetPointerName(pointer)+"=null;return -1;}");	
+                        this.WriteLine("\tswitch({0})","index");
+					     }
 					  //遍历其中的项目		
-					   this.WriteLine("\tswitch({0})","index");
+                        if(indexName==""){this.WriteLine("\tswitch(0)");}
+					  
 					   this.WriteLine("\t{");
 					   int i=0;
 						foreach(var StructItem in StructList)
@@ -283,11 +288,15 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 								//处理parameDic
 							 foreach(string pName in parameDic.Keys)
 							{	
-								//如果不是数组
+								//如果不是数组(根据数量只有一个)
 									List<object> paraList= parameDic[pName];															
 									if(paraList.Count==1)
 									{
-										TraversalStructItem(paraList[0], Prefix,false ,0);
+                                        //如果数量只有一个,但是原来定义为数组类型
+                                        Parameter m= paraList[0] as Parameter;
+                                        if(m.index!="")	{TraversalStructItem(paraList[0], Prefix,true,0);}
+                                        //如果不是数组(根据数量只有一个)
+										else{TraversalStructItem(paraList[0], Prefix,false ,0);}
 									}
 								//如果是数组
 									else if(paraList.Count>1)
@@ -305,9 +314,18 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 									List<object> strucList= structDic[sName];
 									if(strucList.Count==1)
 									{
-										string newPerfix=string.Format("{0}{1}{2}",Prefix ,sName,".");
-										TraversalStructItem(strucList[0], newPerfix,false ,0);
-									}
+                                        //如果数量只有一个,但是原来定义为数组类型
+                                        StructItem m= strucList[0] as StructItem;
+                                        
+                                        if(m.index!="")	{
+                                            string newPerfix=string.Format("{0}{1}[0]{2}",Prefix ,sName,".");
+                                            TraversalStructItem(strucList[0], newPerfix,true ,0);
+                                            }
+                                        //如果不是数组(根据数量只有一个)
+										else{
+                                                string newPerfix=string.Format("{0}{1}{2}",Prefix ,sName,".");
+                                                TraversalStructItem(strucList[0], newPerfix,false ,0);}			
+									         }
 								//如果是数组
 									else if(strucList.Count>1)
 									{
@@ -348,7 +366,7 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
         #line default
         #line hidden
         
-        #line 261 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 279 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
   
 
 private void GenerateText(string type,string pointer)//生成文本   
@@ -362,28 +380,28 @@ private void GenerateText(string type,string pointer)//生成文本
         #line default
         #line hidden
         
-        #line 269 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 287 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("    switch(");
 
         
         #line default
         #line hidden
         
-        #line 270 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 288 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(StructList.Count));
 
         
         #line default
         #line hidden
         
-        #line 270 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 288 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(")\r\n    {\r\n");
 
         
         #line default
         #line hidden
         
-        #line 272 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 290 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  for(int i=0;i<StructList.Count;i++)
 	      { 
 		  var ParameterList=(StructList[i] as StructItem).parameterList.ToList();
@@ -391,53 +409,53 @@ this.Write(")\r\n    {\r\n");
         #line default
         #line hidden
         
-        #line 274 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 292 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("\t    case ");
 
         
         #line default
         #line hidden
         
-        #line 275 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 293 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(i+1));
 
         
         #line default
         #line hidden
         
-        #line 275 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 293 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(":\r\n");
 
         
         #line default
         #line hidden
         
-        #line 276 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 294 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  JudgeType(ParameterList,pointer,space);
         
         #line default
         #line hidden
         
-        #line 277 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 295 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 277 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 295 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("    }\r\n");
 
         
         #line default
         #line hidden
         
-        #line 279 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 297 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 280 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 298 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  else if(StructList.Count==1)
    {  
     space="    ";
@@ -446,26 +464,26 @@ this.Write("    }\r\n");
         #line default
         #line hidden
         
-        #line 284 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 302 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  JudgeType(ParameterList,pointer,space); 
         
         #line default
         #line hidden
         
-        #line 285 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 303 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 285 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 303 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("    return 0;\r\n");
 
         
         #line default
         #line hidden
         
-        #line 287 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
   
 }
 
@@ -473,7 +491,7 @@ this.Write("    return 0;\r\n");
         #line default
         #line hidden
         
-        #line 291 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 
 private void JudgeType(List<object> list,string pointer,string space)//判断是StructItem类型还是Parameter类型(暂时只针对一层嵌套)
 {
@@ -492,84 +510,84 @@ private void JudgeType(List<object> list,string pointer,string space)//判断是
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(space));
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(pointer));
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("->");
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(nestStructItem.name));
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(".");
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).name));
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(" = ");
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).value));
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(";  //");
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).note));
 
         
         #line default
         #line hidden
         
-        #line 305 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("\r\n");
 
         
         #line default
         #line hidden
         
-        #line 306 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 324 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
                 else
 			    { 
@@ -577,104 +595,104 @@ this.Write("\r\n");
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(space));
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(pointer));
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("->");
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(nestStructItem.name));
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(".");
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).name));
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("[");
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).index));
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("] = ");
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).value));
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(";  //");
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).note));
 
         
         #line default
         #line hidden
         
-        #line 309 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 327 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("\r\n");
 
         
         #line default
         #line hidden
         
-        #line 310 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 328 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 311 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
 		     else
 			 { //如果是结构体数组
@@ -684,98 +702,98 @@ this.Write("\r\n");
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(space));
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(pointer));
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("->");
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(nestStructItem.name));
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("[");
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(nestStructItem.index));
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("].");
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).name));
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(" = ");
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).value));
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(";  //");
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).note));
 
         
         #line default
         #line hidden
         
-        #line 316 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("\r\n");
 
         
         #line default
         #line hidden
         
-        #line 317 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 335 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
                 else
 			    { 
@@ -783,136 +801,136 @@ this.Write("\r\n");
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(space));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(pointer));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("->");
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(nestStructItem.name));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("[");
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(nestStructItem.index));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("].");
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).name));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("[");
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).index));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("] = ");
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).value));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(";  //");
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((nestStructItem.parameterList[m] as Parameter).note));
 
         
         #line default
         #line hidden
         
-        #line 320 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 338 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("\r\n");
 
         
         #line default
         #line hidden
         
-        #line 321 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 339 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 322 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 340 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 323 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 341 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 324 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 342 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 325 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 343 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  else if(list[j] is Parameter)
 	     { 
 		    if((list[j] as Parameter).index == "")
@@ -921,70 +939,70 @@ this.Write("\r\n");
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(space));
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(pointer));
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("->");
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((list[j] as Parameter).name));
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(" = ");
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((list[j] as Parameter).value));
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(";  //");
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((list[j] as Parameter).note));
 
         
         #line default
         #line hidden
         
-        #line 329 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 347 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("\r\n");
 
         
         #line default
         #line hidden
         
-        #line 330 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 348 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
             else
 			{ 
@@ -992,102 +1010,102 @@ this.Write("\r\n");
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(space));
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(pointer));
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("->");
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((list[j] as Parameter).name));
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("[");
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((list[j] as Parameter).index));
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("] = ");
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((list[j] as Parameter).value));
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(";  //");
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture((list[j] as Parameter).note));
 
         
         #line default
         #line hidden
         
-        #line 333 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 351 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
 this.Write("\r\n");
 
         
         #line default
         #line hidden
         
-        #line 334 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 352 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 335 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 353 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 336 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 354 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  } 
         
         #line default
         #line hidden
         
-        #line 337 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 355 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools4.0 Test\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
   
 }
 
