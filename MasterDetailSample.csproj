@@ -215,6 +215,11 @@
     <Compile Include="Resources\EventLog\EventLogClass.cs" />
     <Compile Include="Resources\EntityVsFile\EntityVsFile.cs" />
     <Compile Include="Resources\StringFunction\StringFunction.cs" />
+    <Compile Include="Resources\TextTemplate\RuntimeTextTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RuntimeTextTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Resources\XmlToXls\XmlToXls.cs" />
     <Compile Include="Resources\XmlVsEntity\XmlVsBase.cs" />
     <Compile Include="Resources\XmlVsEntity\XmlVsEnum.cs" />
@@ -432,6 +437,10 @@
     <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.XLS.xml" />
     <Content Include="packages\FreeSpire.XLS.9.2.0\license.txt" />
     <Content Include="My Project\SmallManager.xml" />
+    <Content Include="Resources\TextTemplate\RuntimeTextTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RuntimeTextTemplate.cs</LastGenOutput>
+    </Content>
     <Content Include="SmallManager.xml" />
     <Content Include="UpgradeLog.htm" />
     <None Include="Raws\BlockIco.ico" />
@@ -449,6 +458,9 @@
     <Folder Include="bin\x64\Release\" />
     <Folder Include="bin\x86\Debug\" />
     <Folder Include="bin\x86\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

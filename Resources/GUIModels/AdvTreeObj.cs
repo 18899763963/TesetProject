@@ -83,7 +83,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             DevComponents.AdvTree.ColumnHeader columnHeader2 = new DevComponents.AdvTree.ColumnHeader("预输入");
             columnHeader2.Name = "preinput";
             columnHeader2.Editable = false;
-            columnHeader2.Visible = false;
+            columnHeader2.Visible = true;
             DevComponents.AdvTree.ColumnHeader columnHeader3 = new DevComponents.AdvTree.ColumnHeader("名称");
             columnHeader3.Name = "name";
             columnHeader3.Editable = false;

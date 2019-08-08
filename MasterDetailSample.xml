@@ -360,6 +360,126 @@
             <param name="Type"></param>
             <returns></returns>
         </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate">
+            <summary>
+            Class to produce the template output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.TransformText">
+            <summary>
+            Create the template output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GetBoardNum">
+            得到BoardNum数量
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GetPointerName(System.String)">
+            得到pointerName
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GenerateTextToFunction(System.String,System.String)">
+            生成字符串入口函数
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GroupSameObject(System.Collections.Generic.List{System.Object})">
+            将parameter struct对象分别放入不同队列
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.TraversalStructItem(System.Object,System.String,System.Boolean,System.Int32)">
+            遍历得到树形结构字符串
+        </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase">
+            <summary>
+            Base class for this transformation
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.GenerationEnvironment">
+            <summary>
+            The string builder that generation-time code is using to assemble generated output
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Errors">
+            <summary>
+            The error collection for the generation process
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.indentLengths">
+            <summary>
+            A list of the lengths of each indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.CurrentIndent">
+            <summary>
+            Gets the current indent we use when adding lines to the output
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Session">
+            <summary>
+            Current transformation session
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Write(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.WriteLine(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Write(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.WriteLine(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Error(System.String)">
+            <summary>
+            Raise an error
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Warning(System.String)">
+            <summary>
+            Raise a warning
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.PushIndent(System.String)">
+            <summary>
+            Increase the indent
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.PopIndent">
+            <summary>
+            Remove the last indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ClearIndent">
+            <summary>
+            Remove any indentation
+            </summary>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringInstanceHelper">
+            <summary>
+            Utility class to produce culture-oriented representation of an object as a string.
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringInstanceHelper.FormatProvider">
+            <summary>
+            Gets or sets format provider to be used by ToStringWithCulture method.
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+            <summary>
+            This is called from the compile/run appdomain to convert objects within an expression block to a string
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringHelper">
+            <summary>
+            Helper to produce culture-oriented representation of an object as a string
+            </summary>
+        </member>
         <member name="M:SmallManagerSpace.Resources.XmlVsEntity.XmlVsBase.GetBaseElementString(System.Xml.Linq.XElement)">
             <summary>
             通过文件根节点得到数据

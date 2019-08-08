@@ -229,7 +229,7 @@ namespace MasterDetailSample
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString());
+                System.Windows.Forms.MessageBox.Show(ex.Message.ToString());
                 return;
             }
         }

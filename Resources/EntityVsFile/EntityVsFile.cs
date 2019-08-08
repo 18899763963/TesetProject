@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using SmallManagerSpace.Resources.TextTemplate;
 
 namespace SmallManagerSpace.Resources
 {
@@ -167,8 +168,20 @@ namespace SmallManagerSpace.Resources
             //}
             return keyValuePairs;
         }
+        //用于存放读取头文件的输出部分格式
+        static List<string> OutLine = new List<string>();
         public static void GetEntityFromFile(string FilePath)
         {
+            //读取所有行，若包含AAL_INT32,则添加到集合中
+            string[] readOutputLine = File.ReadAllLines(FilePath, Encoding.Default);
+            foreach (string item in readOutputLine)
+            {
+                if (item.Contains("AAL_INT32"))
+                {
+                    OutLine.Add(item);
+                }
+            }
+
             StreamReader sr = new StreamReader(FilePath, Encoding.Default);
             String line;
             int Cid = 1;
@@ -386,63 +399,91 @@ namespace SmallManagerSpace.Resources
         {
             if (ComData.sourceWorkPath == null && ComData.headSourceFileName == null && ComData.structEntity == null) return;
             //1.将数据同类数据合并到字典中
-            Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComData.customStruct);
+            //Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComData.customStruct);
             //2.复制源文件到新文件中，并且将生成数据放入到其中
-            File.Copy(ComData.sourceWorkPath + ComData.headSourceFileName, GenFileFullName, true);
+            //File.Copy(ComData.sourceWorkPath + ComData.headSourceFileName, GenFileFullName, true);
             //3.得到文件流,将数据添加到文件后面
-            FileStream fileStream = new FileStream(GenFileFullName, FileMode.Append);
-            StreamWriter stringWriter = new StreamWriter(fileStream);
-            //stringWriter.Write("\r\n//******************************Automatic generation*********************************//\r\n");
-            //添加头文件
-            //stringWriter.Write("#include " + ComRunDatas.HeadSourceFileName);
+            FileStream fileStream = new FileStream(GenFileFullName, FileMode.Create);
+            StreamWriter stringWriter = new StreamWriter(fileStream, Encoding.UTF8);
+            //将数据写入到文件,使用T4模板
+            RuntimeTextTemplate example = new RuntimeTextTemplate();
+            string pageContent = example.TransformText();
+            stringWriter.Write(pageContent);
 
-            stringWriter.Write("\r\n//******************************Automatic generation*********************************//\r\n");
-            //4.将数据写入到文件
-            //结构体数组
-            //eg: TEST_T gst[10] = { { }, { }, { }, { } };
-            foreach (string keyName in FormatEntityData.Keys)
-            {
-                //1.添加GST gst[10] =
-                string defineString = keyName + CommStr.Space + keyName.ToLower() + CommStr.SquareBracketOpen + FormatEntityData[keyName].count + CommStr.SquareBracketClose + " = ";
-                stringWriter.Write(defineString);
-                if (FormatEntityData[keyName].count != 1) stringWriter.Write(CommStr.BraceBracketOpen);
-                //2.添加{ { }, { }, { }, { } }
-                int nextIndex = 0;
-                int max = FormatEntityData[keyName].StructData.Count();
-                string preValue = string.Empty;
-                string nextValue = string.Empty;
-                foreach (string item in FormatEntityData[keyName].StructData)
-                {
-                    if (nextIndex < max - 1) { nextValue = FormatEntityData[keyName].StructData[++nextIndex]; }
-                    stringWriter.Write(item);
-                    if (!item.Equals(CommStr.BraceBracketOpen) && !nextValue.Equals(CommStr.BraceBracketClose))
-                    {
-                        stringWriter.Write(CommStr.Comma);
-                    }
-                }
-                if (FormatEntityData[keyName].count != 1) stringWriter.Write(CommStr.BraceBracketClose);
-                stringWriter.Write(CommStr.Semicolon + CommStr.Enter);
-            }
-            stringWriter.Write("//****************************************************************************************//\r\n");
-            //5.生成得到结构体指针的函数 eg: OTN_USER_B_TYPE_INFO  GetOTN_USER_B_TYPE_INFO(int index){ ... }
-            foreach (string keyName in FormatEntityData.Keys)
-            {
-                //1.添加 OTN_USER_B_TYPE_INFO  GetOTN_USER_B_TYPE_INFO(int index)
-                string defineString = keyName + " * Get" + keyName + "(int index)" + "\r\n";
-                stringWriter.Write(defineString);
-                stringWriter.Write("{\r\n");
-                defineString = CommStr.Space + "if(index < (sizeof(" + keyName.ToLower() + ")/sizeof(" + keyName.ToLower() + "[0]" + ")))" + "\r\n";
-                stringWriter.Write(defineString);
-                stringWriter.Write(CommStr.Space + "{\r\n");
-                defineString = CommStr.Space + CommStr.Space + "return &" + keyName.ToLower() + "[index];" + "\r\n";
-                stringWriter.Write(defineString);
-                stringWriter.Write(CommStr.Space + "}\r\n");
-                defineString = CommStr.Space + "else\r\n" + CommStr.Space + "{\r\n" + CommStr.Space + CommStr.Space + "return NULL;\r\n" + CommStr.Space + "}\r\n";
-                stringWriter.Write(defineString);
-                stringWriter.Write("}\r\n");
+            //foreach (string readLine in OutLine)
+            //{
+            //    //写入复制内容的每一行
+            //    stringWriter.Write(readLine.Substring(0, readLine.Length - 1) + "\r\n{\r\n");
+            //    var List = ComData.customStruct.nodeList.GroupBy(x => (x as StructItem).type).Select(c => c.First()).ToList();
+            //    foreach (StructItem Item in List)
+            //    {
+            //        if (readLine.Contains(Item.type))
+            //        {
+            //            //截取指针名
+            //            int index1 = readLine.IndexOf('*');
+            //            int index2 = readLine.IndexOf(')');
+            //            string HeadInfoString = readLine.Substring(index1 + 1, index2 - index1 - 1);//指针名 
+            //            StructItem nestStructItem;//嵌套的结构体
+            //            String ParameterName, ParameterValue;//参数名，参数值
+            //            var RepeatList = ComData.customStruct.nodeList.Where(x => (x as StructItem).type == Item.type).ToList();
+            //            if (RepeatList.Count > 1)
+            //            {
+            //                stringWriter.Write(CommStr.Space + CommStr.Space + "switch(" + RepeatList.Count + ")\r\n" + CommStr.Space + CommStr.Space + "{\r\n");
+            //                int i = 1;
+            //                foreach (StructItem RepeatItem in RepeatList)
+            //                {
+            //                    stringWriter.Write(CommStr.Space + CommStr.Space + CommStr.Space + CommStr.Space + "case " + i + ":\r\n");
+            //                    for (int j = 0; j < RepeatItem.parameterList.Count; j++)
+            //                    {
+            //                        if (RepeatItem.parameterList[j] is StructItem)
+            //                        {
+            //                            nestStructItem = Item.parameterList[j] as StructItem;
+            //                            for (int m = 0; m < nestStructItem.parameterList.Count; m++)
+            //                            {
+            //                                ParameterName = (nestStructItem.parameterList[m] as Parameter).name;
+            //                                ParameterValue = (nestStructItem.parameterList[m] as Parameter).value;
+            //                                stringWriter.Write(CommStr.Space + CommStr.Space + CommStr.Space + CommStr.Space + HeadInfoString + "->" + nestStructItem.name + "."  + ParameterName + " = " + ParameterValue + ";\r\n");
+            //                            }
+            //                        }
+            //                        else if (RepeatItem.parameterList[j] is Parameter)
+            //                        {
+            //                            ParameterName = (RepeatItem.parameterList[j] as Parameter).name;
+            //                            ParameterValue = (RepeatItem.parameterList[j] as Parameter).value;
+            //                            stringWriter.Write(CommStr.Space + CommStr.Space + CommStr.Space + CommStr.Space + HeadInfoString + "->" + ParameterName + " = " + ParameterValue + ";\r\n");
+            //                        }
+            //                    }
+            //                    i++;
+            //                }
+            //                stringWriter.Write(CommStr.Space + CommStr.Space + "}\r\n");
+            //            }
+            //            else
+            //            {
+            //                for (int j = 0; j < Item.parameterList.Count; j++)
+            //                {
+            //                    if (Item.parameterList[j] is StructItem)
+            //                    {
+            //                        nestStructItem = Item.parameterList[j] as StructItem;
+            //                        for (int m = 0; m < nestStructItem.parameterList.Count; m++)
+            //                        {
+            //                            ParameterName = (nestStructItem.parameterList[m] as Parameter).name;
+            //                            ParameterValue = (nestStructItem.parameterList[m] as Parameter).value;
+            //                            stringWriter.Write(CommStr.Space + CommStr.Space + HeadInfoString + "->" + nestStructItem.name + "." + ParameterName + " = " + ParameterValue + ";\r\n");
+            //                        }
+            //                    }
+            //                    else if (Item.parameterList[j] is Parameter)
+            //                    {
 
-            }
-            stringWriter.Write("//****************************************************************************************//\r\n");
+            //                        ParameterName = (Item.parameterList[j] as Parameter).name;
+            //                        ParameterValue = (Item.parameterList[j] as Parameter).value;
+            //                        stringWriter.Write(CommStr.Space + CommStr.Space + HeadInfoString + "->" + ParameterName + " = " + ParameterValue + ";\r\n");
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    stringWriter.Write(CommStr.Space + CommStr.Space + "return 0;\r\n}\r\n\r\n");
+            //}
+            //stringWriter.Write("//****************************************************************************************//\r\n");
             //7.关闭文件流
             stringWriter.Flush();
             stringWriter.Close();
