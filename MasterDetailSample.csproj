@@ -458,6 +458,7 @@
     <Folder Include="bin\x64\Release\" />
     <Folder Include="bin\x86\Debug\" />
     <Folder Include="bin\x86\Release\" />
+    <Folder Include="Install\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
