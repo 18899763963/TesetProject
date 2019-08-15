@@ -18,6 +18,7 @@ namespace SmallManagerSpace.Resources
         static public StructEntity structEntity = null;
         static public StructEntity customStruct = null;
         static public EnumEntity enumEntity = null;
+        static public List<DefineEntity> defineEntities =new  List<DefineEntity>();
         static public Step stepNow = Step.InitComm;
         static public string baseItemsFileName = "BaseItems.xsd";
         static public string structItemsFileName = "StructItems.xml";
@@ -34,6 +35,7 @@ namespace SmallManagerSpace.Resources
         static public string structBody = null;
         static public Dictionary<string, int> EntryVar = null;
         static public Dictionary<string, ElementStyle> nodeElementStyle = null;
+        static public int skinIndex = 0;//AdvTree颜色主题编号
 
         /// <summary>
         /// 初始化程序运行的公共数据
@@ -61,6 +63,7 @@ namespace SmallManagerSpace.Resources
         /// </summary>
         static public void InitEnumSturctContainer()
         {
+            defineEntities.Clear();
             enumFunction = new EnumFunction();
             enumFunction.CreatesimpleTypeInfo();
             structFunction = new StructFunction();

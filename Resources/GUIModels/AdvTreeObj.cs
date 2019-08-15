@@ -54,10 +54,24 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             ParameterStyle.Name = "SpanStyle";
             ComData.nodeElementStyle.Add("SpanStyle", ParameterStyle);
             ElementStyle ValueStyle = new ElementStyle();
-            ParameterStyle.TextColor = Color.Navy;
+            ParameterStyle.TextColor = Color.FromArgb(50, 50, 50);
             ParameterStyle.Font = new Font("宋体", 10.5f);
             ParameterStyle.Name = "ValueStyle";
             ComData.nodeElementStyle.Add("ValueStyle", ParameterStyle);
+        }
+
+        /// <summary>
+        /// 设置Advtree的颜色主题
+        /// </summary>
+        /// <param name="BackColor"></param>
+        /// <param name="ColumnsBackColor"></param>
+        /// <param name="AlternateRowColor"></param>
+        public void AdvTreeSkinSet(Color BackColor, Color ColumnsBackColor, Color AlternateRowColor)
+        {
+            ComData.advTree.BackColor = BackColor;
+            ComData.advTree.ColumnsBackgroundStyle = new ElementStyle();
+            ComData.advTree.ColumnsBackgroundStyle.BackColor = ColumnsBackColor;
+            ComData.advTree.AlternateRowColor = AlternateRowColor;
         }
 
 
@@ -68,6 +82,14 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         {
             ComData.advTree.Nodes.Clear();
             ComData.advTree.View = eView.Tree;
+            if(ComData.skinIndex==0)//默认主题
+            {
+                AdvTreeSkinSet(Color.FromArgb(245, 245, 245), Color.FromArgb(230, 230, 230), Color.AntiqueWhite);
+            }
+            else if(ComData.skinIndex == 1)//浅色主题
+            {
+                AdvTreeSkinSet(Color.FromArgb(252, 252, 252), Color.FromArgb(225, 236, 233), Color.WhiteSmoke);
+            }
             ComData.advTree.ImageList = new ImageList();
             ComData.advTree.ImageList.Images.Add("BlockImage", SmallManagerSpace.Raws.Resource.BlockIco);
             ComData.advTree.ImageList.Images.Add("PathImage", SmallManagerSpace.Raws.Resource.PathIco);
@@ -75,7 +97,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             ComData.advTree.AllowExternalDrop = false;
             ComData.advTree.EnableDataPositionChange = false;
             ComData.advTree.DragDropEnabled = false;
-
             //列设置
             DevComponents.AdvTree.ColumnHeader columnHeader1 = new DevComponents.AdvTree.ColumnHeader("类型");
             columnHeader1.Name = "type";
@@ -113,11 +134,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
 
             columnHeader1.Width.Relative = 15;
             columnHeader2.Width.Relative = 8;
-            columnHeader3.Width.Relative = 15;
+            columnHeader3.Width.Relative = 13;
             columnHeader4.Width.Relative = 5;
-            columnHeader5.Width.Relative = 8;
+            columnHeader5.Width.Relative = 5;
             columnHeader6.Width.Relative = 8;
-            columnHeader7.Width.Relative = 8;
+            columnHeader7.Width.Relative = 14;
             columnHeader8.Width.Relative = 8;
             columnHeader9.Width.Relative = 8;
             columnHeader10.StretchToFill = true;
@@ -137,7 +158,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             ComData.advTree.AfterCellEditComplete += new CellEditEventHandler(this.AdvTreeAfterCellEditComplete);
 
             ComData.advTree.GridColumnLineResizeEnabled = true;
-            ComData.advTree.AlternateRowColor = Color.AntiqueWhite;
+            //ComData.advTree.AlternateRowColor = Color.AntiqueWhite;
             ComData.advTree.Dock = DockStyle.Fill;
             TabItem tim = ComData.tabControl1.CreateTab("配置项");
             tim.AttachedControl.Controls.Add(ComData.advTree);
@@ -729,7 +750,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// 过滤指定类型的节点
         /// </summary>
         /// <param name="nodes">原节点列表</param>
-        /// <param name="nodeType">nodtetype:struct,enum,base</param>
+        /// <param name="nodeTypeArr">nodtetype:struct,enum,base</param>
         /// <returns></returns>
         private Dictionary<string, List<Node>> SelectNodeGruopByType(Dictionary<string, List<Node>> nodes, string[] nodeTypeArr)
         {

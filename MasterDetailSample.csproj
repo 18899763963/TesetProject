@@ -29,7 +29,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
@@ -206,7 +206,9 @@
     <Compile Include="Resources\EntityModels\BaseEntity.cs" />
     <Compile Include="Resources\EntityModels\StructEntity.cs" />
     <Compile Include="Resources\StringFunction\FileStringFunction.cs" />
-    <Compile Include="Resources\GUIModels\ComBoxObj.cs" />
+    <Compile Include="Resources\GUIModels\ComBoxObj.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Resources\GUIModels\AdvTreeObj.cs" />
     <Compile Include="Resources\GUIVsEntity\AdvTreeToEntity.cs" />
     <Compile Include="Resources\GUIVsEntity\EntityToAdvTree.cs" />
@@ -458,6 +460,7 @@
     <Folder Include="bin\x64\Release\" />
     <Folder Include="bin\x86\Debug\" />
     <Folder Include="bin\x86\Release\" />
+    <Folder Include="Install\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

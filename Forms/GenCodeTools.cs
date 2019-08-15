@@ -14,7 +14,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
 using TabControl = DevComponents.DotNetBar.TabControl;
 
 namespace MasterDetailSample
@@ -22,6 +21,7 @@ namespace MasterDetailSample
     public partial class frmMain
     {
         private static frmMain defaultInstance;
+        Sunisoft.IrisSkin.SkinEngine skin = new Sunisoft.IrisSkin.SkinEngine();
         public static frmMain Default
         {
             get
@@ -38,14 +38,31 @@ namespace MasterDetailSample
                 defaultInstance = value;
             }
         }
+        /// <summary>
+        /// 加载主题皮肤
+        /// </summary>
+        /// <param name="skinname">皮肤文件名</param>
+        private void loadSkin(string skinname)
+        {
+            //this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine(((System.ComponentModel.Component)(this)));
+            //this.skinEngine1.SkinFile = Application.StartupPath + @"\Skins\" + skinname; //8
+            //Sunisoft.IrisSkin.SkinEngine se = null;
+            //se = new Sunisoft.IrisSkin.SkinEngine();
+            //se.SkinAllForm = true;
+            skin.SkinFile = Application.StartupPath + @"\Skins\" + skinname;
+            //skin.SkinAllForm = true;
+            //skin.Active = true;
+        }
+
         public frmMain()
         {
             InitializeComponent();
-            this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine(((System.ComponentModel.Component)(this)));
-            this.skinEngine1.SkinFile = Application.StartupPath + @"\Skins\WarmColor1.ssk"; //8
-            Sunisoft.IrisSkin.SkinEngine se = null;
-            se = new Sunisoft.IrisSkin.SkinEngine();
-            se.SkinAllForm = true;
+            //this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine(((System.ComponentModel.Component)(this)));
+            //this.skinEngine1.SkinFile = Application.StartupPath + @"\Skins\WarmColor1.ssk"; //8
+            //Sunisoft.IrisSkin.SkinEngine se = null;
+            //se = new Sunisoft.IrisSkin.SkinEngine();
+            //se.SkinAllForm = true;
+            loadSkin("WarmColor1.ssk");
         }
         static void defaultInstance_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -57,19 +74,19 @@ namespace MasterDetailSample
         delegate void DisplayDataGuiViaString(string n);
         delegate void DisplayDataGuiViaEntity(StructEntity structEntity);
         delegate void GenerationXlsFromXml(string n);
-        delegate void GenerationXmlFromEntity(string Type,string FileFullName);
+        delegate void GenerationXmlFromEntity(string Type, string FileFullName);
         delegate void InitCommonData(TabControl tabControlInstance, string n);
         delegate void MainProcess(string n);
         public void MainProcessInstance(string PathFileName)
         {
-         
+
             //1.加载base文件,初始化AdvTree,TabControl,路径字符等公共变量
             if (ComData.stepNow.Equals(Step.InitComm))
             {
                 InitCommonData InitCommonData = new InitCommonData(ComData.InitCommonData);
                 InitCommonData(tabControl1, PathFileName);
                 ComData.stepNow = Step.ParserFileToEntity;
-            }    
+            }
             //2.如果是H/XML文件，则转化OBJ对象
             if (ComData.stepNow.Equals(Step.ParserFileToEntity))
             {   //a.如果是H头文件->Obj
@@ -79,8 +96,8 @@ namespace MasterDetailSample
                     GenerationEntityFromHeader(PathFileName);
                     //将obj对象的数据序列化到xml文件中
                     GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
-                    GenerationXmlFromEntity("enum", ComData.programStartPath+ComData.enumItemsFileName);
-                    GenerationXmlFromEntity("struct", ComData.programStartPath+ComData.structItemsFileName);
+                    GenerationXmlFromEntity("enum", ComData.programStartPath + ComData.enumItemsFileName);
+                    GenerationXmlFromEntity("struct", ComData.programStartPath + ComData.structItemsFileName);
                     ComData.stepNow = Step.EntityToCustomEntity;
                 }
                 //b.如果是XML头文件->OBJ
@@ -88,16 +105,15 @@ namespace MasterDetailSample
                 {
                     GenerationEntityFromXml GenerationEntityFromXml = new GenerationEntityFromXml(GetEntityFromXmlFile);
                     GenerationEntityFromXml(PathFileName);
-                    ComData.stepNow = Step.EntityToCustomEntity;
+                    ComData.stepNow = Step.EntityToGUI;
                 }
             }
             //3.Entity转换CustomEntity
             if (ComData.stepNow.Equals(Step.EntityToCustomEntity))
             {
-                DefineEntityFuncion defineEntityFuncion = new DefineEntityFuncion();
-                List<DefineEntity> defineEntitys = defineEntityFuncion.CreateDefineEntity();
+             
                 StructFunction structFunction = new StructFunction();
-                structFunction.CreateCustomStruct(defineEntitys);
+                structFunction.CreateCustomStruct(ComData.defineEntities);
                 //将obj对象的数据序列化到xml文件中
                 GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
                 GenerationXmlFromEntity("customstruct", ComData.programStartPath + ComData.customItemsFileName);
@@ -121,7 +137,7 @@ namespace MasterDetailSample
         private void GetEntityFromXmlFile(string InputFilePath)
         {
             //1.解析XML文件内容到Entity
-            ComData.structEntity = ComData.structFunction.XmlDeSerializeToStructObj(ComData.sourceWorkPath, ComData.structItemsFileName);
+            ComData.structEntity = ComData.structFunction.XmlDeSerializeToStructObj(ComData.sourceWorkPath, ComData.customItemsFileName);
         }
         /// <summary>
         /// 序列化对象到xml文件中
@@ -143,7 +159,7 @@ namespace MasterDetailSample
                     break;
                 default:
                     break;
-            }      
+            }
         }
 
 
@@ -200,7 +216,7 @@ namespace MasterDetailSample
 
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    if(saveFileDialog1.FileName.ToLower().Contains(".c"))
+                    if (saveFileDialog1.FileName.ToLower().Contains(".c"))
                     {
                         FileStringFunction pathFileStringADU = new FileStringFunction();
                         ComData.saveWorkPath = pathFileStringADU.GetDirectionNameString(saveFileDialog1.FileName);
@@ -212,7 +228,7 @@ namespace MasterDetailSample
                             advTreeToEntity.GetEntityByAdvTreeNode(CurrentAdvTree);
                             //*********************************need to rework************************************//
                             //2.将当前树的数据放入header文件中                            
-                            string GenFileFullName = ComData.saveWorkPath +@"\"+ ComData.saveCFileName;
+                            string GenFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName;
                             EntityVsFile.GetFileFromEntity(GenFileFullName);
                             //3.将文件结构体中的数组变量用数组值替换
                             FileStringFunction fileStringADU = new FileStringFunction();
@@ -220,7 +236,7 @@ namespace MasterDetailSample
                             //********************************************************************//
                             //4.将obj对象的数据序列化到xml文件中
                             GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
-                            GenerationXmlFromEntity("customstruct", ComData.programStartPath+ComData.customItemsFileName);
+                            GenerationXmlFromEntity("customstruct", ComData.programStartPath + ComData.customItemsFileName);
 
                         }
                     }
@@ -420,6 +436,63 @@ namespace MasterDetailSample
         private void FileToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+        private void 默认ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                loadSkin("WarmColor1.ssk");
+                默认ToolStripMenuItem.Checked = true;
+                默认ToolStripMenuItem1.Checked = true;
+                浅色ToolStripMenuItem.Checked = false;
+                浅色ToolStripMenuItem1.Checked = false;
+                ComData.skinIndex = 0;
+                AdvTreeObj advTreeObj = new AdvTreeObj();
+                advTreeObj.AdvTreeSkinSet(Color.FromArgb(245, 245, 245), Color.FromArgb(230, 230, 230), Color.AntiqueWhite);
+            }
+            catch { }
+        }
+
+        private void 浅色ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                loadSkin("PageColor1.ssk");
+                浅色ToolStripMenuItem.Checked = true;
+                浅色ToolStripMenuItem1.Checked = true;
+                默认ToolStripMenuItem.Checked = false;
+                默认ToolStripMenuItem1.Checked = false;
+                ComData.skinIndex = 1;
+                AdvTreeObj advTreeObj = new AdvTreeObj();
+                advTreeObj.AdvTreeSkinSet(Color.FromArgb(252, 252, 252), Color.FromArgb(225, 236, 233), Color.FromArgb(242, 242, 242));
+            }
+            catch { }
+        }
+
+        private void 默认ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            默认ToolStripMenuItem_Click(sender, e);
+        }
+
+        private void 浅色ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            浅色ToolStripMenuItem_Click(sender, e);
+        }
+
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.S && e.Control)
+            {
+                SaveFileToolStripMenuItem.PerformClick();
+            }
+            else if (e.KeyCode == Keys.O && e.Control)
+            {
+                OpenFileToolStripMenuItem.PerformClick();
+            }
+            else if (e.KeyCode == Keys.F4 && e.Alt)
+            {
+                ExitMainToolStripMenuItem.PerformClick();
+            }
         }
     }
 }

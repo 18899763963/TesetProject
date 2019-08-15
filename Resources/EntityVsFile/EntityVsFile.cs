@@ -27,8 +27,6 @@ namespace SmallManagerSpace.Resources
             public static string AngleBracketClose = ">";
         }
 
-        //用于存放读取头文件的输出部分格式
-        static List<string> OutLine = new List<string>();
         private static bool IsString(string InputName)
         {
             bool isString = false;
@@ -56,7 +54,7 @@ namespace SmallManagerSpace.Resources
             }
             return arrayName;
         }
-     
+
         /// <summary>
         /// 得到匹配的基本类型，enum类型的长度
         /// </summary>
@@ -139,18 +137,9 @@ namespace SmallManagerSpace.Resources
             return ParameterDataList;
         }
 
-  
+
         public static void GetEntityFromFile(string FilePath)
         {
-            //读取所有行，若包含AAL_INT32,则添加到集合中
-            string[] readOutputLine = File.ReadAllLines(FilePath, Encoding.Default);
-            foreach (string item in readOutputLine)
-            {
-                if (item.Contains("AAL_INT32"))
-                {
-                    OutLine.Add(item);
-                }
-            }
 
             StreamReader sr = new StreamReader(FilePath, Encoding.Default);
             String line;
@@ -190,7 +179,7 @@ namespace SmallManagerSpace.Resources
                             CapturedType = "isStruct";
 
                             //添加structitem数据到列表中
-                            ComData.structFunction.AddValueOfStructItem(ComData.structEntity.nodeList, Cid.ToString().PadLeft(4, '0'), type, name,indexS, preinput, node, nodetype);
+                            ComData.structFunction.AddValueOfStructItem(ComData.structEntity.nodeList, Cid.ToString().PadLeft(4, '0'), type, name, indexS, preinput, node, nodetype);
                             ProcessStep++;
                             Cid++;
                         }
@@ -204,6 +193,27 @@ namespace SmallManagerSpace.Resources
                             ComData.enumFunction.addValueOfsimpleTypeItemWithout(baseValue, lengthValue, valueValue);
                             CapturedType = "isEnum";
                             ProcessStep++;
+                        }
+                        //3.匹配结构体或结构体数组的定义,例如：
+                        //OTN_USER_BOARD_INFO OTN_USER_BOARD_INFO_VAR;
+                        //OTN_USER_BOARD_INFO OTN_USER_BOARD_INFO_VAR[board_num];
+                        else if (Regex.IsMatch(line, @"[\w]+[\s]+[\w]+[\s]*(;|[\[]{1}[\S]+[\]]{1};)"))
+                        {
+                            //    string RegexStr3 = @"}[\s]*(?<structType>[\S]+)[\s]*;";
+                            //[\[]+(?<parameterarray>[\S]*)[\]]+
+                            //@"[\s]*(?<structType>[\S]+)[\s]+(?<structName>[\S]+);"
+                            string RegexStr3 = @"(?<structType>[\w]+)[\s]+(?<structName>[\w]+)[\s]*(;|[\[]{1}(?<ArrayNum>[\w]+)[\]]{1};)";
+                            Match matchStr = Regex.Match(line, RegexStr3);
+                            string structType = matchStr.Groups["structType"].ToString();
+                            string structName = matchStr.Groups["structName"].ToString();
+                            if(matchStr.Groups["ArrayNum"]==null || matchStr.Groups["ArrayNum"].ToString()=="")
+                            {
+                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName });
+                            }
+                            else
+                            {
+                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName+"["+ matchStr.Groups["ArrayNum"].ToString()+"]" });
+                            }
                         }
                     }
                 }
@@ -229,7 +239,7 @@ namespace SmallManagerSpace.Resources
                             structType = matc.Groups["structType"].ToString();
                             //修改structitem数据到列表中
                             ComData.structFunction.UpdateValueOfStructItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "type", structType);
-                            ComData.structFunction.UpdateValueOfStructItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "name", structType+"_VAR");
+                            ComData.structFunction.UpdateValueOfStructItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "name", structType + "_VAR");
                             //修改parametertitem数据到列表中
                             ComData.structFunction.UpdateValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "preinput", "entry");
                             ProcessStep = 0;
@@ -250,7 +260,7 @@ namespace SmallManagerSpace.Resources
                             string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;[\s]*/+(?<parameternote>[\S]+)";
                             Match matchStr = Regex.Match(line, RegexStr3);
                             type = matchStr.Groups["parametertype"].ToString();
-                            note = matchStr.Groups["parameternote"].ToString()??"";
+                            note = matchStr.Groups["parameternote"].ToString() ?? "";
                             length = GetLengthOfType(type).ToString();
 
                             string lineItem = matchStr.Groups["parametername"].ToString();
@@ -259,7 +269,7 @@ namespace SmallManagerSpace.Resources
                             {
                                 string RegexStr4 = @"(?<parameterpointer>[\*]*)[\s]*(?<parametername>[\S]+)[\s]*[\[]+(?<parameterarray>[\S]*)[\]]+";
                                 Match matchString = Regex.Match(lineItem, RegexStr4);
-                                name = "*" + matchString.Groups["parametername"].ToString() ;
+                                name = "*" + matchString.Groups["parametername"].ToString();
                                 preinput = matchString.Groups["parameterarray"].ToString();
                                 value = "{" + value + "}";
                                 // vartype = "pointer* array[0]";
@@ -271,7 +281,7 @@ namespace SmallManagerSpace.Resources
                                 Match matchString = Regex.Match(lineItem, RegexStr4);
                                 Console.WriteLine("parameterpointer:{0},parametername:{1}", matchString.Groups["parameterpointer"].ToString(), matchString.Groups["parametername"].ToString());
                                 name = "*" + matchString.Groups["parametername"].ToString();
-                                if (type == "AAL_UINT8")
+                                if (type == "AAL_INT8")
                                 {
                                     value = "DefaultString";
                                 }
@@ -295,11 +305,11 @@ namespace SmallManagerSpace.Resources
                             }
                             if (name.Equals("board_num") && isStartCapture.Equals(true)) { isCaptured = true; CapturedData = "board_num"; }
                             //匹配范围
-                            if(ComData.baseDictonary.ContainsKey(type))
+                            if (ComData.baseDictonary.ContainsKey(type))
                             {
                                 range = ComData.baseDictonary[type].range;
                             }
-                            ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem,Cid.ToString().PadLeft(4, '0'), type, preinput, name,indexS, range, value, length, note, nodetype);
+                            ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, indexS, range, value, length, note, nodetype);
                             Cid++;
                         }
                     }

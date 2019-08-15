@@ -110,6 +110,14 @@
             初始化节点和元素风格
             </summary>
         </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeSkinSet(System.Drawing.Color,System.Drawing.Color,System.Drawing.Color)">
+            <summary>
+            设置Advtree的颜色主题
+            </summary>
+            <param name="BackColor"></param>
+            <param name="ColumnsBackColor"></param>
+            <param name="AlternateRowColor"></param>
+        </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AdvTreeSetting">
             <summary>
             设置该页的名称，树的列，图片，字体等
@@ -211,7 +219,7 @@
             过滤指定类型的节点
             </summary>
             <param name="nodes">原节点列表</param>
-            <param name="nodeType">nodtetype:struct,enum,base</param>
+            <param name="nodeTypeArr">nodtetype:struct,enum,base</param>
             <returns></returns>
         </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.NodeGroupBySameParent(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{DevComponents.AdvTree.Node}},System.String)">
@@ -585,6 +593,12 @@
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.loadSkin(System.String)">
+            <summary>
+            加载主题皮肤
+            </summary>
+            <param name="skinname">皮肤文件名</param>
         </member>
         <member name="M:MasterDetailSample.frmMain.SerialEntityToXml(System.String,System.String)">
             <summary>

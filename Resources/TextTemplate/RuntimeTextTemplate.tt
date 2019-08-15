@@ -129,8 +129,11 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 						//添加校验项目					
                         if(indexName!="")
                          {
-                        this.Write("\tif(index>={0})",GetBoardNum());						
-                        this.WriteLine("\t{"+GetPointerName(pointer)+"=null;return -1;}");	
+                        this.WriteLine("\tif(index >= {0})",GetBoardNum());	
+                        this.WriteLine("\t{");
+                        this.WriteLine("\t\t"+GetPointerName(pointer)+" = NULL;");	
+                        this.WriteLine("\t\treturn -1;");
+                        this.WriteLine("\t}");
                         this.WriteLine("\tswitch({0})","index");
 					     }
 					  //遍历其中的项目		
@@ -140,9 +143,9 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 					   int i=0;
 						foreach(var StructItem in StructList)
 						{
-							this.WriteLine("\t case {0}:",i);
+							this.WriteLine("\t\tcase {0}:",i);
 							TraversalStructItem(StructItem,pointer,false,0);
-							this.WriteLine("\t break;");
+							this.WriteLine("\t\tbreak;");
 							i++;
 						}
 						this.WriteLine("\t}");
@@ -201,7 +204,7 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 								//处理parameDic
 							 foreach(string pName in parameDic.Keys)
 							{	
-								//如果不是数组(根据数量只有一个)
+								//如果根据数量只有一个
 									List<object> paraList= parameDic[pName];															
 									if(paraList.Count==1)
 									{
@@ -211,7 +214,7 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
                                         //如果不是数组(根据数量只有一个)
 										else{TraversalStructItem(paraList[0], Prefix,false ,0);}
 									}
-								//如果是数组
+								//如果数量多于一个，则一定是数组
 									else if(paraList.Count>1)
 									{
 										for(int i=0;i<paraList.Count;i++)
@@ -223,7 +226,7 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 							//处理structDic
 							 foreach(string sName in structDic.Keys)
 							{	
-								//如果不是数组
+								//如果数量只有一个
 									List<object> strucList= structDic[sName];
 									if(strucList.Count==1)
 									{
@@ -239,7 +242,7 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
                                                 string newPerfix=string.Format("{0}{1}{2}",Prefix ,sName,".");
                                                 TraversalStructItem(strucList[0], newPerfix,false ,0);}			
 									         }
-								//如果是数组
+								//如果数量多于一个，则一定是数组
 									else if(strucList.Count>1)
 									{
 										for(int i=0;i<strucList.Count;i++)
@@ -255,103 +258,28 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 						{
 						    Parameter pItem=ObjItem as Parameter;
 							if(!isArray)
+                            {
+                               //去除fpga_module这一项
+                               if(pItem.name!="fpga_module")
+                               {
+                                  //如果是字符串形式
+                                  if(pItem.name.Contains("*"))
+                                  {
+                                      this.WriteLine("\t\t{0}{1} = \"{2}\";\t//{3}",Prefix,pItem.name.Substring(1),pItem.value,pItem.note);
+                                  }
+                                  else{this.WriteLine("\t\t{0}{1} = {2};\t//{3}",Prefix,pItem.name,pItem.value,pItem.note);}
+                                }
+                            }
+                            else if(isArray)
 							{
 								//如果是字符串形式
 								if(pItem.name.Contains("*"))
 								{
-									this.WriteLine("\t\t{0}{1}=\"{2}\";\t//{3}",Prefix,pItem.name,pItem.value,pItem.note);
+									this.WriteLine("\t\t{0}{1}[{2}] = \"{3}\";\t//{4}",Prefix,pItem.name.Substring(1),indexValue,pItem.value,pItem.note);
 								}
-								else{this.WriteLine("\t\t{0}{1}={2};\t//{3}",Prefix,pItem.name,pItem.value,pItem.note);}
-							}else if(isArray)
-							{
-								//如果是字符串形式
-								if(pItem.name.Contains("*"))
-								{
-									this.WriteLine("\t\t{0}{1}[{2}]=\"{3}\";\t//{4}",Prefix,pItem.name,indexValue,pItem.value,pItem.note);
-								}
-							  else{this.WriteLine("\t\t{0}{1}[{2}]={3};\t//{4}",Prefix,pItem.name,indexValue,pItem.value,pItem.note);}
+							  else{this.WriteLine("\t\t{0}{1}[{2}] = {3};\t//{4}",Prefix,pItem.name,indexValue,pItem.value,pItem.note);}
 							}
 							
 						}
 					}
  #>
-
-<#+  
-
-private void GenerateText(string type,string pointer)//生成文本   
-{  
-   var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
-   string space;
-   if(StructList.Count>1)
-   { 
-    space="        "; #>
-    switch(<#= StructList.Count #>)
-    {
-<#+ for(int i=0;i<StructList.Count;i++)
-	      { 
-		  var ParameterList=(StructList[i] as StructItem).parameterList.ToList();#>
-	    case <#= i+1 #>:
-<#+ JudgeType(ParameterList,pointer,space);#>
-<#+ } #>
-    }
-<#+ } #>
-<#+ else if(StructList.Count==1)
-   {  
-    space="    ";
-    var ParameterList=(StructList[0] as StructItem).parameterList.ToList();#>
-<#+ JudgeType(ParameterList,pointer,space); #>
-<#+ } #>
-    return 0;
-<#+  
-}
-#>
-
-<#+
-private void JudgeType(List<object> list,string pointer,string space)//判断是StructItem类型还是Parameter类型(暂时只针对一层嵌套)
-{
-   for(int j=0;j<list.Count;j++)
-	  { 
-	     if(list[j] is StructItem)
-		 {
-		    StructItem nestStructItem=list[j] as StructItem;
-			for(int m=0;m<nestStructItem.parameterList.Count;m++)
-			{ //如果不是结构体数组
-			 if(nestStructItem.index=="")
-			 {
-			    if((nestStructItem.parameterList[m] as Parameter).index == "")
-			    { #>
-<#= space #><#= pointer #>-><#= nestStructItem.name #>.<#= (nestStructItem.parameterList[m] as Parameter).name #> = <#= (nestStructItem.parameterList[m] as Parameter).value #>;  //<#= (nestStructItem.parameterList[m] as Parameter).note #>
-<#+ } 
-                else
-			    { #>
-<#= space #><#= pointer #>-><#= nestStructItem.name #>.<#= (nestStructItem.parameterList[m] as Parameter).name #>[<#= (nestStructItem.parameterList[m] as Parameter).index #>] = <#= (nestStructItem.parameterList[m] as Parameter).value #>;  //<#= (nestStructItem.parameterList[m] as Parameter).note #>
-<#+ } #>
-<#+ } 
-		     else
-			 { //如果是结构体数组
-			    if((nestStructItem.parameterList[m] as Parameter).index == "")
-			    { #>
-<#= space #><#= pointer #>-><#= nestStructItem.name #>[<#= nestStructItem.index #>].<#= (nestStructItem.parameterList[m] as Parameter).name #> = <#= (nestStructItem.parameterList[m] as Parameter).value #>;  //<#= (nestStructItem.parameterList[m] as Parameter).note #>
-<#+ } 
-                else
-			    { #>
-<#= space #><#= pointer #>-><#= nestStructItem.name #>[<#= nestStructItem.index #>].<#= (nestStructItem.parameterList[m] as Parameter).name #>[<#= (nestStructItem.parameterList[m] as Parameter).index #>] = <#= (nestStructItem.parameterList[m] as Parameter).value #>;  //<#= (nestStructItem.parameterList[m] as Parameter).note #>
-<#+ } #>
-<#+ } #>
-<#+ } #>
-<#+ } #>
-<#+ else if(list[j] is Parameter)
-	     { 
-		    if((list[j] as Parameter).index == "")
-			{ #>
-<#= space #><#= pointer #>-><#= (list[j] as Parameter).name #> = <#= (list[j] as Parameter).value #>;  //<#= (list[j] as Parameter).note #>
-<#+ } 
-            else
-			{ #>
-<#= space #><#= pointer #>-><#= (list[j] as Parameter).name #>[<#= (list[j] as Parameter).index #>] = <#= (list[j] as Parameter).value #>;  //<#= (list[j] as Parameter).note #>
-<#+ } #>
-<#+ } #>
-<#+ } #>
-<#+  
-}
-#>

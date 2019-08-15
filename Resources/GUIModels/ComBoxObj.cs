@@ -7,6 +7,20 @@ using System.Windows.Forms;
 
 namespace SmallManagerSpace.Resources.GUIModels
 {
+    class MyComboBox : System.Windows.Forms.ComboBox
+    {
+        //禁用ComboBox中鼠标滑轮
+        protected override void WndProc(ref Message m)
+        {
+
+            if (m.Msg == 0x020A)
+            { }
+            else
+            {
+                base.WndProc(ref m);
+            }
+        }
+    }
 
     public class ComBoxEnumChild
     {
@@ -31,7 +45,7 @@ namespace SmallManagerSpace.Resources.GUIModels
         public Control CreateEnbedCombox(Cell HostedCell, string typeName)
         {
             Control controlObj = null;
-            ComboBox comboBox = new ComboBox();
+            MyComboBox comboBox = new MyComboBox();
             simpleType selectItem = null;
             if (ComData.enumEntity.simpleTypes.Where(x => x.name == typeName).Count() != 0)
             {
@@ -52,7 +66,7 @@ namespace SmallManagerSpace.Resources.GUIModels
         }
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ComboBox comboBox = (ComboBox)sender;
+            MyComboBox comboBox = (MyComboBox)sender;
             AdvTree advTree = comboBox.Parent as AdvTree;
             if (advTree != null)
             {

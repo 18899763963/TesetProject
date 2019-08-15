@@ -114,7 +114,6 @@ namespace SmallManagerSpace.Resources
             foreach (DefineEntity defineEntity in defineEntitys)
             {
 
-                //string RegexStr4 = @"(?<parameterpointer>[\*]*)[\s]*(?<parametername>[\S]+)[\s]*[\[]+(?<parameterarray>[\S]*)[\]]+";
                 string RegexStr4 = @"(?<varName>[\S]+)[\s]*[\[]+(?<varVal>[\S]*)[\]]+";
                 Match matc = Regex.Match(defineEntity.name, RegexStr4);
                 string varName = matc.Groups["varName"].ToString();
@@ -135,6 +134,7 @@ namespace SmallManagerSpace.Resources
                     if (!ComData.EntryVar.ContainsKey(varVal)) { ComData.EntryVar.Add(varVal, 0); }                    
                     ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName , index = ob.index, preinput = varVal, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+
                 }
             }
         }
