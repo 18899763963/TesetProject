@@ -444,7 +444,6 @@
       <LastGenOutput>RuntimeTextTemplate.cs</LastGenOutput>
     </Content>
     <Content Include="SmallManager.xml" />
-    <Content Include="UpgradeLog.htm" />
     <None Include="Raws\BlockIco.ico" />
     <None Include="Raws\ParameterIco.ico" />
     <None Include="Raws\PathIco.ico" />

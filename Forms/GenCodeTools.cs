@@ -110,8 +110,7 @@ namespace MasterDetailSample
             }
             //3.Entity转换CustomEntity
             if (ComData.stepNow.Equals(Step.EntityToCustomEntity))
-            {
-             
+            {             
                 StructFunction structFunction = new StructFunction();
                 structFunction.CreateCustomStruct(ComData.defineEntities);
                 //将obj对象的数据序列化到xml文件中

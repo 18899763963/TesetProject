@@ -199,20 +199,17 @@ namespace SmallManagerSpace.Resources
                         //OTN_USER_BOARD_INFO OTN_USER_BOARD_INFO_VAR[board_num];
                         else if (Regex.IsMatch(line, @"[\w]+[\s]+[\w]+[\s]*(;|[\[]{1}[\S]+[\]]{1};)"))
                         {
-                            //    string RegexStr3 = @"}[\s]*(?<structType>[\S]+)[\s]*;";
-                            //[\[]+(?<parameterarray>[\S]*)[\]]+
-                            //@"[\s]*(?<structType>[\S]+)[\s]+(?<structName>[\S]+);"
                             string RegexStr3 = @"(?<structType>[\w]+)[\s]+(?<structName>[\w]+)[\s]*(;|[\[]{1}(?<ArrayNum>[\w]+)[\]]{1};)";
                             Match matchStr = Regex.Match(line, RegexStr3);
                             string structType = matchStr.Groups["structType"].ToString();
                             string structName = matchStr.Groups["structName"].ToString();
-                            if(matchStr.Groups["ArrayNum"]==null || matchStr.Groups["ArrayNum"].ToString()=="")
+                            if (matchStr.Groups["ArrayNum"] == null || matchStr.Groups["ArrayNum"].ToString() == "")
                             {
                                 ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName });
                             }
                             else
                             {
-                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName+"["+ matchStr.Groups["ArrayNum"].ToString()+"]" });
+                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName + "[" + matchStr.Groups["ArrayNum"].ToString() + "]" });
                             }
                         }
                     }
@@ -244,11 +241,11 @@ namespace SmallManagerSpace.Resources
                             ComData.structFunction.UpdateValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, "preinput", "entry");
                             ProcessStep = 0;
                             CapturedType = "";
-                        }     //4.匹配字符串{内容}
+                        }
+                        //4.匹配字符串{内容}
                         else if (Regex.IsMatch(line, @"[\S]+[\s]+[\S]+[\s]?;"))
                         {
                             string type = "";
-                            // string vartype = "base";
                             string preinput = "";
                             string name = "";
                             string indexS = "";
@@ -257,6 +254,8 @@ namespace SmallManagerSpace.Resources
                             string length = "1";
                             string note = "";
                             string nodetype = "base";
+                            bool isArrayNumber = false;
+                            int arrayNumber = 0;
                             string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;[\s]*/+(?<parameternote>[\S]+)";
                             Match matchStr = Regex.Match(line, RegexStr3);
                             type = matchStr.Groups["parametertype"].ToString();
@@ -295,6 +294,13 @@ namespace SmallManagerSpace.Resources
                                 Console.WriteLine("parametername:{0},parameterarray:{1}", matchString.Groups["parametername"].ToString(), matchString.Groups["parameterarray"].ToString());
                                 name = matchString.Groups["parametername"].ToString();
                                 preinput = matchString.Groups["parameterarray"].ToString();
+                                arrayNumber = 0;
+                                isArrayNumber = false;
+                                if (int.TryParse(preinput, out arrayNumber))
+                                {
+                                    isArrayNumber = true;
+                                    preinput = "";
+                                }
                                 indexS = "0";
                             }
                             //(4)结构如cfg_buf
@@ -309,7 +315,17 @@ namespace SmallManagerSpace.Resources
                             {
                                 range = ComData.baseDictonary[type].range;
                             }
-                            ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, indexS, range, value, length, note, nodetype);
+                            if(isArrayNumber==false)
+                            {
+                                ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, indexS, range, value, length, note, nodetype);
+                            }
+                            else if(isArrayNumber == true)
+                            {
+                                for(int i=0;i<arrayNumber;i++)
+                                {
+                                    ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, i.ToString(), range, value, length, note, nodetype);
+                                }
+                            }
                             Cid++;
                         }
                     }

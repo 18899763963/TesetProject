@@ -141,37 +141,31 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         }
 
         private void GetNodeByTraversal(Node pNode, object objItem)
-        {// ComData.nodeElementStyle["ParameterStyle"], 2
-            //        pNode.Nodes.Add();
+        {
             if (objItem is Parameter)
             {
                 Parameter pObj = objItem as Parameter;
                 switch (pObj.nodetype)
                 {
                     case "base":
-                        //Node ParameterNode = GetNodeByObjOfParameter(objItem, ComData.nodeElementStyle["ParameterStyle"], 2);
-                        if (pObj.name == "fpga_module")
-                        {
-                            pObj.value = "5";
-                            //Node baseNode = GetNodeByObjOfBase(pObj, ComData.nodeElementStyle["ParameterStyle"], 2);
-                            //pNode.Nodes.Add(baseNode);
-                        }
-                        else if (pObj.preinput == "fpga_module")
-                        {
-                            for (int i = 0; i < 5; i++)
-                            {
-                                pObj.index = i.ToString();
-                                Node baseNode = GetNodeByObjOfBase(pObj, ComData.nodeElementStyle["ParameterStyle"], 2);
-                                pNode.Nodes.Add(baseNode);
-                            }
-                        }
-                        else
+                        //if (pObj.name == "fpga_module")
+                        //{
+                        //    pObj.value = "5";
+                        //}
+                        //else if (pObj.preinput == "fpga_module")
+                        //{
+                        //    for (int i = 0; i < 5; i++)
+                        //    {
+                        //        pObj.index = i.ToString();
+                        //        Node baseNode = GetNodeByObjOfBase(pObj, ComData.nodeElementStyle["ParameterStyle"], 2);
+                        //        pNode.Nodes.Add(baseNode);
+                        //    }
+                        //}
+                        //else
                         {
                             Node baseNode = GetNodeByObjOfBase(pObj, ComData.nodeElementStyle["ParameterStyle"], 2);
                             pNode.Nodes.Add(baseNode);
                         }
-                        //Node baseNode = GetNodeByObjOfBase(pObj, ComData.nodeElementStyle["ParameterStyle"], 2);
-                        //pNode.Nodes.Add(baseNode);
                         break;
                     case "enum":
                         Node enumNode = GetNodeByObjOfEnum(pObj, ComData.nodeElementStyle["ParameterStyle"], 1);
