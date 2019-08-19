@@ -222,6 +222,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RuntimeTextTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Resources\TextTemplate\TestTextTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestTextTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Resources\XmlToXls\XmlToXls.cs" />
     <Compile Include="Resources\XmlVsEntity\XmlVsBase.cs" />
     <Compile Include="Resources\XmlVsEntity\XmlVsEnum.cs" />
@@ -442,6 +447,10 @@
     <Content Include="Resources\TextTemplate\RuntimeTextTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>RuntimeTextTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Resources\TextTemplate\TestTextTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TestTextTemplate.cs</LastGenOutput>
     </Content>
     <Content Include="SmallManager.xml" />
     <None Include="Raws\BlockIco.ico" />

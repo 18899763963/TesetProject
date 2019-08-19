@@ -13,9 +13,9 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
 {
     class AdvTreeObj
     {
-
         public string BeforeValue;
         bool isFisrtEntry = true;
+        Node LastEnumNode = null;
         public Dictionary<string, string> BeforeSelectedColumnData = new Dictionary<string, string>();
         Dictionary<string, int> ColumnName = new Dictionary<string, int>() {
             { "type", 0 }, { "preinput", 1 }, { "name", 2 },
@@ -82,11 +82,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         {
             ComData.advTree.Nodes.Clear();
             ComData.advTree.View = eView.Tree;
-            if(ComData.skinIndex==0)//默认主题
+            if (ComData.skinIndex == 0)//默认主题
             {
                 AdvTreeSkinSet(Color.FromArgb(245, 245, 245), Color.FromArgb(230, 230, 230), Color.AntiqueWhite);
             }
-            else if(ComData.skinIndex == 1)//浅色主题
+            else if (ComData.skinIndex == 1)//浅色主题
             {
                 AdvTreeSkinSet(Color.FromArgb(252, 252, 252), Color.FromArgb(225, 236, 233), Color.WhiteSmoke);
             }
@@ -156,13 +156,46 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             ComData.advTree.CellEdit = true;
             ComData.advTree.BeforeCellEdit += new CellEditEventHandler(this.AdvTreeBeforeCellEdit);
             ComData.advTree.AfterCellEditComplete += new CellEditEventHandler(this.AdvTreeAfterCellEditComplete);
-
+            ComData.advTree.CellSelected += new AdvTreeCellEventHandler(this.AdvTreeCellSelected);           
+            ComData.advTree.CellUnselected += new AdvTreeCellEventHandler(this.AdvTreeCellUnSelected);
+            //ComData.advTree.SelectedIndexChanged += new EventHandler(this.AdvTreeSelectedIndexChanged);
             ComData.advTree.GridColumnLineResizeEnabled = true;
             //ComData.advTree.AlternateRowColor = Color.AntiqueWhite;
             ComData.advTree.Dock = DockStyle.Fill;
             TabItem tim = ComData.tabControl1.CreateTab("配置项");
             tim.AttachedControl.Controls.Add(ComData.advTree);
         }
+
+       
+
+        private void AdvTreeCellUnSelected(object sender, EventArgs e)
+        {
+
+            if(LastEnumNode!=null)
+            {
+                int indexCell = ColumnName["value"];
+                if (LastEnumNode.Cells[indexCell].HostedControl is MyComboBox)
+                {
+                    LastEnumNode.Cells[indexCell].HostedControl = null;
+                    LastEnumNode = null;
+                }
+            }
+        }
+
+        private void AdvTreeCellSelected(object sender, EventArgs e)
+        {
+            AdvTree CurrentAdvTree = (AdvTree)sender;
+            Node selectedNode = CurrentAdvTree.SelectedNode;
+            int indexCell = ColumnName["value"];
+            Dictionary<string, string> SelectedColumnData = GetSelectedColumnData(selectedNode);
+            //如果是enum类型          
+            if (SelectedColumnData.ContainsKey("nodetype") && SelectedColumnData["nodetype"] == "enum")
+            {
+                LastEnumNode = selectedNode;
+                setNodeControlForEnum(selectedNode, SelectedColumnData["type"]);
+            }
+        }
+
         /// <summary>
         /// 保存选中节点的数据
         /// </summary>
@@ -219,8 +252,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
 
                     }
                 }
-
-
             }
         }
 
@@ -259,21 +290,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 }
             }
         }
-        //private void SubNodeOnGeneral(Dictionary<string, List<Node>> ListNode, int Count)
-        //{
-        //    //1.复制节点最后一个内容
-        //    foreach (string KeyName in ListNode.Keys)
-        //    {
-        //        List<Node> CurrentListNode = ListNode[KeyName];
-        //        Node OriginNode = CurrentListNode.FirstOrDefault<Node>();
-        //        int BaseCount = CurrentListNode.Count;
-        //        for (int index = Count; index < 0; index++)
-        //        {
-        //            Node node = CurrentListNode[BaseCount + index];
-        //            OriginNode.Parent.Nodes.Remove(node);
-        //        }
-        //    }
-        //}
+  
         /// <summary>
         /// 得到选中节点列名的元胞
         /// </summary>
@@ -292,65 +309,13 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             }
             return cell;
         }
-        //private void AddNodeOnGeneral(Dictionary<string, List<Node>> ListNode, int Count)
-        //{
-        //    foreach (string KeyName in ListNode.Keys)
-        //    {
-        //        List<Node> CurrentListNode = ListNode[KeyName];
-        //        int BaseCount = CurrentListNode.Count;
-        //        for (int index = 0; index < Count; index++)
-        //        {
-        //            //1.复制节点最后一个内容
-        //            Node OriginNode = CurrentListNode.LastOrDefault<Node>();
-        //            //2.修改复制的节点内容 isRealChildNode ,NodeCount,ReviseName=preinput,
-        //            Node CloneNode = GetModifiedSingleNode(OriginNode, BaseCount + index);
-        //            //3.插入节点
-        //            OriginNode.Parent.Nodes.Insert(OriginNode.Index + index + 1, CloneNode);
-        //        }
-        //    }
-        //}
-
-        //private void GetModifiedMultiNode(Node OriginNode, Node CloneNode, string MatchName, int index)
-        //{
-        //    CloneNode = OriginNode.DeepCopy();
-        //    Dictionary<string, string> SelectedNodeData = GetSelectedColumnData(OriginNode);
-        //    //负责节点的数据
-        //    //如果是struct,enum,base中数组[]
-        //    if (SelectedNodeData["index"] != "" && SelectedNodeData["name"] == MatchName)
-        //    {
-        //        //1.修改index值
-        //        CloneNode.Cells[2].Text = index.ToString();
-
-        //    }
-        //    //如果是struct节点
-        //    if (OriginNode.HasChildNodes && SelectedNodeData["nodetype"] == "struct")
-        //    {
-        //        //进入下级节点处修改                    
-        //        for (int i = 0; i < OriginNode.Nodes.Count; i++)
-        //        {
-        //            GetModifiedMultiNode(OriginNode.Nodes[i], CloneNode.Nodes[i], MatchName, index);
-        //        }
-        //    }
-        //    //如果是emum节点
-        //    else if (SelectedNodeData["nodetype"] == "enum")
-        //    {
-        //        //嵌入Combox控件
-        //        ComBoxObj comBoxObj = new ComBoxObj();
-        //        Control control = comBoxObj.CreateEnbedCombox(CloneNode.Cells[5], SelectedNodeData["name"]);
-        //        if (control != null) CloneNode.Cells[5].HostedControl = control;
-        //    }
-        //    //如果是base节点
-        //    else if (SelectedNodeData["nodetype"] == "base")
-        //    {
-        //        //不做事情
-        //    }
-        //}
+       
         /// <summary>
         /// 得到节点类型
         /// </summary>
         /// <param name="node"></param>
         /// <returns>enum,base,struct</returns>
-        public  string getNodeType(Node node)
+        public string getNodeType(Node node)
         {
             Dictionary<string, string> SelectedNodeData = GetSelectedColumnData(node);
             return SelectedNodeData["nodetype"];
@@ -366,7 +331,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             //嵌入Combox控件
             ComBoxObj comBoxObj = new ComBoxObj();
             int indexCell = ColumnName["value"];
-            Control control = comBoxObj.CreateEnbedCombox(node.Cells[indexCell], enumName);
+            Control control = comBoxObj.CreateEnbedCombox(node.Cells[indexCell], enumName, node.Cells[indexCell].Text);
             if (control != null) node.Cells[indexCell].HostedControl = control;
         }
 
@@ -382,7 +347,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             switch (SelectedNodeData["nodetype"])
             {
                 case "struct":
-
                     if (isFisrtEntry == true && SelectedNodeData["index"] != "")
                     {
                         //1.修改index值
@@ -396,11 +360,10 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                             GetTraversalModifiedStructNode(iNode, setIndex);
                         }
                     }
-
                     //进入下级节点处修改  
                     break;
                 case "enum":
-                    setNodeControlForEnum(node, SelectedNodeData["type"]);
+                    //setNodeControlForEnum(node, SelectedNodeData["type"]);
                     break;
                 case "base":
                     //不做事情
@@ -444,7 +407,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     //进入下级节点处修改  
                     break;
                 case "enum":
-                    setNodeControlForEnum(node, SelectedNodeData["type"]);
+                    //setNodeControlForEnum(node, SelectedNodeData["type"]);
                     break;
                 case "base":
                     //不做事情
@@ -993,7 +956,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         public Dictionary<string, string> GetSelectedColumnData(Node node)
         {
             Dictionary<string, string> TempKeyValuePairs = new Dictionary<string, string>();
-
+            if (node == null) return TempKeyValuePairs;
             string[] columnN = ColumnName.Keys.ToArray();
             foreach (int i in ColumnName.Values)
             {

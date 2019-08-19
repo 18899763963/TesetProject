@@ -71,7 +71,22 @@
             <param name="destList"></param>
             <param name="sourceList"></param>
         </member>
-        <!-- 对于成员“M:SmallManagerSpace.Resources.StructFunction.XmlDeSerializeToStructObj(System.String,System.String)”忽略有格式错误的 XML 注释 -->
+        <member name="M:SmallManagerSpace.Resources.StructFunction.XmlDeSerializeToEnumObj(System.String,System.String)">
+            <summary>
+            将xml文件化为Enum对象数据序列
+            </summary>
+            <param name="Path"></param>
+            <param name="enumItemsFileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.XmlDeSerializeToStructObj(System.String,System.String)">
+            <summary>
+             将xml文件化为Struct对象数据序列
+            </summary>
+            <param name="Path"></param>
+            <param name="StructItemsFileName"></param>
+            <returns></returns>
+        </member>
         <member name="M:SmallManagerSpace.Resources.StructFunction.UpdateValueOfStructItem(SmallManagerSpace.Resources.StructItem,System.String,System.String)">
             <summary>
              修改StructItem中数据
@@ -86,24 +101,30 @@
             <summary>
             增加StructItem
             </summary>
+            <param name="higherNode"></param>
             <param name="CID"></param>
             <param name="type"></param>
             <param name="name"></param>
+            <param name="indexS"></param>
             <param name="preinput"></param>
             <param name="note"></param>
+            <param name="nodetype"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfParameterItem(SmallManagerSpace.Resources.StructItem,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             增加ParameterItem
             </summary>
+            <param name="higherNode"></param>
             <param name="CID"></param>
             <param name="type"></param>
             <param name="preinput"></param>
             <param name="name"></param>
+            <param name="indexS"></param>
             <param name="range"></param>
             <param name="value"></param>
             <param name="length"></param>
             <param name="note"></param>
+            <param name="nodetype"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.ElementStyleSetting">
             <summary>
@@ -332,7 +353,7 @@
             <typeparam name="T">实体类型</typeparam>
             <param name="strXML">XML</param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.EnumFunction.XmlDeSerializeToStructObj(System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.EnumFunction.XmlDeSerializeToEnumObj(System.String,System.String)">
             <summary>
              将xml文件化为对象数据序列
             </summary>
@@ -484,6 +505,111 @@
             </summary>
         </member>
         <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringHelper">
+            <summary>
+            Helper to produce culture-oriented representation of an object as a string
+            </summary>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.TestTextTemplate">
+            <summary>
+            Class to produce the template output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplate.TransformText">
+            <summary>
+            Create the template output
+            </summary>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase">
+            <summary>
+            Base class for this transformation
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.GenerationEnvironment">
+            <summary>
+            The string builder that generation-time code is using to assemble generated output
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Errors">
+            <summary>
+            The error collection for the generation process
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.indentLengths">
+            <summary>
+            A list of the lengths of each indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.CurrentIndent">
+            <summary>
+            Gets the current indent we use when adding lines to the output
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Session">
+            <summary>
+            Current transformation session
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Write(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.WriteLine(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Write(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.WriteLine(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Error(System.String)">
+            <summary>
+            Raise an error
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Warning(System.String)">
+            <summary>
+            Raise a warning
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.PushIndent(System.String)">
+            <summary>
+            Increase the indent
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.PopIndent">
+            <summary>
+            Remove the last indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ClearIndent">
+            <summary>
+            Remove any indentation
+            </summary>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringInstanceHelper">
+            <summary>
+            Utility class to produce culture-oriented representation of an object as a string.
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringInstanceHelper.FormatProvider">
+            <summary>
+            Gets or sets format provider to be used by ToStringWithCulture method.
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+            <summary>
+            This is called from the compile/run appdomain to convert objects within an expression block to a string
+            </summary>
+        </member>
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringHelper">
             <summary>
             Helper to produce culture-oriented representation of an object as a string
             </summary>

@@ -94,7 +94,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
 #include """);
             
             #line 30 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ComData.headSourceFileName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(ComData.selectedSourceFileName));
             
             #line default
             #line hidden

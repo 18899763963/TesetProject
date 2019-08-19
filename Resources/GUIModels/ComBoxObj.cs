@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using SmallManagerSpace.Resources;
 
 namespace SmallManagerSpace.Resources.GUIModels
 {
@@ -20,6 +21,24 @@ namespace SmallManagerSpace.Resources.GUIModels
                 base.WndProc(ref m);
             }
         }
+        //protected override void CreateHandle()
+        //{
+        //    if (!IsHandleCreated)
+        //    {
+        //        try
+        //        {
+        //            base.CreateHandle();
+        //        }
+        //        catch { }
+        //        finally
+        //        {
+        //            if (!IsHandleCreated)
+        //            {
+        //                base.RecreateHandle();
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     public class ComBoxEnumChild
@@ -42,7 +61,8 @@ namespace SmallManagerSpace.Resources.GUIModels
 
     class ComBoxObj
     {
-        public Control CreateEnbedCombox(Cell HostedCell, string typeName)
+        //MyComboBox comboBox = new MyComboBox();
+        public Control CreateEnbedCombox(Cell HostedCell, string typeName,string defaultEnum)
         {
             Control controlObj = null;
             MyComboBox comboBox = new MyComboBox();
@@ -51,18 +71,27 @@ namespace SmallManagerSpace.Resources.GUIModels
             {
                 selectItem = ComData.enumEntity.simpleTypes.Where(x => x.name == typeName).First();
                 comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+                int SelectedIndex = 0;
+                int TempIndex = 0;
                 foreach (EnumValue eItem in selectItem.EnumValues)
                 {
+                    if (eItem.en == defaultEnum)
+                    {
+                        SelectedIndex = TempIndex;
+                    }
+                    TempIndex++;
                     comboBox.Items.Add(eItem.en);
                     comboBox.DisplayMember = eItem.en;
                     comboBox.ValueMember = eItem.value;
                 }
-                comboBox.SelectedIndex = 0;
-                HostedCell.Text = selectItem.EnumValues[0].en;
+                comboBox.SelectedIndex = SelectedIndex;     
+                HostedCell.Text = selectItem.EnumValues[SelectedIndex].en;
                 comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
                 controlObj = comboBox;
+             
             }
             return controlObj;
+
         }
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -76,7 +105,7 @@ namespace SmallManagerSpace.Resources.GUIModels
                 selectedCell.Text = comboBox.Text;
             }
 
-
+            
         }
     }
 }

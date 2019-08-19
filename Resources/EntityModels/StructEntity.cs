@@ -165,7 +165,13 @@ namespace SmallManagerSpace.Resources
                                 destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name,  index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
                                 break;
                             case "enum":
-                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "enum" });
+                                //默认匹配第一项
+                                if (ComData.enumEntity.simpleTypes.Where(x => x.name == sobj.type).Count() != 0)
+                                {                               
+                                    simpleType selectItem = ComData.enumEntity.simpleTypes.Where(x => x.name == sobj.type).First();
+                                    string defaultEnum= selectItem.EnumValues[0].en;
+                                    destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = defaultEnum, length = sobj.length, nodetype = "enum" });
+                                }
                                 break;
                             case "struct":
                                 StructItem i = keyValue[keyValue.Keys.First()] as StructItem;
@@ -180,14 +186,21 @@ namespace SmallManagerSpace.Resources
             }
 
         }
-
-
+        /// <summary>
+        /// 将xml文件化为Enum对象数据序列
+        /// </summary>
+        /// <param name="Path"></param>
+        /// <param name="enumItemsFileName"></param>
+        /// <returns></returns>
+        public EnumEntity XmlDeSerializeToEnumObj(string Path, string enumItemsFileName)
+        {
+            return EntitySerialize.DESerializerOnFile<EnumEntity>(Path + enumItemsFileName);
+        }
 
         /// <summary>
-        ///  将xml文件化为对象数据序列
+        ///  将xml文件化为Struct对象数据序列
         /// </summary>
-        /// </summary>
-        /// <param name="WorkPath"></param>
+        /// <param name="Path"></param>
         /// <param name="StructItemsFileName"></param>
         /// <returns></returns>
         public StructEntity XmlDeSerializeToStructObj(string Path, string StructItemsFileName)
@@ -250,11 +263,14 @@ namespace SmallManagerSpace.Resources
         /// <summary>
         /// 增加StructItem
         /// </summary>
+        /// <param name="higherNode"></param>
         /// <param name="CID"></param>
         /// <param name="type"></param>
         /// <param name="name"></param>
+        /// <param name="indexS"></param>
         /// <param name="preinput"></param>
         /// <param name="note"></param>
+        /// <param name="nodetype"></param>
         public void AddValueOfStructItem(List<object> higherNode, string CID, string type, string name, string indexS,string preinput, string note, string nodetype)
         {
             //创建structitem信息
@@ -275,14 +291,17 @@ namespace SmallManagerSpace.Resources
         /// <summary>
         /// 增加ParameterItem
         /// </summary>
+        /// <param name="higherNode"></param>
         /// <param name="CID"></param>
         /// <param name="type"></param>
         /// <param name="preinput"></param>
         /// <param name="name"></param>
+        /// <param name="indexS"></param>
         /// <param name="range"></param>
         /// <param name="value"></param>
         /// <param name="length"></param>
         /// <param name="note"></param>
+        /// <param name="nodetype"></param>
         public void AddValueOfParameterItem(StructItem higherNode, string CID, string type, string preinput, string name,string indexS, string range, string value, string length, string note, string nodetype)
         {
             //创建parameterInfo信息

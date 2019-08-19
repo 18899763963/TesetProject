@@ -39,7 +39,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
 
                 }
                 RreeNode.Nodes.Add(StructNode);
-
             }
         }
         private Node CreateNode(string nodeText, ElementStyle nodeItemStyle, int imageIndex)
@@ -110,12 +109,13 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             newTreeNode.Cells.Add(new Cell(pObj.range, elementStyle));
             if (pObj.nodetype=="enum")
             {
-                ComBoxObj comBoxObj = new ComBoxObj();
-                Cell cell = new Cell();
-                Control control = comBoxObj.CreateEnbedCombox(cell,pObj.type);             
-                cell.HostedControl = control;
-                control = cell.HostedControl;
-                newTreeNode.Cells.Add(cell);
+                //ComBoxObj comBoxObj = new ComBoxObj();
+                //Cell cell = new Cell();
+                //Control control = comBoxObj.CreateEnbedCombox(cell,pObj.type,pObj.value);             
+                //cell.HostedControl = control;
+                //control = cell.HostedControl;
+                //newTreeNode.Cells.Add(cell);
+                newTreeNode.Cells.Add(new Cell(pObj.value, elementStyle));
             }
             else
             {

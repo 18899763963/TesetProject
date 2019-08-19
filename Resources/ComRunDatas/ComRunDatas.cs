@@ -24,7 +24,7 @@ namespace SmallManagerSpace.Resources
         static public string structItemsFileName = "StructItems.xml";
         static public string customItemsFileName = "CustomItems.xml";
         static public string enumItemsFileName = "EnumItems.xml";
-        static public string headSourceFileName = null;
+        static public string selectedSourceFileName = null;
         static public string saveCFileName = null;
         static public string saveWorkPath = null;
         static public string sourceWorkPath = null;
@@ -36,7 +36,8 @@ namespace SmallManagerSpace.Resources
         static public Dictionary<string, int> EntryVar = null;
         static public Dictionary<string, ElementStyle> nodeElementStyle = null;
         static public int skinIndex = 0;//AdvTree颜色主题编号
-
+        static public List<string> readAllLines = new List<string>();
+        static public List<string> OutLines = new List<string>();
         /// <summary>
         /// 初始化程序运行的公共数据
         /// </summary>
@@ -74,7 +75,7 @@ namespace SmallManagerSpace.Resources
             //1.解析xml文件路径
             FileStringFunction pathFileString = new FileStringFunction();
             sourceWorkPath = pathFileString.GetDirectionNameString(PathFileName);
-            headSourceFileName = pathFileString.GetFileNameString(PathFileName);
+            selectedSourceFileName = pathFileString.GetFileNameString(PathFileName);
         }
 
         static public void InitAdvTreeData()

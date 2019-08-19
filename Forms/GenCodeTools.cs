@@ -38,6 +38,7 @@ namespace MasterDetailSample
                 defaultInstance = value;
             }
         }
+
         /// <summary>
         /// 加载主题皮肤
         /// </summary>
@@ -103,9 +104,14 @@ namespace MasterDetailSample
                 //b.如果是XML头文件->OBJ
                 else if (PathFileName.Contains(".xml"))
                 {
-                    GenerationEntityFromXml GenerationEntityFromXml = new GenerationEntityFromXml(GetEntityFromXmlFile);
-                    GenerationEntityFromXml(PathFileName);
+                    //转换enum文件的内容
+                    GenerationEntityFromXml enumEntityFromXml = new GenerationEntityFromXml(GetEnumEntityFromXmlFile);
+                    enumEntityFromXml("");
+                    //转换struct文件的内容
+                    GenerationEntityFromXml structEntityFromXml = new GenerationEntityFromXml(GetCustomEntityFromXmlFile);
+                    structEntityFromXml("");
                     ComData.stepNow = Step.EntityToGUI;
+
                 }
             }
             //3.Entity转换CustomEntity
@@ -115,14 +121,16 @@ namespace MasterDetailSample
                 structFunction.CreateCustomStruct(ComData.defineEntities);
                 //将obj对象的数据序列化到xml文件中
                 GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
-                GenerationXmlFromEntity("customstruct", ComData.programStartPath + ComData.customItemsFileName);
+                //GenerationXmlFromEntity("customstruct", ComData.programStartPath + ComData.customItemsFileName);
                 ComData.stepNow = Step.EntityToGUI;
             }
             //4.CustomEntity对象生成界面
             if (ComData.stepNow.Equals(Step.EntityToGUI))
             {
+
                 DisplayDataGuiViaEntity displayDataGuiViaOBJ = new DisplayDataGuiViaEntity(DisplayDataGuiViaOBJ);
                 displayDataGuiViaOBJ(ComData.customStruct);
+       
             }
             ComData.stepNow = Step.InitComm;
         }
@@ -133,10 +141,15 @@ namespace MasterDetailSample
             //1.解析文件内容
             EntityVsFile.GetEntityFromFile(InputFilePath);
         }
-        private void GetEntityFromXmlFile(string InputFilePath)
+        private void GetEnumEntityFromXmlFile(string InputFilePath)
         {
             //1.解析XML文件内容到Entity
-            ComData.structEntity = ComData.structFunction.XmlDeSerializeToStructObj(ComData.sourceWorkPath, ComData.customItemsFileName);
+            ComData.enumEntity = ComData.enumFunction.XmlDeSerializeToEnumObj(ComData.programStartPath, ComData.enumItemsFileName);
+        }
+        private void GetCustomEntityFromXmlFile(string InputFilePath)
+        {
+            //1.解析XML文件内容到Entity
+            ComData.customStruct = ComData.structFunction.XmlDeSerializeToStructObj(ComData.sourceWorkPath, ComData.selectedSourceFileName);
         }
         /// <summary>
         /// 序列化对象到xml文件中
@@ -235,6 +248,8 @@ namespace MasterDetailSample
                             //********************************************************************//
                             //4.将obj对象的数据序列化到xml文件中
                             GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
+                            GenerationXmlFromEntity("enum", ComData.programStartPath + ComData.enumItemsFileName);
+                            GenerationXmlFromEntity("struct", ComData.programStartPath + ComData.structItemsFileName);
                             GenerationXmlFromEntity("customstruct", ComData.programStartPath + ComData.customItemsFileName);
 
                         }

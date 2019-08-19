@@ -28,8 +28,8 @@ namespace SmallManagerSpace.Resources
         /// <param name="Path"></param>
         /// <param name="EnumItemsFileName"></param>
         /// <returns></returns>
-        public EnumEntity XmlDeSerializeToStructObj(string Path, string EnumItemsFileName)
-        {            
+        public EnumEntity XmlDeSerializeToEnumObj(string Path, string EnumItemsFileName)
+        {
             return EntitySerialize.DESerializerOnFile<EnumEntity>(Path + EnumItemsFileName);
         }
         /// <summary>
