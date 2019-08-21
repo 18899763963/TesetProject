@@ -9,7 +9,7 @@
         Copyright (C), 2002-2010, Wuhan FiberHome Tech. Co., Ltd.
 
 ******************************************************************************
-   文 件 名   : <#= ComData.saveCFileName #>
+   文 件 名   : fhapp_otn_user_auto.cpp
    版 本 号   : 初稿
    作    者   : xhou
    生成日期   : <#= DateTime.Now.ToString("yyyy") #>年<#= DateTime.Now.ToString("MM") #>月<#= DateTime.Now.ToString("dd") #>日
@@ -27,7 +27,7 @@
 /*----------------------------------------------*
 * 包含头文件                                   *
 *----------------------------------------------*/
-#include "<#= ComData.headSourceFileName #>"
+#include "fhapp_otn_user_auto.h"
 
 
 AAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info)
@@ -61,10 +61,6 @@ AAL_INT32 otn_user_get_board_alm_info(AAL_UINT8 index, OTN_USER_BOARD_ALM_INFO *
 <# GenerateTextToFunction("OTN_USER_BOARD_ALM_INFO","board_alm_info->","index"); #>
 }
 
-AAL_INT32 otn_user_get_ssm_info(AAL_UINT8 index, OTN_USER_SSM_INFO *ssm_info)
-{
-<# GenerateTextToFunction("OTN_USER_SSM_INFO","ssm_info->","index"); #>
-}
 
 AAL_INT32 otn_user_fpga_read(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 *data)
 {
@@ -122,35 +118,38 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 					}
                     ///生成字符串入口函数
 					private void GenerateTextToFunction(string type,string pointer,string indexName)
-					{
+    {
 				
-						//分类指定type的数据
-						var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
-						//添加校验项目					
-                        if(indexName!="")
-                         {
-                        this.WriteLine("\tif(index >= {0})",GetBoardNum());	
-                        this.WriteLine("\t{");
-                        this.WriteLine("\t\t"+GetPointerName(pointer)+" = NULL;");	
-                        this.WriteLine("\t\treturn -1;");
-                        this.WriteLine("\t}");
-                        this.WriteLine("\tswitch({0})","index");
-					     }
-					  //遍历其中的项目		
-                        if(indexName==""){this.WriteLine("\tswitch(0)");}
+        //分类指定type的数据
+        var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
+        //添加校验项目					
+        if(indexName!="")
+        {
+            this.WriteLine("\tif(index >= {0})",GetBoardNum());	
+            this.WriteLine("\t{");
+            this.WriteLine("\t\t"+GetPointerName(pointer)+" = NULL;");	
+            this.WriteLine("\t\treturn -1;");
+            this.WriteLine("\t}");
+            this.WriteLine("\tswitch({0})","index");
+        }
+        //遍历其中的项目		
+        if(indexName==""){this.WriteLine("\tswitch(0)");}
 					  
-					   this.WriteLine("\t{");
-					   int i=0;
-						foreach(var StructItem in StructList)
-						{
-							this.WriteLine("\t\tcase {0}:",i);
-							TraversalStructItem(StructItem,pointer,false,0);
-							this.WriteLine("\t\tbreak;");
-							i++;
-						}
-						this.WriteLine("\t}");
-                        this.WriteLine("\treturn 0;");	
-					}
+        this.WriteLine("\t{");
+        int i=0;
+        foreach(var StructItem in StructList)
+        {
+            this.WriteLine("\t\tcase {0}:",i);
+            TraversalStructItem(StructItem,pointer,false,0);
+            this.WriteLine("\t\tbreak;");
+            i++;
+        }
+        //添加default:break;字符串
+        this.WriteLine("\t\tdefault:");
+        this.WriteLine("\t\tbreak;");
+        this.WriteLine("\t}");
+        this.WriteLine("\treturn 0;");	
+    }
 					///将parameter struct对象分别放入不同队列
 					private List<Dictionary<string,List<object>>> GroupSameObject(List<object> objList)
 					{

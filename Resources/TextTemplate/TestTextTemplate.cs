@@ -19,7 +19,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+    #line 1 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class TestTextTemplate : TestTextTemplateBase
     {
@@ -34,28 +34,28 @@ namespace SmallManagerSpace.Resources.TextTemplate
                     "*********************************************************************\r\n   文 件 名 " +
                     "  : ");
             
-            #line 12 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            #line 12 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ComData.saveCFileName));
             
             #line default
             #line hidden
             this.Write("\r\n   版 本 号   : 初稿\r\n   作    者   : xhou\r\n   生成日期   : ");
             
-            #line 15 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 15 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 15 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
@@ -63,21 +63,21 @@ namespace SmallManagerSpace.Resources.TextTemplate
             this.Write("日\r\n   最近修改   :\r\n   功能描述   : 单盘初始化信息处理\r\n   函数列表   :\r\n              \r\n   修改历史   :\r\n" +
                     "   1.日    期   : ");
             
-            #line 21 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 21 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 21 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
@@ -93,8 +93,8 @@ namespace SmallManagerSpace.Resources.TextTemplate
 *----------------------------------------------*/
 #include """);
             
-            #line 30 "E:\GenCode Tools8.0 Test\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ComData.selectedSourceFileName));
+            #line 30 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools8.0 Test 2.0\GenCode Tools\Resources\TextTemplate\TestTextTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ComData.saveCFileName));
             
             #line default
             #line hidden

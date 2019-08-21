@@ -218,8 +218,9 @@ namespace MasterDetailSample
             try
             {
                 //设置文件类型 
-                //saveFileDialog1.Filter = "c文件|*.c|日志文件|*.xml";
-                saveFileDialog1.Filter = "c文件|*.c";
+                //saveFileDialog1.Filter = "cpp文件|*.c|日志文件|*.xml";
+                saveFileDialog1.Filter = "cpp文件|*.cpp";
+                saveFileDialog1.FileName = "fhapp_otn_user_auto";
 
                 //设置默认文件类型显示顺序 
                 saveFileDialog1.FilterIndex = 1;
@@ -238,13 +239,13 @@ namespace MasterDetailSample
                         {   //1.将当前树的数据转换为对象
                             AdvTreeToEntity advTreeToEntity = new AdvTreeToEntity();
                             advTreeToEntity.GetEntityByAdvTreeNode(CurrentAdvTree);
-                            //*********************************need to rework************************************//
+                            //*********************************************************************//
                             //2.将当前树的数据放入header文件中                            
                             string GenFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName;
-                            EntityVsFile.GetFileFromEntity(GenFileFullName);
-                            //3.将文件结构体中的数组变量用数组值替换
-                            FileStringFunction fileStringADU = new FileStringFunction();
-                            fileStringADU.ReplaceStringOnFile(GenFileFullName, ComData.EntryVar);
+                            EntityVsFile.GetFileFromEntityByT4(GenFileFullName);
+                            ////3.将文件结构体中的数组变量用数组值替换
+                            //FileStringFunction fileStringADU = new FileStringFunction();
+                            //fileStringADU.ReplaceStringOnFile(GenFileFullName, ComData.EntryVar);
                             //********************************************************************//
                             //4.将obj对象的数据序列化到xml文件中
                             GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);

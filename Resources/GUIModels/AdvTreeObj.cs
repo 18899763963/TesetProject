@@ -963,28 +963,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 TempKeyValuePairs[columnN[i]] = node.Cells[i].Text;
             }
             return TempKeyValuePairs;
-            //foreach (Cell cellItem in node.Cells)
-            //{
-
-            //    //如果不是克隆节点（克隆节点没有columnHeader)
-
-            //    if (cellItem.ColumnHeader != null)
-            //    {
-            //        if (cellItem.Text == null) TempKeyValuePairs[cellItem.ColumnHeader.Name] = "";
-            //        TempKeyValuePairs[cellItem.ColumnHeader.Name] = cellItem.Text;
-            //    }
-            //    ColumnName.
-            //如果是克隆节点
-            //else
-            //{
-            //    Dictionary< string ,int> lumnName = ColumnName.ElementAt(index);
-            //    if (cellItem.Text == null) TempKeyValuePairs[cellItem.ColumnHeader.Name] = "";
-            //    TempKeyValuePairs[ColumnName[index]] = cellItem.Text;
-            //    //}
-            //    index++;
-            //}
-
-
+    
         }
         private bool IsMatchedPointerVar(string inputName)
         {

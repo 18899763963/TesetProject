@@ -142,6 +142,7 @@ namespace SmallManagerSpace.Resources
         {
             //读取所有行，若包含AAL_INT32,则添加到集合中
             ComData.readAllLines = File.ReadAllLines(FilePath, Encoding.Default).ToList();
+            ComData.OutLines.Clear();
             foreach (string item in ComData.readAllLines)
             {
                 if (item.Contains("AAL_INT32"))
@@ -406,7 +407,22 @@ namespace SmallManagerSpace.Resources
             sr.Close();
         }
 
-        
+
+        public static void GetFileFromEntityByT4(string GenFileFullName)
+        {
+
+            if (ComData.sourceWorkPath == null && ComData.selectedSourceFileName == null && ComData.structEntity == null) return;
+            FileStream fileStream = new FileStream(GenFileFullName, FileMode.Create);
+            StreamWriter stringWriter = new StreamWriter(fileStream, Encoding.UTF8);
+            //将数据写入到文件,使用T4模板
+            RuntimeTextTemplate example = new RuntimeTextTemplate();
+            string pageContent = example.TransformText();
+            stringWriter.Write(pageContent);
+            //关闭文件流
+            stringWriter.Flush();
+            stringWriter.Close();
+        }
+
 
         public static void GetFileFromEntity(string GenFileFullName)
         {

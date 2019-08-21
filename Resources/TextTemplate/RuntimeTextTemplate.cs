@@ -19,7 +19,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+    #line 1 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class RuntimeTextTemplate : RuntimeTextTemplateBase
     {
@@ -29,33 +29,31 @@ namespace SmallManagerSpace.Resources.TextTemplate
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("/******************************************************************************\r\n" +
-                    "\r\n        Copyright (C), 2002-2010, Wuhan FiberHome Tech. Co., Ltd.\r\n\r\n*********" +
-                    "*********************************************************************\r\n   文 件 名 " +
-                    "  : ");
+            this.Write(@"/******************************************************************************
+
+        Copyright (C), 2002-2010, Wuhan FiberHome Tech. Co., Ltd.
+
+******************************************************************************
+   文 件 名   : fhapp_otn_user_auto.cpp
+   版 本 号   : 初稿
+   作    者   : xhou
+   生成日期   : ");
             
-            #line 12 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ComData.saveCFileName));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n   版 本 号   : 初稿\r\n   作    者   : xhou\r\n   生成日期   : ");
-            
-            #line 15 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 15 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 15 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
@@ -63,21 +61,21 @@ namespace SmallManagerSpace.Resources.TextTemplate
             this.Write("日\r\n   最近修改   :\r\n   功能描述   : 单盘初始化信息处理\r\n   函数列表   :\r\n              \r\n   修改历史   :\r\n" +
                     "   1.日    期   : ");
             
-            #line 21 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 21 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 21 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
@@ -91,16 +89,14 @@ namespace SmallManagerSpace.Resources.TextTemplate
 /*----------------------------------------------*
 * 包含头文件                                   *
 *----------------------------------------------*/
-#include """);
+#include ""fhapp_otn_user_auto.h""
+
+
+AAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info)
+{
+");
             
-            #line 30 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(ComData.selectedSourceFileName));
-            
-            #line default
-            #line hidden
-            this.Write("\"\r\n\r\n\r\nAAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info)\r\n{\r\n");
-            
-            #line 35 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 35 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  GenerateTextToFunction("OTN_USER_B_TYPE_INFO","btype_info->" ,""); 
             
             #line default
@@ -109,7 +105,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
                     "NT32 otn_user_get_board_info(AAL_UINT8 index, OTN_USER_BOARD_INFO *board_info)\r\n" +
                     "{\r\n\r\n");
             
-            #line 46 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 46 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  GenerateTextToFunction("OTN_USER_BOARD_INFO","board_info->","index"); 
             
             #line default
@@ -117,7 +113,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
             this.Write("}\r\n\r\nAAL_INT32 otn_user_get_port_info(AAL_UINT8 index, OTN_USER_PORT_INFO *port_i" +
                     "nfo)\r\n{\r\n");
             
-            #line 51 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 51 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  GenerateTextToFunction("OTN_USER_PORT_INFO","port_info->","index"); 
             
             #line default
@@ -125,7 +121,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
             this.Write("}\r\n\r\nAAL_INT32 otn_user_get_fpga_info(AAL_UINT8 index, OTN_USER_FPGA_INFO *fpga_i" +
                     "nfo)\r\n{\r\n");
             
-            #line 56 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 56 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  GenerateTextToFunction("OTN_USER_FPGA_INFO","fpga_info->","index"); 
             
             #line default
@@ -133,20 +129,13 @@ namespace SmallManagerSpace.Resources.TextTemplate
             this.Write("}\r\n\r\nAAL_INT32 otn_user_get_board_alm_info(AAL_UINT8 index, OTN_USER_BOARD_ALM_IN" +
                     "FO *board_alm_info)\r\n{\r\n");
             
-            #line 61 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+            #line 61 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  GenerateTextToFunction("OTN_USER_BOARD_ALM_INFO","board_alm_info->","index"); 
             
             #line default
             #line hidden
-            this.Write("}\r\n\r\nAAL_INT32 otn_user_get_ssm_info(AAL_UINT8 index, OTN_USER_SSM_INFO *ssm_info" +
-                    ")\r\n{\r\n");
-            
-            #line 66 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
- GenerateTextToFunction("OTN_USER_SSM_INFO","ssm_info->","index"); 
-            
-            #line default
-            #line hidden
             this.Write(@"}
+
 
 AAL_INT32 otn_user_fpga_read(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 *data)
 {
@@ -186,7 +175,7 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 103 "E:\GenCode Tools7.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
+        #line 99 "F:\WorkProject\Fiber_Project\2.Software\GenCode Tools10.0\GenCode Tools\Resources\TextTemplate\RuntimeTextTemplate.tt"
  
                     ///得到BoardNum数量
 				    private string GetBoardNum()
@@ -209,35 +198,38 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 					}
                     ///生成字符串入口函数
 					private void GenerateTextToFunction(string type,string pointer,string indexName)
-					{
+    {
 				
-						//分类指定type的数据
-						var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
-						//添加校验项目					
-                        if(indexName!="")
-                         {
-                        this.WriteLine("\tif(index >= {0})",GetBoardNum());	
-                        this.WriteLine("\t{");
-                        this.WriteLine("\t\t"+GetPointerName(pointer)+" = NULL;");	
-                        this.WriteLine("\t\treturn -1;");
-                        this.WriteLine("\t}");
-                        this.WriteLine("\tswitch({0})","index");
-					     }
-					  //遍历其中的项目		
-                        if(indexName==""){this.WriteLine("\tswitch(0)");}
+        //分类指定type的数据
+        var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
+        //添加校验项目					
+        if(indexName!="")
+        {
+            this.WriteLine("\tif(index >= {0})",GetBoardNum());	
+            this.WriteLine("\t{");
+            this.WriteLine("\t\t"+GetPointerName(pointer)+" = NULL;");	
+            this.WriteLine("\t\treturn -1;");
+            this.WriteLine("\t}");
+            this.WriteLine("\tswitch({0})","index");
+        }
+        //遍历其中的项目		
+        if(indexName==""){this.WriteLine("\tswitch(0)");}
 					  
-					   this.WriteLine("\t{");
-					   int i=0;
-						foreach(var StructItem in StructList)
-						{
-							this.WriteLine("\t\tcase {0}:",i);
-							TraversalStructItem(StructItem,pointer,false,0);
-							this.WriteLine("\t\tbreak;");
-							i++;
-						}
-						this.WriteLine("\t}");
-                        this.WriteLine("\treturn 0;");	
-					}
+        this.WriteLine("\t{");
+        int i=0;
+        foreach(var StructItem in StructList)
+        {
+            this.WriteLine("\t\tcase {0}:",i);
+            TraversalStructItem(StructItem,pointer,false,0);
+            this.WriteLine("\t\tbreak;");
+            i++;
+        }
+        //添加default:break;字符串
+        this.WriteLine("\t\tdefault:");
+        this.WriteLine("\t\tbreak;");
+        this.WriteLine("\t}");
+        this.WriteLine("\treturn 0;");	
+    }
 					///将parameter struct对象分别放入不同队列
 					private List<Dictionary<string,List<object>>> GroupSameObject(List<object> objList)
 					{

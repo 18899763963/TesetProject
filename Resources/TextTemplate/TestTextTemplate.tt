@@ -9,7 +9,7 @@
         Copyright (C), 2002-2010, Wuhan FiberHome Tech. Co., Ltd.
 
 ******************************************************************************
-   文 件 名   : <#= ComData.saveCFileName #>
+   文 件 名   : "fhapp_otn_user_auto.cpp"
    版 本 号   : 初稿
    作    者   : xhou
    生成日期   : <#= DateTime.Now.ToString("yyyy") #>年<#= DateTime.Now.ToString("MM") #>月<#= DateTime.Now.ToString("dd") #>日
@@ -27,6 +27,6 @@
 /*----------------------------------------------*
 * 包含头文件                                   *
 *----------------------------------------------*/
-#include "<#= ComData.headSourceFileName #>"
+#include "fhapp_otn_user_auto.h"
 
 
