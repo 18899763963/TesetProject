@@ -4,6 +4,7 @@ using SmallManagerSpace.Resources.FileStringADU;
 using SmallManagerSpace.Resources.GUIModels;
 using SmallManagerSpace.Resources.GUIVsEntity;
 using SmallManagerSpace.Resources.XmlVsEntity;
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -17,17 +18,21 @@ namespace SmallManagerSpace.Resources
         static public StructFunction structFunction = null;
         static public StructEntity structEntity = null;
         static public StructEntity customStruct = null;
+        static public StructEntity importStruct = null;
         static public EnumEntity enumEntity = null;
         static public List<DefineEntity> defineEntities =new  List<DefineEntity>();
         static public Step stepNow = Step.InitComm;
         static public string baseItemsFileName = "BaseItems.xsd";
         static public string structItemsFileName = "StructItems.xml";
-        static public string customItemsFileName = "CustomItems.xml";
+        //static public string importItemsFileName = "ImportItems.xml";
+        static public string customItemsFileName = "CustomItems"+DateTime.Now.ToString("yyyyMMddHHmm")+".xml";
         static public string enumItemsFileName = "EnumItems.xml";
         static public string selectedSourceFileName = null;
+        static public string importedSourceFileName = null;
         static public string saveCFileName = null;
         static public string saveWorkPath = null;
         static public string sourceWorkPath = null;
+        static public string importedWorkPath = null;
         static public string programStartPath = System.Windows.Forms.Application.StartupPath + "\\";
         static public bool isSuccessdLoadFile = false;
         static public TabControl tabControl1 = null;
@@ -39,6 +44,13 @@ namespace SmallManagerSpace.Resources
         static public List<string> readAllLines = new List<string>();
         static public List<string> OutLines = new List<string>();
         /// <summary>
+        /// 初始化导入融合的公共数据
+        /// </summary>
+        static public void InitImportData(string pathFileName)
+        {
+            InitPathAndFileData(pathFileName);
+        }
+        /// <summary>
         /// 初始化程序运行的公共数据
         /// </summary>
         static public void InitCommonData(TabControl tabControlObj, string pathFileName)
@@ -48,6 +60,14 @@ namespace SmallManagerSpace.Resources
             InitPathAndFileData(pathFileName);
             InitTableControlData(tabControlObj);
             InitAdvTreeData();
+        }
+        /// <summary>
+        /// 初始化程序运行的公共数据
+        /// </summary>
+        static public void InitImportFileData(string pathFileName)
+        {
+
+            InitImportPathAndFileData(pathFileName);
         }
         /// <summary>
         /// 初始化程序运行的Base
@@ -76,6 +96,17 @@ namespace SmallManagerSpace.Resources
             FileStringFunction pathFileString = new FileStringFunction();
             sourceWorkPath = pathFileString.GetDirectionNameString(PathFileName);
             selectedSourceFileName = pathFileString.GetFileNameString(PathFileName);
+        }
+        /// <summary>
+        /// 初始化导入合并文件路径
+        /// </summary>
+        /// <param name="PathFileName"></param>
+        static public void InitImportPathAndFileData(string PathFileName)
+        {
+            //1.解析xml文件路径
+            FileStringFunction pathFileString = new FileStringFunction();
+            importedWorkPath = pathFileString.GetDirectionNameString(PathFileName);
+            importedSourceFileName = pathFileString.GetFileNameString(PathFileName);
         }
 
         static public void InitAdvTreeData()

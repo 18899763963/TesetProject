@@ -347,6 +347,8 @@
     <None Include="bin\Debug\Skins\XPSilver.ssk" />
     <None Include="bin\Debug\SmallManager.exe.config" />
     <None Include="bin\Debug\vsE81.tmp" />
+    <None Include="Install\GenCodeToolsSetup\Debug\GenCodeToolsSetup.msi" />
+    <None Include="Install\GenCodeToolsSetup\GenCodeToolsSetup.vdproj" />
     <None Include="Install_Project\AutoGenTools\AutoGenTools.vdproj" />
     <None Include="Install_Project\AutoGenTools\Debug\AutoGenTools.tmp" />
     <None Include="Install_Project\AutoGenTools\Release\AutoGenTools.msi" />
@@ -399,6 +401,7 @@
     <Content Include="bin\Debug\Spire.XLS.dll" />
     <Content Include="bin\Debug\Spire.XLS.xml" />
     <Content Include="bin\Debug\StructItems.xml" />
+    <Content Include="Install\GenCodeToolsSetup\Debug\setup.exe" />
     <Content Include="Install_Project\AutoGenTools\Debug\setup.exe" />
     <Content Include="Install_Project\AutoGenTools\Release\setup.exe" />
     <Content Include="MasterDetailSample.xml" />
@@ -444,6 +447,7 @@
     <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.XLS.xml" />
     <Content Include="packages\FreeSpire.XLS.9.2.0\license.txt" />
     <Content Include="My Project\SmallManager.xml" />
+    <Content Include="Raws\Theme.png" />
     <Content Include="Resources\TextTemplate\RuntimeTextTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>RuntimeTextTemplate.cs</LastGenOutput>
@@ -468,7 +472,7 @@
     <Folder Include="bin\x64\Release\" />
     <Folder Include="bin\x86\Debug\" />
     <Folder Include="bin\x86\Release\" />
-    <Folder Include="Install\" />
+    <Folder Include="Install\GenCodeToolsSetup\Release\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

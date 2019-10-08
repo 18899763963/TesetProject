@@ -26,7 +26,17 @@
             存放用户自定义数据
             </summary>
         </member>
+        <member name="M:SmallManagerSpace.Resources.ComData.InitImportData(System.String)">
+            <summary>
+            初始化导入融合的公共数据
+            </summary>
+        </member>
         <member name="M:SmallManagerSpace.Resources.ComData.InitCommonData(DevComponents.DotNetBar.TabControl,System.String)">
+            <summary>
+            初始化程序运行的公共数据
+            </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.ComData.InitImportFileData(System.String)">
             <summary>
             初始化程序运行的公共数据
             </summary>
@@ -40,6 +50,12 @@
             <summary>
             Enum Struct 公共数据建立数据容器对象
             </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.ComData.InitImportPathAndFileData(System.String)">
+            <summary>
+            初始化导入合并文件路径
+            </summary>
+            <param name="PathFileName"></param>
         </member>
         <member name="T:SmallManagerSpace.Resources.BaseEntity">
             <summary>
@@ -725,6 +741,12 @@
             加载主题皮肤
             </summary>
             <param name="skinname">皮肤文件名</param>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.ImportFileProcessInstance(System.String)">
+            <summary>
+            添加文件到主界面的实例
+            </summary>
+            <param name="PathFileName">文件路径名称</param>
         </member>
         <member name="M:MasterDetailSample.frmMain.SerialEntityToXml(System.String,System.String)">
             <summary>
