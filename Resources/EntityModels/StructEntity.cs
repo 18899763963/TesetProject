@@ -66,6 +66,24 @@ namespace SmallManagerSpace.Resources
         [XmlAttribute("nodetype")]
         public string nodetype { get; set; }
     }
+
+    public class StructEntityEquality : IEqualityComparer<object>
+    {
+        public bool Equals(object x, object y)
+        {
+            StructItem ox = x as StructItem;
+            StructItem oy = y as StructItem;
+            return ox.name == oy.name && ox.type == oy.type;
+        }
+        public int GetHashCode(object obj)
+        {
+            StructItem objx = obj as StructItem;          
+            return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
+        }
+    }
+
+
+
     public class StructFunction
     {
         /// <summary>
@@ -114,11 +132,11 @@ namespace SmallManagerSpace.Resources
             foreach (DefineEntity defineEntity in defineEntitys)
             {
 
-                string RegexStr4 = @"(?<varName>[\S]+)[\s]*[\[]+(?<varVal>[\S]*)[\]]+";
-                Match matc = Regex.Match(defineEntity.name, RegexStr4);
-                string varName = matc.Groups["varName"].ToString();
-                string varVal = matc.Groups["varVal"].ToString();
-                if(varVal=="")
+                //string RegexStr4 = @"(?<varName>[\S]+)[\s]*[\[]+(?<varNum>[\S]*)[\]]+";
+                //Match matc = Regex.Match(defineEntity.name, RegexStr4);
+                string varName = defineEntity.name;
+                string varNum = defineEntity.ArrayNum;
+                if (varNum=="")
                 {
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
                     //修改structEntity的index
@@ -131,8 +149,8 @@ namespace SmallManagerSpace.Resources
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
                     //修改structEntity的index
                     ob.index = "0";
-                    if (!ComData.EntryVar.ContainsKey(varVal)) { ComData.EntryVar.Add(varVal, 0); }                    
-                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName , index = ob.index, preinput = varVal, note = ob.note, nodetype = ob.nodetype });
+                    if (!ComData.EntryVar.ContainsKey(varNum)) { ComData.EntryVar.Add(varNum, 0); }                    
+                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName , index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
 
                 }

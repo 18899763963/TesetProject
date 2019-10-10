@@ -2,6 +2,7 @@ using DevComponents.AdvTree;
 using DevComponents.DotNetBar;
 using SmallManagerSpace.Forms;
 using SmallManagerSpace.Resources;
+using SmallManagerSpace.Resources.DataBase;
 using SmallManagerSpace.Resources.FileStringADU;
 using SmallManagerSpace.Resources.GUIVsEntity;
 using System;
@@ -118,7 +119,7 @@ namespace MasterDetailSample
             }
             //3.Entity转换CustomEntity
             if (ComData.stepNow.Equals(Step.EntityToCustomEntity))
-            {             
+            {
                 StructFunction structFunction = new StructFunction();
                 structFunction.CreateCustomStruct(ComData.defineEntities);
                 //将obj对象的数据序列化到xml文件中
@@ -132,7 +133,7 @@ namespace MasterDetailSample
 
                 DisplayDataGuiViaEntity displayDataGuiViaOBJ = new DisplayDataGuiViaEntity(DisplayDataGuiViaOBJ);
                 displayDataGuiViaOBJ(ComData.customStruct);
-       
+
             }
             ComData.stepNow = Step.InitComm;
         }
@@ -212,7 +213,23 @@ namespace MasterDetailSample
         private void GetCustomEntityFromXmlFile(string InputFilePath)
         {
             //1.解析XML文件内容到Entity
-            ComData.customStruct = ComData.structFunction.XmlDeSerializeToStructObj(ComData.sourceWorkPath, ComData.selectedSourceFileName);
+            if (ComData.customStruct != null)
+            {     //合并导入后数据.
+                StructEntity ImportStruct = ComData.structFunction.XmlDeSerializeToStructObj(ComData.importedWorkPath, ComData.importedSourceFileName);
+                ComData.customStruct.nodeList.AddRange(ImportStruct.nodeList);
+                //IEnumerable<object> unionLs = ImportStruct.nodeList.Union<object>(ComData.customStruct.nodeList, new StructEntityEquality());
+                //var unionLs = ComData.customStruct.nodeList.Except<object>(ImportStruct.nodeList, new StructEntityEquality());
+                //ComData.customStruct.nodeList.Clear();
+                //ComData.customStruct.nodeList.AddRange(unionLs);
+            }
+            else
+            {
+                ComData.customStruct = ComData.structFunction.XmlDeSerializeToStructObj(ComData.sourceWorkPath, ComData.selectedSourceFileName);
+
+            }
+            //去重复的元素
+            ComData.customStruct.nodeList = ComData.customStruct.nodeList.Distinct<object>(new StructEntityEquality()).ToList<object>();
+
         }
         /// <summary>
         /// 序列化对象到xml文件中
@@ -317,7 +334,7 @@ namespace MasterDetailSample
                             GenerationXmlFromEntity GenerationXmlFromEntity = new GenerationXmlFromEntity(SerialEntityToXml);
                             GenerationXmlFromEntity("enum", ComData.programStartPath + ComData.enumItemsFileName);
                             GenerationXmlFromEntity("struct", ComData.programStartPath + ComData.structItemsFileName);
-                            GenerationXmlFromEntity("customstruct", ComData.saveWorkPath + ComData.customItemsFileName );
+                            GenerationXmlFromEntity("customstruct", ComData.saveWorkPath + ComData.customItemsFileName);
 
                         }
                     }
@@ -578,18 +595,20 @@ namespace MasterDetailSample
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "E:\\";
-            openFileDialog.Filter = "h文件(*.h)|*.h|xml文件(*.xml)|*.xml";
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.FilterIndex = 1;
-            //定义程序处理阶段
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string SelectedPathSource = openFileDialog.FileName;
-                ImportFileProcess importFileProcess = new ImportFileProcess(ImportFileProcessInstance);
-                importFileProcess(SelectedPathSource);
-            }
+            SqliteData sqliteData = new SqliteData();
+            sqliteData.loadSqliteRecord();
+            //OpenFileDialog openFileDialog = new OpenFileDialog();
+            //openFileDialog.InitialDirectory = "E:\\";
+            //openFileDialog.Filter = "h文件(*.h)|*.h|xml文件(*.xml)|*.xml";
+            //openFileDialog.RestoreDirectory = true;
+            //openFileDialog.FilterIndex = 1;
+            ////定义程序处理阶段
+            //if (openFileDialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    string SelectedPathSource = openFileDialog.FileName;
+            //    ImportFileProcess importFileProcess = new ImportFileProcess(ImportFileProcessInstance);
+            //    importFileProcess(SelectedPathSource);
+            //}
         }
     }
 }

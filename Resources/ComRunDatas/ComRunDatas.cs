@@ -18,7 +18,6 @@ namespace SmallManagerSpace.Resources
         static public StructFunction structFunction = null;
         static public StructEntity structEntity = null;
         static public StructEntity customStruct = null;
-        static public StructEntity importStruct = null;
         static public EnumEntity enumEntity = null;
         static public List<DefineEntity> defineEntities =new  List<DefineEntity>();
         static public Step stepNow = Step.InitComm;
@@ -85,6 +84,8 @@ namespace SmallManagerSpace.Resources
         static public void InitEnumSturctContainer()
         {
             defineEntities.Clear();
+            structEntity = null;
+            customStruct = null;
             enumFunction = new EnumFunction();
             enumFunction.CreatesimpleTypeInfo();
             structFunction = new StructFunction();

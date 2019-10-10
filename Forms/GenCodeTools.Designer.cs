@@ -35,6 +35,7 @@ namespace MasterDetailSample
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.ExitMainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +72,7 @@ namespace MasterDetailSample
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutToolStripButton7 = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.默认ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.浅色ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,8 +81,6 @@ namespace MasterDetailSample
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.Panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -138,6 +138,12 @@ namespace MasterDetailSample
             this.OpenFileToolStripMenuItem.Text = "打开文件(&O)           Ctrl+O";
             this.OpenFileToolStripMenuItem.Click += new System.EventHandler(this.OpenFileToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(225, 22);
+            this.toolStripMenuItem2.Text = "添加文件(&A)            Ctrl+A";
+            // 
             // SaveFileToolStripMenuItem
             // 
             this.SaveFileToolStripMenuItem.Name = "SaveFileToolStripMenuItem";
@@ -172,28 +178,28 @@ namespace MasterDetailSample
             // CutToolStripMenuItem
             // 
             this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
-            this.CutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.CutToolStripMenuItem.Text = "剪切";
             this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
             // 
             // CopyToolStripMenuItem
             // 
             this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.CopyToolStripMenuItem.Text = "复制";
             this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // PasteToolStripMenuItem
             // 
             this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
-            this.PasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.PasteToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.PasteToolStripMenuItem.Text = "粘贴";
             this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
             // 
             // DeleteToolStripMenuItem
             // 
             this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.DeleteToolStripMenuItem.Text = "删除    ";
             this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
@@ -214,7 +220,7 @@ namespace MasterDetailSample
             this.DataToolStripMenuItem});
             this.LanguageToolStripMenuItem.Enabled = false;
             this.LanguageToolStripMenuItem.Name = "LanguageToolStripMenuItem";
-            this.LanguageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.LanguageToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.LanguageToolStripMenuItem.Text = "语言配置";
             this.LanguageToolStripMenuItem.Visible = false;
             // 
@@ -247,7 +253,7 @@ namespace MasterDetailSample
             this.默认ToolStripMenuItem,
             this.浅色ToolStripMenuItem});
             this.主题配置ToolStripMenuItem.Name = "主题配置ToolStripMenuItem";
-            this.主题配置ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.主题配置ToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.主题配置ToolStripMenuItem.Text = "主题配置(&C)";
             // 
             // 默认ToolStripMenuItem
@@ -283,7 +289,7 @@ namespace MasterDetailSample
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.AboutToolStripMenuItem.Text = "关于(&A)";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -443,6 +449,17 @@ namespace MasterDetailSample
             this.toolStrip1.TabIndex = 26;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.ToolTipText = "添加文件";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // toolStripSplitButton1
             // 
             this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -499,22 +516,6 @@ namespace MasterDetailSample
             // eventLog1
             // 
             this.eventLog1.SynchronizingObject = this;
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(225, 22);
-            this.toolStripMenuItem2.Text = "添加文件(&A)            Ctrl+A";
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // frmMain
             // 

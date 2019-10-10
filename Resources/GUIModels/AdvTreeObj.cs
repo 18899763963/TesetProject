@@ -223,7 +223,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             Node selectedNode = CurrentAdvTree.SelectedNode;
             Dictionary<string, string> SelectedColumnData = GetSelectedColumnData(selectedNode);
             //如果是entry节点           
-            if (SelectedColumnData["preinput"] == "entry")
+            if (SelectedColumnData.ContainsKey("preinput") && SelectedColumnData["preinput"] == "entry")
             {
                 //判断选中节点的数据是否含有preinput=entry 变量
                 //处理方法：1.含preinput=entry 变量
@@ -959,8 +959,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             if (node == null) return TempKeyValuePairs;
             string[] columnN = ColumnName.Keys.ToArray();
             foreach (int i in ColumnName.Values)
-            {
-                TempKeyValuePairs[columnN[i]] = node.Cells[i].Text;
+            {   
+                if((columnN.Count()>i) && (node.Cells.Count>i))
+                {
+                    TempKeyValuePairs[columnN[i]] = node.Cells[i].Text;
+                }
             }
             return TempKeyValuePairs;
     

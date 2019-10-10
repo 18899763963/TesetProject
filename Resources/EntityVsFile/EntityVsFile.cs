@@ -214,13 +214,20 @@ namespace SmallManagerSpace.Resources
                             Match matchStr = Regex.Match(line, RegexStr3);
                             string structType = matchStr.Groups["structType"].ToString();
                             string structName = matchStr.Groups["structName"].ToString();
+                            //删除同名结构体变量，将最后一个作为新值
+                            if(ComData.defineEntities.Count>0)
+                            {
+                                DefineEntity matchDefineEntity = ComData.defineEntities.Where(i => i.name == structName).FirstOrDefault();
+                                if (matchDefineEntity != null) { ComData.defineEntities.Remove(matchDefineEntity); }
+                            }
                             if (matchStr.Groups["ArrayNum"] == null || matchStr.Groups["ArrayNum"].ToString() == "")
                             {
                                 ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName });
                             }
                             else
                             {
-                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName + "[" + matchStr.Groups["ArrayNum"].ToString() + "]" });
+                                //ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName+"["+ matchStr.Groups["ArrayNum"].ToString()+"]" });
+                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName, ArrayNum = matchStr.Groups["ArrayNum"].ToString() });
                             }
                         }
                     }

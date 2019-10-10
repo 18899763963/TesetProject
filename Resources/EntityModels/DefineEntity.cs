@@ -14,5 +14,6 @@ namespace SmallManagerSpace.Resources
     {
         public string type { get; set; }
         public string name { get; set; }
+        public string ArrayNum { get; set; } = "";
     }
 }
