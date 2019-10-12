@@ -3,7 +3,6 @@ using DevComponents.DotNetBar;
 using SmallManagerSpace.Forms;
 using SmallManagerSpace.Resources;
 using SmallManagerSpace.Resources.DataBase;
-using SmallManagerSpace.Resources.DataBase.BookTest;
 using SmallManagerSpace.Resources.FileStringADU;
 using SmallManagerSpace.Resources.GUIVsEntity;
 using System;
@@ -596,10 +595,8 @@ namespace MasterDetailSample
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            //CategoryTest programTest = new CategoryTest();
-            //programTest.MainTest();
-            TestBook testBook = new TestBook();
-            testBook.btnAdd_Click();
+            SqliteData sqliteData = new SqliteData();
+            sqliteData.loadSqliteRecord();
             //OpenFileDialog openFileDialog = new OpenFileDialog();
             //openFileDialog.InitialDirectory = "E:\\";
             //openFileDialog.Filter = "h文件(*.h)|*.h|xml文件(*.xml)|*.xml";
