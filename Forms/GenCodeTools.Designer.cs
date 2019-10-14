@@ -35,7 +35,7 @@ namespace MasterDetailSample
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddFileToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.ExitMainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,8 +50,8 @@ namespace MasterDetailSample
             this.EnglishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.主题配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.默认ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.浅色ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LithtColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,10 +72,10 @@ namespace MasterDetailSample
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutToolStripButton7 = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.AddFileAToolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
-            this.默认ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.浅色ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.DefaultToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.LightColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new DevComponents.DotNetBar.TabControl();
             this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -122,7 +122,7 @@ namespace MasterDetailSample
             // 
             this.FileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenFileToolStripMenuItem,
-            this.toolStripMenuItem2,
+            this.AddFileToolStripMenuItem2,
             this.SaveFileToolStripMenuItem,
             this.toolStripSeparator4,
             this.ExitMainToolStripMenuItem});
@@ -138,11 +138,12 @@ namespace MasterDetailSample
             this.OpenFileToolStripMenuItem.Text = "打开文件(&O)           Ctrl+O";
             this.OpenFileToolStripMenuItem.Click += new System.EventHandler(this.OpenFileToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem2
+            // AddFileToolStripMenuItem2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(225, 22);
-            this.toolStripMenuItem2.Text = "添加文件(&A)            Ctrl+A";
+            this.AddFileToolStripMenuItem2.Enabled = false;
+            this.AddFileToolStripMenuItem2.Name = "AddFileToolStripMenuItem2";
+            this.AddFileToolStripMenuItem2.Size = new System.Drawing.Size(225, 22);
+            this.AddFileToolStripMenuItem2.Text = "添加文件(&A)            Ctrl+A";
             // 
             // SaveFileToolStripMenuItem
             // 
@@ -250,27 +251,27 @@ namespace MasterDetailSample
             // 主题配置ToolStripMenuItem
             // 
             this.主题配置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.默认ToolStripMenuItem,
-            this.浅色ToolStripMenuItem});
+            this.DefaultToolStripMenuItem,
+            this.LithtColorToolStripMenuItem});
             this.主题配置ToolStripMenuItem.Name = "主题配置ToolStripMenuItem";
             this.主题配置ToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.主题配置ToolStripMenuItem.Text = "主题配置(&C)";
             // 
-            // 默认ToolStripMenuItem
+            // DefaultToolStripMenuItem
             // 
-            this.默认ToolStripMenuItem.Checked = true;
-            this.默认ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.默认ToolStripMenuItem.Name = "默认ToolStripMenuItem";
-            this.默认ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.默认ToolStripMenuItem.Text = "默认";
-            this.默认ToolStripMenuItem.Click += new System.EventHandler(this.默认ToolStripMenuItem_Click);
+            this.DefaultToolStripMenuItem.Checked = true;
+            this.DefaultToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DefaultToolStripMenuItem.Name = "DefaultToolStripMenuItem";
+            this.DefaultToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.DefaultToolStripMenuItem.Text = "默认";
+            this.DefaultToolStripMenuItem.Click += new System.EventHandler(this.DefaultColorToolStripMenuItem_Click);
             // 
-            // 浅色ToolStripMenuItem
+            // LithtColorToolStripMenuItem
             // 
-            this.浅色ToolStripMenuItem.Name = "浅色ToolStripMenuItem";
-            this.浅色ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.浅色ToolStripMenuItem.Text = "浅色";
-            this.浅色ToolStripMenuItem.Click += new System.EventHandler(this.浅色ToolStripMenuItem_Click);
+            this.LithtColorToolStripMenuItem.Name = "LithtColorToolStripMenuItem";
+            this.LithtColorToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.LithtColorToolStripMenuItem.Text = "浅色";
+            this.LithtColorToolStripMenuItem.Click += new System.EventHandler(this.LightColorToolStripMenuItem_Click);
             // 
             // ToolsToolStripMenuItem
             // 
@@ -430,7 +431,7 @@ namespace MasterDetailSample
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenFileToolStripButton1,
-            this.toolStripButton1,
+            this.AddFileAToolStripButton1,
             this.SaveFileToolStripButton1,
             this.toolStripSeparator2,
             this.CutToolStripButton1,
@@ -449,23 +450,24 @@ namespace MasterDetailSample
             this.toolStrip1.TabIndex = 26;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // AddFileAToolStripButton1
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.ToolTipText = "添加文件";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.AddFileAToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddFileAToolStripButton1.Enabled = false;
+            this.AddFileAToolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("AddFileAToolStripButton1.Image")));
+            this.AddFileAToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddFileAToolStripButton1.Name = "AddFileAToolStripButton1";
+            this.AddFileAToolStripButton1.Size = new System.Drawing.Size(24, 24);
+            this.AddFileAToolStripButton1.Text = "toolStripButton1";
+            this.AddFileAToolStripButton1.ToolTipText = "添加文件";
+            this.AddFileAToolStripButton1.Click += new System.EventHandler(this.AddFileAToolStripButton1_Click);
             // 
             // toolStripSplitButton1
             // 
             this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.默认ToolStripMenuItem1,
-            this.浅色ToolStripMenuItem1});
+            this.DefaultToolStripMenuItem1,
+            this.LightColorToolStripMenuItem1});
             this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
@@ -473,21 +475,21 @@ namespace MasterDetailSample
             this.toolStripSplitButton1.Text = "toolStripSplitButton1";
             this.toolStripSplitButton1.ToolTipText = "主题";
             // 
-            // 默认ToolStripMenuItem1
+            // DefaultToolStripMenuItem1
             // 
-            this.默认ToolStripMenuItem1.Checked = true;
-            this.默认ToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.默认ToolStripMenuItem1.Name = "默认ToolStripMenuItem1";
-            this.默认ToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
-            this.默认ToolStripMenuItem1.Text = "默认";
-            this.默认ToolStripMenuItem1.Click += new System.EventHandler(this.默认ToolStripMenuItem1_Click);
+            this.DefaultToolStripMenuItem1.Checked = true;
+            this.DefaultToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DefaultToolStripMenuItem1.Name = "DefaultToolStripMenuItem1";
+            this.DefaultToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
+            this.DefaultToolStripMenuItem1.Text = "默认";
+            this.DefaultToolStripMenuItem1.Click += new System.EventHandler(this.DefaultColorToolStripMenuItem1_Click);
             // 
-            // 浅色ToolStripMenuItem1
+            // LightColorToolStripMenuItem1
             // 
-            this.浅色ToolStripMenuItem1.Name = "浅色ToolStripMenuItem1";
-            this.浅色ToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
-            this.浅色ToolStripMenuItem1.Text = "浅色";
-            this.浅色ToolStripMenuItem1.Click += new System.EventHandler(this.浅色ToolStripMenuItem1_Click);
+            this.LightColorToolStripMenuItem1.Name = "LightColorToolStripMenuItem1";
+            this.LightColorToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
+            this.LightColorToolStripMenuItem1.Text = "浅色";
+            this.LightColorToolStripMenuItem1.Click += new System.EventHandler(this.LightColorToolStripMenuItem1_Click);
             // 
             // tabControl1
             // 
@@ -596,13 +598,13 @@ namespace MasterDetailSample
         private ToolStripMenuItem DataToolStripMenuItem;
         private SaveFileDialog saveFileDialog1;
         private ToolStripMenuItem 主题配置ToolStripMenuItem;
-        private ToolStripMenuItem 默认ToolStripMenuItem;
-        private ToolStripMenuItem 浅色ToolStripMenuItem;
+        private ToolStripMenuItem DefaultToolStripMenuItem;
+        private ToolStripMenuItem LithtColorToolStripMenuItem;
         private ToolStripSplitButton toolStripSplitButton1;
-        private ToolStripMenuItem 默认ToolStripMenuItem1;
-        private ToolStripMenuItem 浅色ToolStripMenuItem1;
-        private ToolStripMenuItem toolStripMenuItem2;
-        private ToolStripButton toolStripButton1;
+        private ToolStripMenuItem DefaultToolStripMenuItem1;
+        private ToolStripMenuItem LightColorToolStripMenuItem1;
+        private ToolStripMenuItem AddFileToolStripMenuItem2;
+        private ToolStripButton AddFileAToolStripButton1;
     }
 	
 }

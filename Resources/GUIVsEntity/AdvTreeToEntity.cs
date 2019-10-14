@@ -15,14 +15,13 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// 将AdvTree节点数据转换为obj
         /// </summary>
         /// <param name="advTree">输入树结构</param>
-        public void GetEntityByAdvTreeNode(AdvTree advTree)
+        public StructEntity GetEntityByAdvTreeNode(AdvTree advTree)
         {
-            if (advTree == null && ComData.customStruct == null) return;
+            if (advTree == null) return null; ;
             //重置cid
             int cid = 1;
-            //重开辟空间
-            ComData.customStruct = new StructEntity();
-
+            //重开辟空间       
+            StructEntity structEntity = new StructEntity();
             foreach (Node node in advTree.DisplayRootNode.Nodes)
             {
                 AdvTreeObj advTreeObj = new AdvTreeObj();
@@ -31,11 +30,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 {
                     //2.通过节点数据得到StructItem对象
                     StructItem structItem = GetStructItemEntity(node, cid++);
-                    ComData.customStruct.nodeList.Add(structItem);
-                    TraversalTreeNode(ComData.customStruct.nodeList, node);
+                    structEntity.nodeList.Add(structItem);
+                    TraversalTreeNode(structEntity.nodeList, node);
                 }
             }
-
+            return structEntity;
         }
         /// <summary>
         /// 遍历树节点

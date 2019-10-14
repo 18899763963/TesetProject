@@ -480,33 +480,7 @@ namespace SmallManagerSpace.Resources
                 }
                 stringWriter.WriteLine(CommStr.Space + CommStr.Space + "return 0;");
 
-                //if (readLine.Contains("OTN")&&readLine.Contains("*"))
-                //{
-                //    //截取指针名
-                //    int index1 = readLine.IndexOf('*');
-                //    int index2 = readLine.IndexOf(')');
-                //    string pointer = readLine.Substring(index1 + 1, index2 - index1 - 1)+"->";//指针名 
-                //    //截取结构体类型名
-                //    index1 = readLine.IndexOf("OTN");
-                //    index2 = readLine.IndexOf("*");
-                //    string type = readLine.Substring(index1, index2 - index1 - 1);//结构体类型 
-                //    string indexName;
-                //    if (readLine.Contains("AAL_UINT8"))
-                //    {
-                //        index1 = readLine.IndexOf("AAL_UINT8");
-                //        index2 = readLine.IndexOf(",");
-                //        indexName = readLine.Substring(index1+10, index2 - index1 - 10);
-                //    }
-                //    else
-                //    {
-                //        indexName = "";
-                //    }
-                //    GenerateTextToFunction(type, pointer, indexName);
-                //}
-                //else
-                //{
-                //    stringWriter.WriteLine(CommStr.Space+ CommStr.Space+"return 0;");
-                //}
+             
                 stringWriter.WriteLine("}\r\n");
             }
 
@@ -693,80 +667,6 @@ namespace SmallManagerSpace.Resources
                 }
             }
 
-            //foreach (string readLine in OutLine)
-            //{
-            //    //写入复制内容的每一行
-            //    stringWriter.Write(readLine.Substring(0, readLine.Length - 1) + "\r\n{\r\n");
-            //    var List = ComData.customStruct.nodeList.GroupBy(x => (x as StructItem).type).Select(c => c.First()).ToList();
-            //    foreach (StructItem Item in List)
-            //    {
-            //        if (readLine.Contains(Item.type))
-            //        {
-            //            //截取指针名
-            //            int index1 = readLine.IndexOf('*');
-            //            int index2 = readLine.IndexOf(')');
-            //            string HeadInfoString = readLine.Substring(index1 + 1, index2 - index1 - 1);//指针名 
-            //            StructItem nestStructItem;//嵌套的结构体
-            //            String ParameterName, ParameterValue;//参数名，参数值
-            //            var RepeatList = ComData.customStruct.nodeList.Where(x => (x as StructItem).type == Item.type).ToList();
-            //            if (RepeatList.Count > 1)
-            //            {
-            //                stringWriter.Write(CommStr.Space + CommStr.Space + "switch(" + RepeatList.Count + ")\r\n" + CommStr.Space + CommStr.Space + "{\r\n");
-            //                int i = 1;
-            //                foreach (StructItem RepeatItem in RepeatList)
-            //                {
-            //                    stringWriter.Write(CommStr.Space + CommStr.Space + CommStr.Space + CommStr.Space + "case " + i + ":\r\n");
-            //                    for (int j = 0; j < RepeatItem.parameterList.Count; j++)
-            //                    {
-            //                        if (RepeatItem.parameterList[j] is StructItem)
-            //                        {
-            //                            nestStructItem = Item.parameterList[j] as StructItem;
-            //                            for (int m = 0; m < nestStructItem.parameterList.Count; m++)
-            //                            {
-            //                                ParameterName = (nestStructItem.parameterList[m] as Parameter).name;
-            //                                ParameterValue = (nestStructItem.parameterList[m] as Parameter).value;
-            //                                stringWriter.Write(CommStr.Space + CommStr.Space + CommStr.Space + CommStr.Space + HeadInfoString + "->" + nestStructItem.name + "."  + ParameterName + " = " + ParameterValue + ";\r\n");
-            //                            }
-            //                        }
-            //                        else if (RepeatItem.parameterList[j] is Parameter)
-            //                        {
-            //                            ParameterName = (RepeatItem.parameterList[j] as Parameter).name;
-            //                            ParameterValue = (RepeatItem.parameterList[j] as Parameter).value;
-            //                            stringWriter.Write(CommStr.Space + CommStr.Space + CommStr.Space + CommStr.Space + HeadInfoString + "->" + ParameterName + " = " + ParameterValue + ";\r\n");
-            //                        }
-            //                    }
-            //                    i++;
-            //                }
-            //                stringWriter.Write(CommStr.Space + CommStr.Space + "}\r\n");
-            //            }
-            //            else
-            //            {
-            //                for (int j = 0; j < Item.parameterList.Count; j++)
-            //                {
-            //                    if (Item.parameterList[j] is StructItem)
-            //                    {
-            //                        nestStructItem = Item.parameterList[j] as StructItem;
-            //                        for (int m = 0; m < nestStructItem.parameterList.Count; m++)
-            //                        {
-            //                            ParameterName = (nestStructItem.parameterList[m] as Parameter).name;
-            //                            ParameterValue = (nestStructItem.parameterList[m] as Parameter).value;
-            //                            stringWriter.Write(CommStr.Space + CommStr.Space + HeadInfoString + "->" + nestStructItem.name + "." + ParameterName + " = " + ParameterValue + ";\r\n");
-            //                        }
-            //                    }
-            //                    else if (Item.parameterList[j] is Parameter)
-            //                    {
-
-            //                        ParameterName = (Item.parameterList[j] as Parameter).name;
-            //                        ParameterValue = (Item.parameterList[j] as Parameter).value;
-            //                        stringWriter.Write(CommStr.Space + CommStr.Space + HeadInfoString + "->" + ParameterName + " = " + ParameterValue + ";\r\n");
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    stringWriter.Write(CommStr.Space + CommStr.Space + "return 0;\r\n}\r\n\r\n");
-            //}
-            //stringWriter.Write("//****************************************************************************************//\r\n");
             //7.关闭文件流
             stringWriter.Flush();
             stringWriter.Close();

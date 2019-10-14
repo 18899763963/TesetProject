@@ -26,7 +26,7 @@
             存放用户自定义数据
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.ComData.InitImportData(System.String)">
+        <member name="M:SmallManagerSpace.Resources.ComData.InitImportData">
             <summary>
             初始化导入融合的公共数据
             </summary>
@@ -747,13 +747,6 @@
             添加文件到主界面的实例
             </summary>
             <param name="PathFileName">文件路径名称</param>
-        </member>
-        <member name="M:MasterDetailSample.frmMain.SerialEntityToXml(System.String,System.String)">
-            <summary>
-            序列化对象到xml文件中
-            </summary>
-            <param name="Type">对象类型</param>
-            <param name="FileFullName">存放文件地址</param>
         </member>
         <member name="M:MasterDetailSample.frmMain.SaveFileToolStripMenuItem_Click(System.Object,System.EventArgs)">
             <summary>

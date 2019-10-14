@@ -73,7 +73,7 @@ namespace SmallManagerSpace.Resources
         {
             StructItem ox = x as StructItem;
             StructItem oy = y as StructItem;
-            return ox.name == oy.name && ox.type == oy.type;
+            return ox.name == oy.name && ox.index == oy.index;
         }
         public int GetHashCode(object obj)
         {
@@ -126,9 +126,11 @@ namespace SmallManagerSpace.Resources
         /// 创建customStruct对象
         /// </summary>
         /// <param name="defineEntitys"></param>
-        public void CreateCustomStruct(List<DefineEntity> defineEntitys)
+        public StructEntity CreateCustomStruct(List<DefineEntity> defineEntitys)
         {
-            ComData.customStruct = new StructEntity();
+          
+            StructEntity structEntity = new StructEntity();
+
             foreach (DefineEntity defineEntity in defineEntitys)
             {
 
@@ -141,20 +143,21 @@ namespace SmallManagerSpace.Resources
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
                     //修改structEntity的index
                     ob.index = "";
-                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name,index= ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
-                    TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name,index= ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
+                    TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
                 }
                 else
                 {
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
                     //修改structEntity的index
                     ob.index = "0";
-                    if (!ComData.EntryVar.ContainsKey(varNum)) { ComData.EntryVar.Add(varNum, 0); }                    
-                    ComData.customStruct.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName , index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype });
-                    TraversalAddItem((ComData.customStruct.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+                    if (!ComData.EntryVar.ContainsKey(varNum)) { ComData.EntryVar.Add(varNum, 0); }
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName , index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype });
+                    TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
 
                 }
             }
+            return structEntity;
         }
         /// <summary>
         /// 填充customStruct对象的数据

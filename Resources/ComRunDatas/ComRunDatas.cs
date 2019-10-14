@@ -18,14 +18,15 @@ namespace SmallManagerSpace.Resources
         static public StructFunction structFunction = null;
         static public StructEntity structEntity = null;
         static public StructEntity customStruct = null;
+        static public StructEntity importStruct = null;
         static public EnumEntity enumEntity = null;
         static public List<DefineEntity> defineEntities =new  List<DefineEntity>();
         static public Step stepNow = Step.InitComm;
         static public string baseItemsFileName = "BaseItems.xsd";
+        static public string enumItemsFileName = "EnumItems.xml";
         static public string structItemsFileName = "StructItems.xml";
         //static public string importItemsFileName = "ImportItems.xml";
         static public string customItemsFileName = "CustomItems"+DateTime.Now.ToString("yyyyMMddHHmm")+".xml";
-        static public string enumItemsFileName = "EnumItems.xml";
         static public string selectedSourceFileName = null;
         static public string importedSourceFileName = null;
         static public string saveCFileName = null;
@@ -45,9 +46,9 @@ namespace SmallManagerSpace.Resources
         /// <summary>
         /// 初始化导入融合的公共数据
         /// </summary>
-        static public void InitImportData(string pathFileName)
+        static public void InitImportData()
         {
-            InitPathAndFileData(pathFileName);
+            defineEntities.Clear();
         }
         /// <summary>
         /// 初始化程序运行的公共数据
