@@ -200,6 +200,7 @@ namespace SmallManagerSpace.Resources
                             string baseValue = "xsd:hexBinary";
                             string lengthValue = "1";
                             string valueValue = "1";
+                            enumAutoStep = 0;
                             //添加simpleTypeItem数据到列表中
                             ComData.enumFunction.addValueOfsimpleTypeItemWithout(baseValue, lengthValue, valueValue);
                             CapturedType = "isEnum";
@@ -317,7 +318,7 @@ namespace SmallManagerSpace.Resources
                                 if (int.TryParse(preinput, out arrayNumber))
                                 {
                                     isArrayNumber = true;
-                                    preinput = "";
+                                    preinput = "invariant";
                                 }
                                 indexS = "0";
                             }
@@ -383,7 +384,7 @@ namespace SmallManagerSpace.Resources
                             //(1)结构如OTN_USER_PORT_RATE_NULL = 0,
                             if (line.Contains("="))
                             {
-                                string RegexStr1 = @"(?<enValue>[\S]+)[\s]*=[\s]*(?<valueValue>[\S]*),";
+                                string RegexStr1 = @"(?<enValue>[\S]+)[\s]*=[\s]*(?<valueValue>[\S]*[^,\s])[\s]*,?[\s]*";
                                 Match matc1 = Regex.Match(line, RegexStr1);
                                 Console.WriteLine("parametertype:{0},parametername:{1}", matc1.Groups["enValue"].ToString(), matc1.Groups["valueValue"].ToString());
                                 enValue = matc1.Groups["enValue"].ToString();
@@ -398,7 +399,7 @@ namespace SmallManagerSpace.Resources
                             }//(2)结构如OTN_USER_PORT_RATE_2G5,
                             else
                             {
-                                string RegexStr1 = @"(?<enValue>[\S]+[^,])[\s]*,?";
+                                string RegexStr1 = @"(?<enValue>[\S]+[^,])[\s]*,?[\s]*";
                                 Match matc1 = Regex.Match(line, RegexStr1);
                                 Console.WriteLine("parametertype:{0}", matc1.Groups["enValue"].ToString());
                                 enValue = matc1.Groups["enValue"].ToString();
@@ -414,15 +415,18 @@ namespace SmallManagerSpace.Resources
             sr.Close();
         }
 
-
-        public static void GetFileFromEntityByT4(string GenFileFullName)
+        /// <summary>
+        /// 通过t4模板得到cpp文件
+        /// </summary>
+        /// <param name="GenFileFullName">生成文件名</param>
+        public static void GetCppFileFromEntityByT4(string GenFileFullName)
         {
 
-            if (ComData.sourceWorkPath == null && ComData.selectedSourceFileName == null && ComData.structEntity == null) return;
+            if (ComData.sourceWorkPath == null && ComData.selectedSourceFileName == null && ComData.customStruct == null) return;
             FileStream fileStream = new FileStream(GenFileFullName, FileMode.Create);
             StreamWriter stringWriter = new StreamWriter(fileStream, Encoding.UTF8);
             //将数据写入到文件,使用T4模板
-            RuntimeTextTemplate example = new RuntimeTextTemplate();
+            GetCppString example = new GetCppString();
             string pageContent = example.TransformText();
             stringWriter.Write(pageContent);
             //关闭文件流
@@ -430,247 +434,23 @@ namespace SmallManagerSpace.Resources
             stringWriter.Close();
         }
 
-
-        public static void GetFileFromEntity(string GenFileFullName)
+        /// <summary>
+        /// 通过t4模板得到h文件
+        /// </summary>
+        /// <param name="GenFileFullName">生成文件名</param>
+        public static void GetHeaderFileFromEntityByT4(string GenFileFullName)
         {
-            if (ComData.sourceWorkPath == null && ComData.selectedSourceFileName == null && ComData.structEntity == null) return;
-            //1.将数据同类数据合并到字典中
-            //Dictionary<string, FormatEntity> FormatEntityData = GetFormatEntityData(ComData.customStruct);
-            //2.复制源文件到新文件中，并且将生成数据放入到其中
-            //File.Copy(ComData.sourceWorkPath + ComData.headSourceFileName, GenFileFullName, true);
-            //3.得到文件流,将数据添加到文件后面
+
+            if (ComData.sourceWorkPath == null && ComData.selectedSourceFileName == null && ComData.enumEntity == null && ComData.structEntity == null) return;
             FileStream fileStream = new FileStream(GenFileFullName, FileMode.Create);
             StreamWriter stringWriter = new StreamWriter(fileStream, Encoding.UTF8);
-            //将版本信息模板写入到输出文件中,使用T4模板
-            //RuntimeTextTemplate example = new RuntimeTextTemplate();
-            TestTextTemplate example = new TestTextTemplate();
+            //将数据写入到文件,使用T4模板
+            GetHeaderString example = new GetHeaderString();
             string pageContent = example.TransformText();
             stringWriter.Write(pageContent);
-            //将具体数据写入
-            foreach (string readLine in ComData.OutLines)
-            {
-                //写入复制内容的每一行
-                stringWriter.Write(readLine.Substring(0, readLine.Length - 1) + "\r\n{\r\n");
-                var List = ComData.customStruct.nodeList.GroupBy(x => (x as StructItem).type).Select(c => c.First()).ToList();
-                foreach(StructItem Item in List)
-                {
-                    if (readLine.Contains(Item.type))
-                    {
-                        //截取指针名
-                        int index1 = readLine.IndexOf('*');
-                        int index2 = readLine.IndexOf(')');
-                        string pointer = readLine.Substring(index1 + 1, index2 - index1 - 1) + "->";//指针名 
-                                                                                                    //截取结构体类型名
-                        index1 = readLine.IndexOf("OTN");
-                        index2 = readLine.IndexOf("*");
-                        string type = readLine.Substring(index1, index2 - index1 - 1);//结构体类型 
-                        string indexName;
-                        if (readLine.Contains("AAL_UINT8"))
-                        {
-                            index1 = readLine.IndexOf("AAL_UINT8");
-                            index2 = readLine.IndexOf(",");
-                            indexName = readLine.Substring(index1 + 10, index2 - index1 - 10);
-                        }
-                        else
-                        {
-                            indexName = "";
-                        }
-                        GenerateTextToFunction(type, pointer, indexName);
-                    }
-                }
-                stringWriter.WriteLine(CommStr.Space + CommStr.Space + "return 0;");
-
-             
-                stringWriter.WriteLine("}\r\n");
-            }
-
-            //得到BoardNum数量
-            string GetBoardNum()
-            {
-                var FirstList = ComData.customStruct.nodeList.FirstOrDefault();
-                StructItem firstItem = FirstList as StructItem;
-                var sItem = firstItem.parameterList.Where(x => (x as Parameter).name == "board_num").ToList();
-                Parameter Item = sItem.FirstOrDefault() as Parameter;
-                return Item.value;
-            }
-            //得到pointerName
-            string GetPointerName(string input)
-            {
-                string substring = "";
-                if (input.Contains("->"))
-                {
-                    substring = input.Substring(0, input.IndexOf('-'));
-                }
-                return substring;
-            }
-            //生成字符串入口函数
-            void GenerateTextToFunction(string type, string pointer, string indexName)
-            {
-
-                //分类指定type的数据
-                var StructList = ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList();
-                //添加校验项目					
-                if (indexName != "")
-                {
-                    stringWriter.WriteLine("\tif(index >= {0})", GetBoardNum());
-                    stringWriter.WriteLine("\t{");
-                    stringWriter.WriteLine("\t\t" + GetPointerName(pointer) + " = NULL;");
-                    stringWriter.WriteLine("\t\treturn -1;");
-                    stringWriter.WriteLine("\t}");
-                    stringWriter.WriteLine("\tswitch({0})", "index");
-                }
-                //遍历其中的项目		
-                if (indexName == "") { stringWriter.WriteLine("\tswitch(0)"); }
-                stringWriter.WriteLine("\t{");
-                int i = 0;
-                foreach (var StructItem in StructList)
-                {
-                    stringWriter.WriteLine("\t\tcase {0}:", i);
-                    TraversalStructItem(StructItem, pointer, false, 0);
-                    stringWriter.WriteLine("\t\tbreak;");
-                    i++;
-                }
-                stringWriter.WriteLine("\t}");
-                //stringWriter.WriteLine("\treturn 0;");
-            }
-            //将parameter struct对象分别放入不同队列
-            List<Dictionary<string, List<object>>> GroupSameObject(List<object> objList)
-            {
-                List<Dictionary<string, List<object>>> listDic = new List<Dictionary<string, List<object>>>();
-                Dictionary<string, List<object>> parameDic = new Dictionary<string, List<object>>() { };
-                Dictionary<string, List<object>> structDic = new Dictionary<string, List<object>>() { };
-
-                foreach (object oI in objList)
-                {
-                    if (oI is StructItem)
-                    {
-                        //添加StructItem到字典
-                        StructItem pItem = oI as StructItem;
-                        //如果初次添加
-                        if (!structDic.ContainsKey(pItem.name))
-                        {
-                            //List<object> objList=new List<object>();
-                            structDic[pItem.name] = new List<object>();
-                        }
-                        structDic[pItem.name].Add(oI);
-                    }
-                    else if (oI is Parameter)
-                    {
-                        //添加Parameter到字典
-                        Parameter sItem = oI as Parameter;
-                        //如果初次添加
-                        if (!parameDic.ContainsKey(sItem.name))
-                        {
-                            //List<object> objList=new List<object>();
-                            parameDic[sItem.name] = new List<object>();
-                        }
-                        parameDic[sItem.name].Add(oI);
-                    }
-                }
-                listDic.Add(parameDic);
-                listDic.Add(structDic);
-                return listDic;
-
-            }
-            //遍历得到树形结构字符串
-            void TraversalStructItem(object ObjItem, string Prefix, bool isArray, int indexValue)
-            {
-                if (ObjItem == null) return;
-                if (ObjItem is StructItem)
-                {
-                    StructItem sItem = ObjItem as StructItem;
-                    //第一个队列放structDic，第二个队列放parameDic
-                    List<Dictionary<string, List<object>>> gruopObj = GroupSameObject(sItem.parameterList);
-                    Dictionary<string, List<object>> parameDic = gruopObj[0];
-                    Dictionary<string, List<object>> structDic = gruopObj[1];
-                    //处理parameDic
-                    foreach (string pName in parameDic.Keys)
-                    {
-                        //如果根据数量只有一个
-                        List<object> paraList = parameDic[pName];
-                        if (paraList.Count == 1)
-                        {
-                            //如果数量只有一个,但是原来定义为数组类型
-                            Parameter m = paraList[0] as Parameter;
-                            if (m.index != "") { TraversalStructItem(paraList[0], Prefix, true, 0); }
-                            //如果不是数组(根据数量只有一个)
-                            else { TraversalStructItem(paraList[0], Prefix, false, 0); }
-                        }
-                        //如果数量多于一个，则一定是数组
-                        else if (paraList.Count > 1)
-                        {
-                            for (int i = 0; i < paraList.Count; i++)
-                            {
-                                TraversalStructItem(paraList[i], Prefix, true, i);
-                            }
-                        }
-                    }
-                    //处理structDic
-                    foreach (string sName in structDic.Keys)
-                    {
-                        //如果数量只有一个
-                        List<object> strucList = structDic[sName];
-                        if (strucList.Count == 1)
-                        {
-                            //如果数量只有一个,但是原来定义为数组类型
-                            StructItem m = strucList[0] as StructItem;
-
-                            if (m.index != "")
-                            {
-                                string newPerfix = string.Format("{0}{1}[0]{2}", Prefix, sName, ".");
-                                TraversalStructItem(strucList[0], newPerfix, true, 0);
-                            }
-                            //如果不是数组(根据数量只有一个)
-                            else
-                            {
-                                string newPerfix = string.Format("{0}{1}{2}", Prefix, sName, ".");
-                                TraversalStructItem(strucList[0], newPerfix, false, 0);
-                            }
-                        }
-                        //如果数量多于一个，则一定是数组
-                        else if (strucList.Count > 1)
-                        {
-                            for (int i = 0; i < strucList.Count; i++)
-                            {
-                                string newPerfix = string.Format("{0}{1}[{2}].", Prefix, sName, i);
-                                TraversalStructItem(strucList[i], newPerfix, true, i);
-                            }
-                        }
-                    }
-
-                }
-                else if (ObjItem is Parameter)
-                {
-                    Parameter pItem = ObjItem as Parameter;
-                    if (!isArray)
-                    {
-                        //去除fpga_module这一项
-                        if (pItem.name != "fpga_module")
-                        {
-                            //如果是字符串形式
-                            if (pItem.name.Contains("*"))
-                            {
-                                stringWriter.WriteLine("\t\t{0}{1} = \"{2}\";\t//{3}", Prefix, pItem.name.Substring(1), pItem.value, pItem.note);
-                            }
-                            else { stringWriter.WriteLine("\t\t{0}{1} = {2};\t//{3}", Prefix, pItem.name, pItem.value, pItem.note); }
-                        }
-                    }
-                    else if (isArray)
-                    {
-                        //如果是字符串形式
-                        if (pItem.name.Contains("*"))
-                        {
-                            stringWriter.WriteLine("\t\t{0}{1}[{2}] = \"{3}\";\t//{4}", Prefix, pItem.name.Substring(1), indexValue, pItem.value, pItem.note);
-                        }
-                        else { stringWriter.WriteLine("\t\t{0}{1}[{2}] = {3};\t//{4}", Prefix, pItem.name, indexValue, pItem.value, pItem.note); }
-                    }
-                }
-            }
-
-            //7.关闭文件流
+            //关闭文件流
             stringWriter.Flush();
             stringWriter.Close();
-
         }
 
     }

@@ -39,6 +39,7 @@ namespace SmallManagerSpace.Resources
         static public AdvTree advTree = null;
         static public string structBody = null;
         static public Dictionary<string, int> EntryVar = null;
+        static public Dictionary<string, int> customEntryVar = null;
         static public Dictionary<string, ElementStyle> nodeElementStyle = null;
         static public int skinIndex = 0;//AdvTree颜色主题编号
         static public List<string> readAllLines = new List<string>();

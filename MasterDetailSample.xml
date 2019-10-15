@@ -67,6 +67,20 @@
              创建对象
             </summary>
         </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.GetEntryVarValue(SmallManagerSpace.Resources.StructEntity)">
+            <summary>
+            得到StructEntity对象中的所有preinput="entry"的变量的value值
+            </summary>
+            <param name="sEntity">对象名</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.GetEntryVarChildValue(System.Collections.Generic.Dictionary{System.String,System.Int32},System.Object)">
+            <summary>
+            得到StructEntity对象中子节点的所有preinput="entry"的变量的value值
+            </summary>
+            <param name="keyValues">存储值的变量</param>
+            <param name="ob">对象名</param>
+        </member>
         <member name="M:SmallManagerSpace.Resources.StructFunction.GetRealNodeType(System.String)">
             <summary>
             得到类型
@@ -405,227 +419,245 @@
             <param name="Type"></param>
             <returns></returns>
         </member>
-        <member name="T:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate">
+        <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetCppFileFromEntityByT4(System.String)">
+            <summary>
+            通过t4模板得到cpp文件
+            </summary>
+            <param name="GenFileFullName">生成文件名</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetHeaderFileFromEntityByT4(System.String)">
+            <summary>
+            通过t4模板得到h文件
+            </summary>
+            <param name="GenFileFullName">生成文件名</param>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.GetCppString">
             <summary>
             Class to produce the template output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.TransformText">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.TransformText">
             <summary>
             Create the template output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GetBoardNum">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GetBoardNum">
             得到BoardNum数量
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GetPointerName(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GetPointerName(System.String)">
             得到pointerName
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GenerateTextToFunction(System.String,System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GenerateTextToFunction(System.String,System.String,System.String)">
             生成字符串入口函数
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.GroupSameObject(System.Collections.Generic.List{System.Object})">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GroupSameObject(System.Collections.Generic.List{System.Object})">
             将parameter struct对象分别放入不同队列
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplate.TraversalStructItem(System.Object,System.String,System.Boolean,System.Int32)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.TraversalStructItem(System.Object,System.String,System.Boolean,System.Int32)">
             遍历得到树形结构字符串
         </member>
-        <member name="T:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase">
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase">
             <summary>
             Base class for this transformation
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.GenerationEnvironment">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.GenerationEnvironment">
             <summary>
             The string builder that generation-time code is using to assemble generated output
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Errors">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.Errors">
             <summary>
             The error collection for the generation process
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.indentLengths">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.indentLengths">
             <summary>
             A list of the lengths of each indent that was added with PushIndent
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.CurrentIndent">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.CurrentIndent">
             <summary>
             Gets the current indent we use when adding lines to the output
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Session">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.Session">
             <summary>
             Current transformation session
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Write(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.Write(System.String)">
             <summary>
             Write text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.WriteLine(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.WriteLine(System.String)">
             <summary>
             Write text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Write(System.String,System.Object[])">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.Write(System.String,System.Object[])">
             <summary>
             Write formatted text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.WriteLine(System.String,System.Object[])">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.WriteLine(System.String,System.Object[])">
             <summary>
             Write formatted text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Error(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.Error(System.String)">
             <summary>
             Raise an error
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.Warning(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.Warning(System.String)">
             <summary>
             Raise a warning
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.PushIndent(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.PushIndent(System.String)">
             <summary>
             Increase the indent
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.PopIndent">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.PopIndent">
             <summary>
             Remove the last indent that was added with PushIndent
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ClearIndent">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.ClearIndent">
             <summary>
             Remove any indentation
             </summary>
         </member>
-        <member name="T:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringInstanceHelper">
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.ToStringInstanceHelper">
             <summary>
             Utility class to produce culture-oriented representation of an object as a string.
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringInstanceHelper.FormatProvider">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.ToStringInstanceHelper.FormatProvider">
             <summary>
             Gets or sets format provider to be used by ToStringWithCulture method.
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
             <summary>
             This is called from the compile/run appdomain to convert objects within an expression block to a string
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.RuntimeTextTemplateBase.ToStringHelper">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetCppStringBase.ToStringHelper">
             <summary>
             Helper to produce culture-oriented representation of an object as a string
             </summary>
         </member>
-        <member name="T:SmallManagerSpace.Resources.TextTemplate.TestTextTemplate">
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.GetHeaderString">
             <summary>
             Class to produce the template output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplate.TransformText">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderString.TransformText">
             <summary>
             Create the template output
             </summary>
         </member>
-        <member name="T:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderString.GenerateEnumText">
+            生成枚举体定义
+        </member>
+        <member name="F:SmallManagerSpace.Resources.TextTemplate.GetHeaderString.lastName">
+            生成结构体定义
+        </member>
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase">
             <summary>
             Base class for this transformation
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.GenerationEnvironment">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.GenerationEnvironment">
             <summary>
             The string builder that generation-time code is using to assemble generated output
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Errors">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.Errors">
             <summary>
             The error collection for the generation process
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.indentLengths">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.indentLengths">
             <summary>
             A list of the lengths of each indent that was added with PushIndent
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.CurrentIndent">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.CurrentIndent">
             <summary>
             Gets the current indent we use when adding lines to the output
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Session">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.Session">
             <summary>
             Current transformation session
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Write(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.Write(System.String)">
             <summary>
             Write text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.WriteLine(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.WriteLine(System.String)">
             <summary>
             Write text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Write(System.String,System.Object[])">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.Write(System.String,System.Object[])">
             <summary>
             Write formatted text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.WriteLine(System.String,System.Object[])">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.WriteLine(System.String,System.Object[])">
             <summary>
             Write formatted text directly into the generated output
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Error(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.Error(System.String)">
             <summary>
             Raise an error
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.Warning(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.Warning(System.String)">
             <summary>
             Raise a warning
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.PushIndent(System.String)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.PushIndent(System.String)">
             <summary>
             Increase the indent
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.PopIndent">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.PopIndent">
             <summary>
             Remove the last indent that was added with PushIndent
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ClearIndent">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.ClearIndent">
             <summary>
             Remove any indentation
             </summary>
         </member>
-        <member name="T:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringInstanceHelper">
+        <member name="T:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.ToStringInstanceHelper">
             <summary>
             Utility class to produce culture-oriented representation of an object as a string.
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringInstanceHelper.FormatProvider">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.ToStringInstanceHelper.FormatProvider">
             <summary>
             Gets or sets format provider to be used by ToStringWithCulture method.
             </summary>
         </member>
-        <member name="M:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
             <summary>
             This is called from the compile/run appdomain to convert objects within an expression block to a string
             </summary>
         </member>
-        <member name="P:SmallManagerSpace.Resources.TextTemplate.TestTextTemplateBase.ToStringHelper">
+        <member name="P:SmallManagerSpace.Resources.TextTemplate.GetHeaderStringBase.ToStringHelper">
             <summary>
             Helper to produce culture-oriented representation of an object as a string
             </summary>

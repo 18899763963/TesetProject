@@ -144,6 +144,7 @@ namespace MasterDetailSample
             this.AddFileToolStripMenuItem2.Name = "AddFileToolStripMenuItem2";
             this.AddFileToolStripMenuItem2.Size = new System.Drawing.Size(225, 22);
             this.AddFileToolStripMenuItem2.Text = "Ìí¼ÓÎÄ¼þ(&A)            Ctrl+A";
+            this.AddFileToolStripMenuItem2.Click += new System.EventHandler(this.AddFileToolStripMenuItem2_Click);
             // 
             // SaveFileToolStripMenuItem
             // 

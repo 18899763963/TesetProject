@@ -1,0 +1,189 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SmallManagerSpace.Resources" #>
+/******************************************************************************
+
+        Copyright (C), 2002-2010, Wuhan FiberHome Tech. Co., Ltd.
+
+******************************************************************************
+   文 件 名   : "fhapp_otn_user_auto.h"
+   版 本 号   : 初稿
+   作    者   : 用户1
+   生成日期   : <#= DateTime.Now.ToString("yyyy") #>年<#= DateTime.Now.ToString("MM") #>月<#= DateTime.Now.ToString("dd") #>日
+   最近修改   :
+   功能描述   : 单盘初始化信息处理
+   函数列表   :
+              
+   修改历史   :
+   1.日    期   : <#= DateTime.Now.ToString("yyyy") #>年<#= DateTime.Now.ToString("MM") #>月<#= DateTime.Now.ToString("dd") #>日
+    作    者   : 用户1
+    修改内容   : 创建文件
+
+******************************************************************************/
+#ifndef FHAPP_OTN_USER_AUTO_H
+#define FHAPP_OTN_USER_AUTO_H
+
+#include "fhapp_platform_adpt.h"
+#include "fhapp_board_comm_inf.h"
+#include "fhapp_otn_drv_adpt_inf.h"
+#include "cbb_comm.h"
+#include "fpga_app_inf.h"
+#include "fhapp_otn_opt_drv_adapt_inf.h"
+#include "fhapp_optical_adapt_inf.h"
+#include "prbs_eth_comm_inf.h"
+#include "otn_encryption_info.h"//加密头文件
+#include "uasLibV2.h"
+
+#define	OTN_USER_BOARD_NUM_MAX		5         //单盘软件共用最大单盘数量
+#define	OTN_USER_LOGIC_PORT_NUM_MAX		80         //单盘逻辑口最大数量
+#define	OTN_USER_PHY_PORT_NUM_MAX		80         //单盘物理口最大数量
+#define	OTN_USER_POWER_PIN_MAX		10         //最大监测电源数
+#define	OTN_USER_FPGA_MODULE_MAX		5         //最大监测电源数
+
+#pragma pack(1)
+
+<# GenerateEnumText(); #>
+<# GenerateStructText(); #>
+
+#pragma pack()
+
+#ifdef  __cplusplus
+extern "C" 
+{
+#endif
+
+AAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info);
+
+AAL_INT32 otn_user_get_btype(AAL_UINT8 *btype);
+
+AAL_INT32 otn_user_get_board_info(AAL_UINT8 index, OTN_USER_BOARD_INFO *board_info);
+
+AAL_INT32 otn_user_get_port_info(AAL_UINT8 index, OTN_USER_PORT_INFO *port_info);
+
+AAL_INT32 otn_user_get_fpga_info(AAL_UINT8 index, OTN_USER_FPGA_INFO *fpga_info);
+
+AAL_INT32 otn_user_get_board_alm_info(AAL_UINT8 index, OTN_USER_BOARD_ALM_INFO *board_alm_info);
+
+AAL_INT32 otn_user_fpga_read(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 *data);
+
+AAL_INT32 otn_user_fpga_write(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 data);
+
+AAL_INT32 otn_user_get_pwr_uvalm(AAL_UINT8 chip_no, AAL_UINT8 pwr_pin, AAL_UINT8 *alm_value);
+
+AAL_INT32 otn_user_get_pwr_ovalm(AAL_UINT8 chip_no, AAL_UINT8 pwr_pin, AAL_UINT8 *alm_value);
+
+AAL_INT32 otn_user_get_clk_status(AAL_UINT8 chip_no, AAL_UINT8 *alm_value);
+
+AAL_INT32 otn_user_get_board_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp);
+
+AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp);
+
+#ifdef	__cplusplus
+}
+#endif	/* __cplusplus */
+
+#endif
+
+
+<#+ 
+
+					///生成枚举体定义
+                    private void GenerateEnumText()
+					{   
+		
+						if(ComData.enumEntity!=null)
+						{
+						    foreach(simpleType TypeItem in  ComData.enumEntity.simpleTypes)
+							{
+
+								this.WriteLine("typedef enum");
+								this.WriteLine("{");
+								int count=TypeItem.EnumValues.Count();
+								foreach(EnumValue ValueItem  in TypeItem.EnumValues)
+								{
+									if((--count)==0)
+									{
+									this.WriteLine("\t{0} = {1}",ValueItem.cn,ValueItem.value);
+									}
+									else
+									{
+									this.WriteLine("\t{0} = {1},",ValueItem.cn,ValueItem.value);
+									}
+								}		
+								this.WriteLine("}"+TypeItem.name+";");	
+								this.WriteLine("\r\n");	
+							}
+						}
+
+					}
+					///生成结构体定义
+                    string lastName=null;
+					private void GenerateStructText( )
+					{   
+						if(ComData.structEntity!=null)
+						{
+						    foreach(object ob in  ComData.structEntity.nodeList)
+							{	
+								StructItem sI=ob as StructItem;
+								this.WriteLine("typedef struct"+" _"+sI.type.ToLower());
+								this.WriteLine("{");
+								foreach(object  paraItem  in sI.parameterList)
+								{
+									if(paraItem is Parameter)
+								    {
+										Parameter pIChi =paraItem as Parameter;                                       
+										if(pIChi.preinput!="" && pIChi.preinput!="entry")
+										{
+                                             if(ComData.customEntryVar.ContainsKey(pIChi.preinput))
+                                             {
+                                                    this.WriteLine("\t{0} {1}[{2}];//{3}",pIChi.type,pIChi.name,ComData.customEntryVar[pIChi.preinput],pIChi.note);	
+                                                    lastName=null;             
+                                              }
+                                             else if(ComData.customEntryVar.ContainsKey(pIChi.name) && lastName==null)
+                                             {
+                                                    this.WriteLine("\t{0} {1}[{2}];//{3}",pIChi.type,pIChi.name,ComData.customEntryVar[pIChi.name],pIChi.note);	
+                                                    lastName=pIChi.name;             
+                                             }
+                                        }
+										else 
+										{
+										this.WriteLine("\t{0} {1};//{2}",pIChi.type,pIChi.name,pIChi.note);
+		                                lastName=null;  
+										}
+                                        
+						
+									}
+									else if(paraItem is StructItem)
+									{
+										StructItem sIChi =paraItem as StructItem;
+										if(sIChi.preinput!="" && sIChi.preinput!="entry" )
+										{
+                                            if(ComData.customEntryVar.ContainsKey(sIChi.preinput))
+                                            {
+										                this.WriteLine("\t{0} {1}[{2}];//{3}",sIChi.type,sIChi.name,ComData.customEntryVar[sIChi.preinput],sIChi.note);	
+                                                        lastName=null; 
+                                            }
+                                            else if(ComData.customEntryVar.ContainsKey(sIChi.name) && lastName==null)
+                                            {
+										                this.WriteLine("\t{0} {1}[{2}];//{3}",sIChi.type,sIChi.name,ComData.customEntryVar[sIChi.name],sIChi.note);	                                            
+                                                        lastName=sIChi.name; 
+                                            }
+										}
+										else 
+										{
+										this.WriteLine("\t{0} {1};//{2}",sIChi.type,sIChi.name,sIChi.note);	
+	                                    lastName=null;
+										}
+									}	
+								}		
+								this.WriteLine("}"+sI.type+";");	
+								this.WriteLine("\r\n");	
+							}
+						}
+                     
+					}
+                  
+ #>

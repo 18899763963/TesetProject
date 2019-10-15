@@ -244,7 +244,7 @@ namespace MasterDetailSample
                 //设置文件类型 
                 //saveFileDialog1.Filter = "cpp文件|*.c|日志文件|*.xml";
                 saveFileDialog1.Filter = "cpp文件|*.cpp";
-                saveFileDialog1.FileName = "fhapp_otn_user_auto";
+                saveFileDialog1.FileName = "fhapp_otn_user_auto"+ DateTime.Now.ToString("yyyyMMddHHmm");
 
                 //设置默认文件类型显示顺序 
                 saveFileDialog1.FilterIndex = 1;
@@ -263,13 +263,15 @@ namespace MasterDetailSample
                         {   //1.将当前树的数据转换为对象
                             AdvTreeToEntity advTreeToEntity = new AdvTreeToEntity();
                             ComData.customStruct = advTreeToEntity.GetEntityByAdvTreeNode(CurrentAdvTree);
+                            StructFunction sF = new StructFunction();
+                            ComData.customEntryVar = sF.GetEntryVarValue(ComData.customStruct);
                             //*********************************************************************//
-                            //2.将当前树的数据放入header文件中                            
-                            string GenFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName;
-                            EntityVsFile.GetFileFromEntityByT4(GenFileFullName);
-                            ////3.将文件结构体中的数组变量用数组值替换
-                            //FileStringFunction fileStringADU = new FileStringFunction();
-                            //fileStringADU.ReplaceStringOnFile(GenFileFullName, ComData.EntryVar);
+                            //2.将当前树的数据放入cpp文件中                            
+                            string GenCppFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName;
+                            EntityVsFile.GetCppFileFromEntityByT4(GenCppFileFullName);
+                            //3.将当前树的数据放入header文件中 
+                            string GenHeaderFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName.Replace(".cpp", ".h");
+                            EntityVsFile.GetHeaderFileFromEntityByT4(GenHeaderFileFullName);
                             //********************************************************************//
                             //4.将obj对象的数据序列化到xml文件中
                             EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);
@@ -548,6 +550,11 @@ namespace MasterDetailSample
                 ImportFileProcess importFileProcess = new ImportFileProcess(ImportFileProcessInstance);
                 importFileProcess(SelectedPathSource);
             }
+        }
+
+        private void AddFileToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            AddFileAToolStripButton1_Click(sender, e);
         }
     }
 }

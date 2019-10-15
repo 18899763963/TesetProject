@@ -228,15 +228,15 @@
     <Compile Include="Resources\EventLog\EventLogClass.cs" />
     <Compile Include="Resources\EntityVsFile\EntityVsFile.cs" />
     <Compile Include="Resources\StringFunction\StringFunction.cs" />
-    <Compile Include="Resources\TextTemplate\RuntimeTextTemplate.cs">
+    <Compile Include="Resources\TextTemplate\GetCppString.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RuntimeTextTemplate.tt</DependentUpon>
+      <DependentUpon>GetCppString.tt</DependentUpon>
     </Compile>
-    <Compile Include="Resources\TextTemplate\TestTextTemplate.cs">
+    <Compile Include="Resources\TextTemplate\GetHeaderString.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TestTextTemplate.tt</DependentUpon>
+      <DependentUpon>GetHeaderString.tt</DependentUpon>
     </Compile>
     <Compile Include="Resources\XmlToXls\XmlToXls.cs" />
     <Compile Include="Resources\XmlVsEntity\XmlVsBase.cs" />
@@ -361,9 +361,7 @@
     <None Include="DataBase\demotest.db" />
     <None Include="Install\GenCodeToolsSetup\Debug\GenCodeToolsSetup.msi" />
     <None Include="Install\GenCodeToolsSetup\GenCodeToolsSetup.vdproj" />
-    <None Include="Install_Project\AutoGenTools\AutoGenTools.vdproj" />
-    <None Include="Install_Project\AutoGenTools\Debug\AutoGenTools.tmp" />
-    <None Include="Install_Project\AutoGenTools\Release\AutoGenTools.msi" />
+    <None Include="My Project\packages.config" />
     <None Include="My Project\Settings.settings" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
@@ -376,7 +374,6 @@
     <None Include="obj\Release\MasterDetailSample.csproj.CopyComplete" />
     <None Include="obj\Release\MasterDetailSample.csproj.CoreCompileInputs.cache" />
     <None Include="obj\Release\MasterDetailSample.csproj.GenerateResource.cache" />
-    <None Include="My Project\packages.config" />
     <None Include="packages.config" />
     <None Include="packages\EntityFramework.6.2.0\.signature.p7s" />
     <None Include="packages\EntityFramework.6.2.0\content\net40\App.config.transform" />
@@ -423,11 +420,10 @@
     <Content Include="bin\Debug\Spire.XLS.xml" />
     <Content Include="bin\Debug\StructItems.xml" />
     <Content Include="Install\GenCodeToolsSetup\Debug\setup.exe" />
-    <Content Include="Install_Project\AutoGenTools\Debug\setup.exe" />
-    <Content Include="Install_Project\AutoGenTools\Release\setup.exe" />
     <Content Include="MasterDetailSample.xml" />
-    <Content Include="My Project\MasterDetailSample.xml" />
     <Content Include="My Project\Application.myapp" />
+    <Content Include="My Project\MasterDetailSample.xml" />
+    <Content Include="My Project\SmallManager.xml" />
     <Content Include="obj\Debug\MasterDetailSample.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\SmallManager.exe" />
     <Content Include="obj\Debug\SmallManager.pdb" />
@@ -479,15 +475,14 @@
     <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.XLS.dll" />
     <Content Include="packages\FreeSpire.XLS.9.2.0\lib\netstandard2.0\Spire.XLS.xml" />
     <Content Include="packages\FreeSpire.XLS.9.2.0\license.txt" />
-    <Content Include="My Project\SmallManager.xml" />
     <Content Include="Raws\Theme.png" />
-    <Content Include="Resources\TextTemplate\RuntimeTextTemplate.tt">
+    <Content Include="Resources\TextTemplate\GetCppString.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>RuntimeTextTemplate.cs</LastGenOutput>
+      <LastGenOutput>GetCppString.cs</LastGenOutput>
     </Content>
-    <Content Include="Resources\TextTemplate\TestTextTemplate.tt">
+    <Content Include="Resources\TextTemplate\GetHeaderString.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TestTextTemplate.cs</LastGenOutput>
+      <LastGenOutput>GetHeaderString.cs</LastGenOutput>
     </Content>
     <Content Include="SmallManager.xml" />
     <None Include="Raws\BlockIco.ico" />

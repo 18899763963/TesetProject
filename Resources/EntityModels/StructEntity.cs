@@ -77,7 +77,7 @@ namespace SmallManagerSpace.Resources
         }
         public int GetHashCode(object obj)
         {
-            StructItem objx = obj as StructItem;          
+            StructItem objx = obj as StructItem;
             return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
         }
     }
@@ -92,6 +92,72 @@ namespace SmallManagerSpace.Resources
         public void CreateStructEntity()
         {
             ComData.structEntity = new StructEntity();
+        }
+
+        /// <summary>
+        /// 得到StructEntity对象中的所有preinput="entry"的变量的value值
+        /// </summary>
+        /// <param name="sEntity">对象名</param>
+        /// <returns></returns>
+        public Dictionary<string, int> GetEntryVarValue(StructEntity sEntity)
+        {
+            Dictionary<string, int> keyValues = new Dictionary<string, int>();
+            foreach (object ob in sEntity.nodeList)
+            {
+                GetEntryVarChildValue(keyValues, ob);
+            }
+            return keyValues;
+        }
+        string lastName = null;
+        /// <summary>
+        /// 得到StructEntity对象中子节点的所有preinput="entry"的变量的value值
+        /// </summary>
+        /// <param name="keyValues">存储值的变量</param>
+        /// <param name="ob">对象名</param>
+        public void GetEntryVarChildValue(Dictionary<string, int> keyValues, object ob)
+        {
+             
+            if (ob is Parameter)
+            {
+                Parameter pA = ob as Parameter;              
+                if (pA.preinput == "entry")
+                {
+                    int result = 0;
+                    lastName = null;
+                    if (int.TryParse(pA.value, out result))
+                    {
+                        if(keyValues.ContainsKey(pA.name))
+                        {
+                            if(keyValues[pA.name] < result)
+                            {
+                                keyValues[pA.name] = result;
+                            }
+                        }else
+                        {
+                            keyValues[pA.name] = result;
+                        }
+                       
+                    }
+                }
+                else if(pA.preinput == "invariant")
+                {
+                    if(keyValues.ContainsKey(pA.name)&& lastName== pA.name) keyValues[pA.name] =++keyValues[pA.name];
+                    else
+                    {
+                        keyValues[pA.name] = 1;
+                        lastName = pA.name;
+                    }
+                }
+            }
+            else if (ob is StructItem)
+            {
+                StructItem sI = ob as StructItem;
+                foreach(object obChild in sI.parameterList)
+                {
+                    GetEntryVarChildValue(keyValues, obChild);
+                }
+            }
+
         }
 
         /// <summary>
@@ -128,7 +194,7 @@ namespace SmallManagerSpace.Resources
         /// <param name="defineEntitys"></param>
         public StructEntity CreateCustomStruct(List<DefineEntity> defineEntitys)
         {
-          
+
             StructEntity structEntity = new StructEntity();
 
             foreach (DefineEntity defineEntity in defineEntitys)
@@ -138,12 +204,12 @@ namespace SmallManagerSpace.Resources
                 //Match matc = Regex.Match(defineEntity.name, RegexStr4);
                 string varName = defineEntity.name;
                 string varNum = defineEntity.ArrayNum;
-                if (varNum=="")
+                if (varNum == "")
                 {
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
                     //修改structEntity的index
                     ob.index = "";
-                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name,index= ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
                 }
                 else
@@ -152,7 +218,7 @@ namespace SmallManagerSpace.Resources
                     //修改structEntity的index
                     ob.index = "0";
                     if (!ComData.EntryVar.ContainsKey(varNum)) { ComData.EntryVar.Add(varNum, 0); }
-                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName , index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype });
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
 
                 }
@@ -171,7 +237,7 @@ namespace SmallManagerSpace.Resources
                 if (obj is StructItem)
                 {
                     StructItem sobj = obj as StructItem;
-                    destList.Add(new StructItem() { CID = sobj.CID, type = sobj.type, name = sobj.name,index=sobj.index, preinput = sobj.preinput, note = sobj.note, nodetype = sobj.nodetype });
+                    destList.Add(new StructItem() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, nodetype = sobj.nodetype });
                     TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, sobj.parameterList);
                 }
                 else if (obj is Parameter)
@@ -183,14 +249,14 @@ namespace SmallManagerSpace.Resources
                         switch (keyValue.Keys.First())
                         {
                             case "base":
-                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name,  index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
+                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
                                 break;
                             case "enum":
                                 //默认匹配第一项
                                 if (ComData.enumEntity.simpleTypes.Where(x => x.name == sobj.type).Count() != 0)
-                                {                               
+                                {
                                     simpleType selectItem = ComData.enumEntity.simpleTypes.Where(x => x.name == sobj.type).First();
-                                    string defaultEnum= selectItem.EnumValues[0].en;
+                                    string defaultEnum = selectItem.EnumValues[0].en;
                                     destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = defaultEnum, length = sobj.length, nodetype = "enum" });
                                 }
                                 break;
@@ -292,7 +358,7 @@ namespace SmallManagerSpace.Resources
         /// <param name="preinput"></param>
         /// <param name="note"></param>
         /// <param name="nodetype"></param>
-        public void AddValueOfStructItem(List<object> higherNode, string CID, string type, string name, string indexS,string preinput, string note, string nodetype)
+        public void AddValueOfStructItem(List<object> higherNode, string CID, string type, string name, string indexS, string preinput, string note, string nodetype)
         {
             //创建structitem信息
             StructItem structitemInfo = new StructItem();
@@ -323,7 +389,7 @@ namespace SmallManagerSpace.Resources
         /// <param name="length"></param>
         /// <param name="note"></param>
         /// <param name="nodetype"></param>
-        public void AddValueOfParameterItem(StructItem higherNode, string CID, string type, string preinput, string name,string indexS, string range, string value, string length, string note, string nodetype)
+        public void AddValueOfParameterItem(StructItem higherNode, string CID, string type, string preinput, string name, string indexS, string range, string value, string length, string note, string nodetype)
         {
             //创建parameterInfo信息
             Parameter parameterInfo = new Parameter();
