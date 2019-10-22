@@ -13,6 +13,23 @@ namespace SmallManagerSpace.Resources
         public List<simpleType> simpleTypes { get; set; }
     }
 
+    /// <summary>
+    /// 通过Name判断两个项目是否相等
+    /// </summary>
+    public class EnumEqualityByName : IEqualityComparer<object>
+    {
+        public bool Equals(object x, object y)
+        {
+            simpleType ox = x as simpleType;
+            simpleType oy = y as simpleType;
+            return ox.name == oy.name;
+        }
+        public int GetHashCode(object obj)
+        {
+            simpleType objx = obj as simpleType;
+            return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
+        }
+    }
     public class EnumFunction
     {
         public  void CreatesimpleTypeInfo()
@@ -72,7 +89,22 @@ namespace SmallManagerSpace.Resources
                 simpleTypeItem.name = value;
             }
         }
+        /// <summary>
+        /// 根据相同name去除重复项，保留最新项
+        /// </summary>
+        /// <param name="enumEntity"></param>
+        public void DistinctSameNameOfEnumEntity(EnumEntity enumEntity)
+        {
+            if (enumEntity == null) return;
+            else
+            {
+                enumEntity.simpleTypes.Reverse();
+                //distinct默认会保留第一个项目
+                enumEntity.simpleTypes = enumEntity.simpleTypes.Distinct<simpleType>(new EnumEqualityByName()).ToList();
+                enumEntity.simpleTypes.Reverse();
+            }
 
+        }
     }
     public class simpleType
     {

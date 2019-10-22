@@ -90,14 +90,18 @@ namespace MasterDetailSample
             //2.如果是H头文件，则转换CstructEntity,再转换CustomEntity
             if (ComData.stepNow.Equals(Step.ParserFileToEntity) && PathFileName.Contains(".h"))
             {
-                //a.如果是H头文件转换structEntity
+                //如果是H头文件转换structEntity
                 GetEntityFromHeaderFile(PathFileName);
+                //根据相同name去除重复项，保留最新项
+                StructFunction structFunction = new StructFunction();
+                EnumFunction enumFunction = new EnumFunction();
+                enumFunction.DistinctSameNameOfEnumEntity(ComData.enumEntity);
+                structFunction.DistinctSameNameOfStructItem(ComData.structEntity);
+                //structEntity转换CustomEntity                  
+                ComData.customStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
                 //将OBJ对象的数据序列化到xml文件中
                 EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);
                 EntitySerialize.XmlSerializeOnString(ComData.structEntity, ComData.programStartPath + ComData.structItemsFileName);
-                //b.structEntity转换CustomEntity         
-                StructFunction structFunction = new StructFunction();
-                ComData.customStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
                 ComData.stepNow = Step.EntityToGUI;
 
             }
@@ -107,7 +111,7 @@ namespace MasterDetailSample
                 //转换enum文件的内容
                 ComData.enumEntity = ComData.enumFunction.XmlDeSerializeToEnumObj(ComData.programStartPath, ComData.enumItemsFileName);
                 //解析XML文件内容到Entity                         
-                ComData.customStruct = GetSructEntityFromXmlFile(ComData.sourceWorkPath, ComData.selectedSourceFileName);
+                ComData.customStruct = GetSructEntityFromXmlFileDistinctNameIndex(ComData.sourceWorkPath, ComData.selectedSourceFileName);
                 ComData.stepNow = Step.EntityToGUI;
             }
             //4.CustomEntity对象生成界面
@@ -144,15 +148,27 @@ namespace MasterDetailSample
             }
             //2.如果是H头文件->StructOBJ对象-->CustomOBJ对象
             if (ComData.stepNow.Equals(Step.ParserFileToEntity) && PathFileName.Contains(".h"))
-            {   //a.如果是H头文件->StructOBJ对象-->CustomOBJ对象
+            {   
+                //如果是H头文件->StructOBJ对象
                 GetEntityFromHeaderFile(PathFileName);
+               
+                //去除结构体中相同元素项目（匹配：name,保留方法：存储最新）
+                StructFunction structFunction = new StructFunction();
+                EnumFunction enumFunction = new EnumFunction();
+                enumFunction.DistinctSameNameOfEnumEntity(ComData.enumEntity);
+                structFunction.DistinctSameNameOfStructItem(ComData.structEntity);
+
+                //structEntity转换CustomEntity               
+                ComData.importStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
+                //合并importStruct到customStruct，保留最新项目
+                if (IsContainsSameItemByName(ComData.importStruct, ComData.customStruct))
+                {
+                    //产生对话框
+                }
+                ComData.customStruct = MergeStructEntity(ComData.importStruct, ComData.customStruct, true);
                 //将OBJ对象的数据序列化到xml文件中
                 EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);
                 EntitySerialize.XmlSerializeOnString(ComData.structEntity, ComData.programStartPath + ComData.structItemsFileName);
-                //b.structEntity转换CustomEntity
-                StructFunction structFunction = new StructFunction();
-                ComData.importStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
-                ComData.customStruct = MergeStructEntity(ComData.importStruct, ComData.customStruct);
                 ComData.stepNow = Step.EntityToGUI;
 
             }
@@ -161,9 +177,14 @@ namespace MasterDetailSample
                 //转换enum文件的内容                  
                 ComData.enumEntity = ComData.enumFunction.XmlDeSerializeToEnumObj(ComData.programStartPath, ComData.enumItemsFileName);
                 //解析XML文件内容到Entity       
-                ComData.importStruct = GetSructEntityFromXmlFile(ComData.importedWorkPath, ComData.importedSourceFileName);
+                ComData.importStruct = GetSructEntityFromXmlFileDistinctNameIndex(ComData.importedWorkPath, ComData.importedSourceFileName);
                 //ComData.customStruct = GetSructEntityFromXmlFile(ComData.sourceWorkPath, ComData.selectedSourceFileName);
-                ComData.customStruct = MergeStructEntity(ComData.importStruct, ComData.customStruct);
+                //合并importStruct到customStruct，保留最新项目
+                if (IsContainsSameItemByName(ComData.importStruct, ComData.customStruct))
+                {
+                    //产生对话框
+                }
+                ComData.customStruct = MergeStructEntity(ComData.importStruct, ComData.customStruct, true);
                 ComData.stepNow = Step.EntityToGUI;
             }
             //3.CustomEntity对象生成界面
@@ -180,30 +201,98 @@ namespace MasterDetailSample
             //1.解析文件内容
             EntityVsFile.GetEntityFromFile(InputFilePath);
         }
-
-        private StructEntity MergeStructEntity(StructEntity source, StructEntity destination)
+        /// <summary>
+        /// 是否包含同名name的结构体类型
+        /// </summary>
+        /// <param name="newStruct"></param>
+        /// <param name="oldSturct"></param>
+        /// <returns></returns>
+        private bool IsContainsSameItemByName(StructEntity newStruct, StructEntity oldSturct)
         {
-            if (source != null && destination != null)
+            bool result = false;
+            if (newStruct != null && oldSturct != null)
             {
-                destination.nodeList.AddRange(source.nodeList);
+                if (newStruct.nodeList.Intersect<object>(oldSturct.nodeList, new StructEqualityByName()).Count<object>() > 0)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 得到结构体中有相同项目结构体
+        /// </summary>
+        /// <param name="newStruct">新结构体项</param>
+        /// <param name="oldSturct">旧结构体项</param>
+        /// <param name="isSaveNew">true:相同项目，则保留newStruct;false:相同项目，则保留oldSturct</param>
+        /// <returns></returns>
+        private StructEntity MergeStructEntity(StructEntity newStruct, StructEntity oldSturct, bool isSaveNew)
+        {
+            StructEntity mergeStruct = new StructEntity();
+            if (newStruct != null && oldSturct != null)
+            {
+                //destination.nodeList.AddRange(source.nodeList);
                 //去重复的元素,保留最后一个 ？
-                destination.nodeList = destination.nodeList.Distinct<object>(new StructEntityEquality()).ToList<object>();
+                //destination.nodeList = destination.nodeList.Distinct<object>(new StructEqualityByNameIndex()).ToList<object>();
+                //if (destination.nodeList.SequenceEqual<object>(source.nodeList, new StructEqualityByName()));
+                if (isSaveNew)
+                {
+                    // mergeStruct.nodeList= newStruct.nodeList.Union<object>(oldSturct.nodeList, new StructEqualityByName()).ToList<object>();
+                    foreach (object ob in newStruct.nodeList)
+                    {
+                        //不含相同项目，则添加到oldStruct列表结尾
+                        if (!oldSturct.nodeList.Contains<object>(ob, new StructEqualityByName()))
+                        {
+                            oldSturct.nodeList.Add(ob);
+                        }
+                        //含有相同项目，则将newStruct相同名的子项替换oldStruct的子项处
+                        else
+                        {
+                            if (ob is StructItem)
+                            {
+                                StructItem sI = ob as StructItem;
+                                //此处的筛选是同一份内容嘛？
+                                //List<object> sameObjectAtOldSide = oldSturct.nodeList.Where(i => i.Equals(ob)).ToList<object>();
+                                List<object> sameObjectAtOldSide = oldSturct.nodeList.FindAll(i => (i as StructItem).name == sI.name);
+                                //更换其中的parameterList项目
+                                foreach (object obItem in sameObjectAtOldSide)
+                                {
+                                    (obItem as StructItem).parameterList = sI.parameterList;
+                                }
+                            }
+                        }
+                    }
+                    mergeStruct.nodeList = oldSturct.nodeList;
+                }
+                else
+                {
+
+                    foreach (object ob in newStruct.nodeList)
+                    {
+                        //不含相同项目，则添加到oldStruct列表结尾
+                        if (!oldSturct.nodeList.Contains<object>(ob, new StructEqualityByName()))
+                        {
+                            oldSturct.nodeList.Add(ob);
+                        }
+                    }
+                    mergeStruct.nodeList = oldSturct.nodeList;
+                }
 
             }
-            return destination;
+            return mergeStruct;
         }
 
 
-        private StructEntity GetSructEntityFromXmlFile(string path, string InputFilePath)
+        private StructEntity GetSructEntityFromXmlFileDistinctNameIndex(string path, string InputFilePath)
         {
             //1.解析XML文件内容到Entity
             StructEntity structEntity = ComData.structFunction.XmlDeSerializeToStructObj(path, InputFilePath);
-            //去重复的元素
-            structEntity.nodeList = structEntity.nodeList.Distinct<object>(new StructEntityEquality()).ToList<object>();
+            //留重复的元素尾元素
+            structEntity.nodeList.Reverse();
+            structEntity.nodeList = structEntity.nodeList.Distinct<object>(new StructEqualityByNameIndex()).ToList<object>();
+            structEntity.nodeList.Reverse();
             return structEntity;
         }
-
-
 
         private void DisplayDataGuiViaOBJ(StructEntity inputEntity)
         {
@@ -244,7 +333,7 @@ namespace MasterDetailSample
                 //设置文件类型 
                 //saveFileDialog1.Filter = "cpp文件|*.c|日志文件|*.xml";
                 saveFileDialog1.Filter = "cpp文件|*.cpp";
-                saveFileDialog1.FileName = "fhapp_otn_user_auto"+ DateTime.Now.ToString("yyyyMMddHHmm");
+                saveFileDialog1.FileName = "fhapp_otn_user_auto" + DateTime.Now.ToString("yyyyMMddHHmm");
 
                 //设置默认文件类型显示顺序 
                 saveFileDialog1.FilterIndex = 1;

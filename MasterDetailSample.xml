@@ -62,6 +62,16 @@
             用于存储base文件中的数据
             </summary>
         </member>
+        <member name="T:SmallManagerSpace.Resources.StructEqualityByNameIndex">
+            <summary>
+            通过Name,Index判断两个项目是否相等
+            </summary>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.StructEqualityByName">
+            <summary>
+            通过Name判断两个项目是否相等
+            </summary>
+        </member>
         <member name="M:SmallManagerSpace.Resources.StructFunction.CreateStructEntity">
             <summary>
              创建对象
@@ -155,6 +165,12 @@
             <param name="length"></param>
             <param name="note"></param>
             <param name="nodetype"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.StructFunction.DistinctSameNameOfStructItem(SmallManagerSpace.Resources.StructEntity)">
+            <summary>
+            根据相同name去除重复项，保留最新项
+            </summary>
+            <param name="structEntity"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.ElementStyleSetting">
             <summary>
@@ -383,6 +399,11 @@
             <typeparam name="T">实体类型</typeparam>
             <param name="strXML">XML</param>
         </member>
+        <member name="T:SmallManagerSpace.Resources.EnumEqualityByName">
+            <summary>
+            通过Name判断两个项目是否相等
+            </summary>
+        </member>
         <member name="M:SmallManagerSpace.Resources.EnumFunction.XmlDeSerializeToEnumObj(System.String,System.String)">
             <summary>
              将xml文件化为对象数据序列
@@ -408,6 +429,12 @@
             <summary>
              修改simpleTypeItem数据
             </summary>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EnumFunction.DistinctSameNameOfEnumEntity(SmallManagerSpace.Resources.EnumEntity)">
+            <summary>
+            根据相同name去除重复项，保留最新项
+            </summary>
+            <param name="enumEntity"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.EventLogClass.SaveErrorEventLog(System.String,System.String,System.String)">
             *****第二种*******/
@@ -779,6 +806,23 @@
             添加文件到主界面的实例
             </summary>
             <param name="PathFileName">文件路径名称</param>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.IsContainsSameItemByName(SmallManagerSpace.Resources.StructEntity,SmallManagerSpace.Resources.StructEntity)">
+            <summary>
+            是否包含同名name的结构体类型
+            </summary>
+            <param name="newStruct"></param>
+            <param name="oldSturct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.MergeStructEntity(SmallManagerSpace.Resources.StructEntity,SmallManagerSpace.Resources.StructEntity,System.Boolean)">
+            <summary>
+            得到结构体中有相同项目结构体
+            </summary>
+            <param name="newStruct">新结构体项</param>
+            <param name="oldSturct">旧结构体项</param>
+            <param name="isSaveNew">true:相同项目，则保留newStruct;false:相同项目，则保留oldSturct</param>
+            <returns></returns>
         </member>
         <member name="M:MasterDetailSample.frmMain.SaveFileToolStripMenuItem_Click(System.Object,System.EventArgs)">
             <summary>

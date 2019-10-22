@@ -67,7 +67,10 @@ namespace SmallManagerSpace.Resources
         public string nodetype { get; set; }
     }
 
-    public class StructEntityEquality : IEqualityComparer<object>
+    /// <summary>
+    /// 通过Name,Index判断两个项目是否相等
+    /// </summary>
+    public class StructEqualityByNameIndex : IEqualityComparer<object>
     {
         public bool Equals(object x, object y)
         {
@@ -81,11 +84,28 @@ namespace SmallManagerSpace.Resources
             return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
         }
     }
-
+    /// <summary>
+    /// 通过Name判断两个项目是否相等
+    /// </summary>
+    public class StructEqualityByName : IEqualityComparer<object>
+    {
+        public bool Equals(object x, object y)
+        {
+            StructItem ox = x as StructItem;
+            StructItem oy = y as StructItem;
+            return ox.name == oy.name;
+        }
+        public int GetHashCode(object obj)
+        {
+            StructItem objx = obj as StructItem;
+            return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
+        }
+    }
 
 
     public class StructFunction
     {
+        string lastName = null;
         /// <summary>
         ///  创建对象
         /// </summary>
@@ -108,7 +128,7 @@ namespace SmallManagerSpace.Resources
             }
             return keyValues;
         }
-        string lastName = null;
+     
         /// <summary>
         /// 得到StructEntity对象中子节点的所有preinput="entry"的变量的value值
         /// </summary>
@@ -116,32 +136,33 @@ namespace SmallManagerSpace.Resources
         /// <param name="ob">对象名</param>
         public void GetEntryVarChildValue(Dictionary<string, int> keyValues, object ob)
         {
-             
+
             if (ob is Parameter)
             {
-                Parameter pA = ob as Parameter;              
+                Parameter pA = ob as Parameter;
                 if (pA.preinput == "entry")
                 {
                     int result = 0;
                     lastName = null;
                     if (int.TryParse(pA.value, out result))
                     {
-                        if(keyValues.ContainsKey(pA.name))
+                        if (keyValues.ContainsKey(pA.name))
                         {
-                            if(keyValues[pA.name] < result)
+                            if (keyValues[pA.name] < result)
                             {
                                 keyValues[pA.name] = result;
                             }
-                        }else
+                        }
+                        else
                         {
                             keyValues[pA.name] = result;
                         }
-                       
+
                     }
                 }
-                else if(pA.preinput == "invariant")
+                else if (pA.preinput == "invariant")
                 {
-                    if(keyValues.ContainsKey(pA.name)&& lastName== pA.name) keyValues[pA.name] =++keyValues[pA.name];
+                    if (keyValues.ContainsKey(pA.name) && lastName == pA.name) keyValues[pA.name] = ++keyValues[pA.name];
                     else
                     {
                         keyValues[pA.name] = 1;
@@ -152,7 +173,7 @@ namespace SmallManagerSpace.Resources
             else if (ob is StructItem)
             {
                 StructItem sI = ob as StructItem;
-                foreach(object obChild in sI.parameterList)
+                foreach (object obChild in sI.parameterList)
                 {
                     GetEntryVarChildValue(keyValues, obChild);
                 }
@@ -347,6 +368,8 @@ namespace SmallManagerSpace.Resources
                 }
             }
         }
+
+
         /// <summary>
         /// 增加StructItem
         /// </summary>
@@ -362,6 +385,7 @@ namespace SmallManagerSpace.Resources
         {
             //创建structitem信息
             StructItem structitemInfo = new StructItem();
+
             structitemInfo.CID = CID;
             structitemInfo.type = type;
             structitemInfo.name = name;
@@ -406,6 +430,22 @@ namespace SmallManagerSpace.Resources
             //添加parameterInfo到队列中
             //ComRunDatas.structEntity.nodeList.LastOrDefault().parameterList.Add(parameterInfo);
             higherNode.parameterList.Add(parameterInfo);
+        }
+
+        /// <summary>
+        /// 根据相同name去除重复项，保留最新项
+        /// </summary>
+        /// <param name="structEntity"></param>
+        public void DistinctSameNameOfStructItem(StructEntity structEntity)
+        {
+            if (structEntity == null) return;
+            else
+            {
+                structEntity.nodeList.Reverse();
+                //distinct默认会保留第一个项目
+                structEntity.nodeList=structEntity.nodeList.Distinct<object>(new StructEqualityByName()).ToList();
+                structEntity.nodeList.Reverse();
+            }
 
         }
 

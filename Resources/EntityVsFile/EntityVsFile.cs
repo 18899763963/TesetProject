@@ -209,7 +209,7 @@ namespace SmallManagerSpace.Resources
                         //3.匹配结构体或结构体数组的定义,例如：
                         //OTN_USER_BOARD_INFO OTN_USER_BOARD_INFO_VAR;
                         //OTN_USER_BOARD_INFO OTN_USER_BOARD_INFO_VAR[board_num];
-                        else if (Regex.IsMatch(line, @"[\w]+[\s]+[\w]+[\s]*(;|[\[]{1}[\S]+[\]]{1};)"))
+                        else if (Regex.IsMatch(line, @"^[\w]+[\s]+[\w]+[\s]*(;|[\[]{1}[\S]+[\]]{1};)"))
                         {
                             string RegexStr3 = @"(?<structType>[\w]+)[\s]+(?<structName>[\w]+)[\s]*(;|[\[]{1}(?<ArrayNum>[\w]+)[\]]{1};)";
                             Match matchStr = Regex.Match(line, RegexStr3);
