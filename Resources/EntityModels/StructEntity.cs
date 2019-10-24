@@ -68,6 +68,18 @@ namespace SmallManagerSpace.Resources
     }
 
     /// <summary>
+    /// 通过Name,Index判断两个项的排序
+    /// </summary>
+    public class StructSortByNameIndex : IComparer<object>
+    {
+        public int Compare(object x, object y)
+        {
+            StructItem ox = x as StructItem;
+            StructItem oy = y as StructItem;
+            return (ox.name+ox.index).CompareTo(oy.name+oy.index);
+        }
+    }
+    /// <summary>
     /// 通过Name,Index判断两个项目是否相等
     /// </summary>
     public class StructEqualityByNameIndex : IEqualityComparer<object>
@@ -128,7 +140,7 @@ namespace SmallManagerSpace.Resources
             }
             return keyValues;
         }
-     
+
         /// <summary>
         /// 得到StructEntity对象中子节点的所有preinput="entry"的变量的value值
         /// </summary>
@@ -230,7 +242,7 @@ namespace SmallManagerSpace.Resources
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
                     //修改structEntity的index
                     ob.index = "";
-                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
                 }
                 else
@@ -443,7 +455,7 @@ namespace SmallManagerSpace.Resources
             {
                 structEntity.nodeList.Reverse();
                 //distinct默认会保留第一个项目
-                structEntity.nodeList=structEntity.nodeList.Distinct<object>(new StructEqualityByName()).ToList();
+                structEntity.nodeList = structEntity.nodeList.Distinct<object>(new StructEqualityByName()).ToList();
                 structEntity.nodeList.Reverse();
             }
 

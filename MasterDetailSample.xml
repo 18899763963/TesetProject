@@ -62,6 +62,11 @@
             用于存储base文件中的数据
             </summary>
         </member>
+        <member name="T:SmallManagerSpace.Resources.StructSortByNameIndex">
+            <summary>
+            通过Name,Index判断两个项的排序
+            </summary>
+        </member>
         <member name="T:SmallManagerSpace.Resources.StructEqualityByNameIndex">
             <summary>
             通过Name,Index判断两个项目是否相等
@@ -815,9 +820,9 @@
             <param name="oldSturct"></param>
             <returns></returns>
         </member>
-        <member name="M:MasterDetailSample.frmMain.MergeStructEntity(SmallManagerSpace.Resources.StructEntity,SmallManagerSpace.Resources.StructEntity,System.Boolean)">
+        <member name="M:MasterDetailSample.frmMain.MergeStructByNameIndexForNewXml(SmallManagerSpace.Resources.StructEntity,SmallManagerSpace.Resources.StructEntity,System.Boolean)">
             <summary>
-            得到结构体中有相同项目结构体
+            更具name,index保留尾项法合并结构体
             </summary>
             <param name="newStruct">新结构体项</param>
             <param name="oldSturct">旧结构体项</param>

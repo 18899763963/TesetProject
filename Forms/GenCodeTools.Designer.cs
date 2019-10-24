@@ -143,7 +143,7 @@ namespace MasterDetailSample
             this.AddFileToolStripMenuItem2.Enabled = false;
             this.AddFileToolStripMenuItem2.Name = "AddFileToolStripMenuItem2";
             this.AddFileToolStripMenuItem2.Size = new System.Drawing.Size(225, 22);
-            this.AddFileToolStripMenuItem2.Text = "添加文件(&A)            Ctrl+A";
+            this.AddFileToolStripMenuItem2.Text = "合并文件(&A)            Ctrl+A";
             this.AddFileToolStripMenuItem2.Click += new System.EventHandler(this.AddFileToolStripMenuItem2_Click);
             // 
             // SaveFileToolStripMenuItem
@@ -460,7 +460,7 @@ namespace MasterDetailSample
             this.AddFileAToolStripButton1.Name = "AddFileAToolStripButton1";
             this.AddFileAToolStripButton1.Size = new System.Drawing.Size(24, 24);
             this.AddFileAToolStripButton1.Text = "toolStripButton1";
-            this.AddFileAToolStripButton1.ToolTipText = "添加文件";
+            this.AddFileAToolStripButton1.ToolTipText = "合并文件";
             this.AddFileAToolStripButton1.Click += new System.EventHandler(this.AddFileAToolStripButton1_Click);
             // 
             // toolStripSplitButton1
