@@ -136,10 +136,34 @@ namespace SmallManagerSpace.Resources
             ParameterDataList.Add(CommStr.BraceBracketClose);
             return ParameterDataList;
         }
-
-
+        /// <summary>
+        /// 是否保留上次的Enum和Struct,Define
+        /// </summary>
+        /// <param name="isInheritEnum">true:保留</param>
+        /// <param name="isInheritStruct">true:保留</param>
+        /// <param name="isInheritDefine">true:保留</param>
+        public static void isInHeritData(bool isInheritEnum, bool isInheritStruct,bool isInheritDefine)
+        {
+            if (isInheritEnum == false && ComData.enumEntity!=null)
+            {
+                ComData.enumEntity.simpleTypes.Clear(); ;
+            }
+            if (isInheritStruct == false && ComData.structEntity != null)
+            {
+                ComData.structEntity.nodeList.Clear();
+            }
+            if (isInheritDefine == false && ComData.defineEntities != null)
+            {
+                ComData.defineEntities.Clear();
+            }
+        }
+        /// <summary>
+        /// 得到H文件的序列化数据
+        /// </summary>
+        /// <param name="FilePath"></param>
         public static void GetEntityFromFile(string FilePath)
         {
+ 
             //读取所有行，若包含AAL_INT32,则添加到集合中
             ComData.readAllLines = File.ReadAllLines(FilePath, Encoding.Default).ToList();
             ComData.OutLines.Clear();
@@ -176,7 +200,7 @@ namespace SmallManagerSpace.Resources
                             string name = "";
                             string indexS = "";
                             string preinput = "";
-                            string node = "";
+                            string note = "";
                             string nodetype = "struct";
                             string RegexStr3 = @"struct[\s]+(?<structtype>[\S]+)";
                             Match matc = Regex.Match(line, RegexStr3);
@@ -186,11 +210,11 @@ namespace SmallManagerSpace.Resources
                             if (isCaptured) { preinput = CapturedData; }
                             else { preinput = ""; }
                             name = "nameValue";
-                            node = " ";
-                            CapturedType = "isStruct";
+                            note = " ";
 
+                            CapturedType = "isStruct";
                             //添加structitem数据到列表中
-                            ComData.structFunction.AddValueOfStructItem(ComData.structEntity.nodeList, Cid.ToString().PadLeft(4, '0'), type, name, indexS, preinput, node, nodetype);
+                            ComData.structFunction.AddValueOfStructItem(ComData.structEntity.nodeList, Cid.ToString().PadLeft(4, '0'), type, name, indexS, preinput, note, nodetype);
                             ProcessStep++;
                             Cid++;
                         }
@@ -272,6 +296,7 @@ namespace SmallManagerSpace.Resources
                             string value = "1";
                             string length = "1";
                             string note = "";
+                            string modified = "N";
                             string nodetype = "base";
                             bool isArrayNumber = false;
                             int arrayNumber = 0;
@@ -336,13 +361,13 @@ namespace SmallManagerSpace.Resources
                             }
                             if(isArrayNumber==false)
                             {
-                                ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, indexS, range, value, length, note, nodetype);
+                                ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, indexS, range, value, length, note, nodetype, modified);
                             }
                             else if(isArrayNumber == true)
                             {
                                 for(int i=0;i<arrayNumber;i++)
                                 {
-                                    ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, i.ToString(), range, value, length, note, nodetype);
+                                    ComData.structFunction.AddValueOfParameterItem(ComData.structEntity.nodeList.LastOrDefault() as StructItem, Cid.ToString().PadLeft(4, '0'), type, preinput, name, i.ToString(), range, value, length, note, nodetype, modified);
                                 }
                             }
                             Cid++;

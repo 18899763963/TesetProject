@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SmallManagerSpace.Resources.GUIVsEntity
 {
-    class AdvTreeObj
+    public class AdvTreeObj
     {
         public string BeforeValue;
         bool isFisrtEntry = true;
@@ -20,7 +20,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         Dictionary<string, int> ColumnName = new Dictionary<string, int>() {
             { "type", 0 }, { "preinput", 1 }, { "name", 2 },
             { "index",3 }, {"length",4 }, {"range",5 }, {"value",6 },
-            { "nodetype",7 }, {"CID",8 }, {"note" ,9 } };
+            { "nodetype",7 }, {"CID",8 }, {"note" ,9 }, {"modified" ,10 } };
         public void InitAdvTreeDatas()
         {
             ElementStyleSetting();
@@ -131,18 +131,21 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             DevComponents.AdvTree.ColumnHeader columnHeader10 = new DevComponents.AdvTree.ColumnHeader("注释");
             columnHeader10.Name = "note";
             columnHeader10.Editable = false;
+            DevComponents.AdvTree.ColumnHeader columnHeader11 = new DevComponents.AdvTree.ColumnHeader("修改");
+            columnHeader11.Name = "modified";
+            columnHeader11.Editable = false;
 
-            columnHeader1.Width.Relative = 15;
+            columnHeader1.Width.Relative = 18;
             columnHeader2.Width.Relative = 8;
-            columnHeader3.Width.Relative = 13;
-            columnHeader4.Width.Relative = 5;
-            columnHeader5.Width.Relative = 5;
+            columnHeader3.Width.Relative = 18;
+            columnHeader4.Width.Relative = 7;
+            columnHeader5.Width.Relative = 7;
             columnHeader6.Width.Relative = 8;
-            columnHeader7.Width.Relative = 14;
-            columnHeader8.Width.Relative = 8;
-            columnHeader9.Width.Relative = 8;
-            columnHeader10.StretchToFill = true;
-
+            columnHeader7.Width.Relative = 8;
+            columnHeader8.Width.Relative = 13;
+            columnHeader9.Width.Relative = 20;
+            columnHeader10.Width.Relative = 18;
+            columnHeader11.StretchToFill = true;
             ComData.advTree.Columns.Add(columnHeader1);
             ComData.advTree.Columns.Add(columnHeader2);
             ComData.advTree.Columns.Add(columnHeader3);
@@ -153,10 +156,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             ComData.advTree.Columns.Add(columnHeader8);
             ComData.advTree.Columns.Add(columnHeader9);
             ComData.advTree.Columns.Add(columnHeader10);
+            ComData.advTree.Columns.Add(columnHeader11);
             ComData.advTree.CellEdit = true;
             ComData.advTree.BeforeCellEdit += new CellEditEventHandler(this.AdvTreeBeforeCellEdit);
             ComData.advTree.AfterCellEditComplete += new CellEditEventHandler(this.AdvTreeAfterCellEditComplete);
-            ComData.advTree.CellSelected += new AdvTreeCellEventHandler(this.AdvTreeCellSelected);           
+            ComData.advTree.CellSelected += new AdvTreeCellEventHandler(this.AdvTreeCellSelected);
             ComData.advTree.CellUnselected += new AdvTreeCellEventHandler(this.AdvTreeCellUnSelected);
             //ComData.advTree.SelectedIndexChanged += new EventHandler(this.AdvTreeSelectedIndexChanged);
             ComData.advTree.GridColumnLineResizeEnabled = true;
@@ -166,12 +170,12 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             tim.AttachedControl.Controls.Add(ComData.advTree);
         }
 
-       
+
 
         private void AdvTreeCellUnSelected(object sender, EventArgs e)
         {
 
-            if(LastEnumNode!=null)
+            if (LastEnumNode != null)
             {
                 int indexCell = ColumnName["value"];
                 if (LastEnumNode.Cells[indexCell].HostedControl is MyComboBox)
@@ -253,6 +257,12 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     }
                 }
             }
+            //如果节点被修改，则设置变量modified 为"Y"
+            Dictionary<string, string> AfterColumnData = GetSelectedColumnData(selectedNode);
+            if (!BeforeValue.Equals(AfterColumnData["value"]))
+            {
+                SetSelectedNodeCellData(selectedNode, "modified", "Y");
+            }
         }
 
         private void SubNodeOnSpecial(Dictionary<string, List<Node>> ListNode, int Count)
@@ -290,7 +300,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 }
             }
         }
-  
+
         /// <summary>
         /// 得到选中节点列名的元胞
         /// </summary>
@@ -309,7 +319,23 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             }
             return cell;
         }
-       
+        /// <summary>
+        /// 设置选中节点列名的数据
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="ColumnName"></param>
+        /// <param name="SetString"></param>
+        /// <returns></returns>
+        public void SetSelectedNodeCellData(Node node, string ColumnName, string SetString)
+        {
+            foreach (Cell cellItem in node.Cells)
+            {
+                if (cellItem.ColumnHeader.Name.Equals(ColumnName))
+                {
+                    cellItem.Text = SetString;
+                }
+            }
+        }
         /// <summary>
         /// 得到节点类型
         /// </summary>
@@ -326,6 +352,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             //1.修改index值
             node.Cells[indexCell].Text = index.ToString();
         }
+        /// <summary>
+        /// 设置节点控件
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="enumName"></param>
         private void setNodeControlForEnum(Node node, string enumName)
         {
             //嵌入Combox控件
@@ -623,19 +654,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             //选择节点类型 
             string[] selectArr = { "base", "enum" };
             Dictionary<string, List<Node>> BaseEnumNodeGroup = SelectNodeGruopByType(SameNameNode, selectArr);
-            ////分组同父节点
-            //Dictionary<string, List<Node>> StructSameParentNodeGroup = null;
-            //if (selectedNode.Parent != ComData.advTree.DisplayRootNode)
-            //{
-            //    Dictionary<string, string> NodeDictinary = GetSelectedColumnData(selectedNode.Parent);
-            //    string key = NodeDictinary["type"] + "_" + NodeDictinary["preinput"] + "_" + NodeDictinary["name"] + "_" + NodeDictinary["index"];
-            //    StructSameParentNodeGroup = NodeGroupBySameParent(BaseEnumNodeGroup, key);
-            //}
-            //else if (selectedNode.Parent == ComData.advTree.DisplayRootNode)
-            //{
-            //    string key = "TopLevel";
-            //    StructSameParentNodeGroup = NodeGroupBySameParent(BaseEnumNodeGroup, key);
-            //}
             //添加节点
             foreach (string vName in BaseEnumNodeGroup.Keys)
             {
@@ -822,7 +840,12 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             }
             return sameNameNode;
         }
-
+        /// <summary>
+        /// 在指定节点上遍历
+        /// </summary>
+        /// <param name="ParentNode"></param>
+        /// <param name="EntryName"></param>
+        /// <param name="ListNodeDic"></param>
         private void TraverslOnSpecial(Node ParentNode, string EntryName, Dictionary<string, List<Node>> ListNodeDic)
         {
             if (ParentNode == null) return;
@@ -847,36 +870,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 }
             }
         }
-
-        //private void TraverslOnParentTree(Node ParentNode, string EntryName, Dictionary<string, List<Node>> ListNodeDic)
-        //{
-        //    if (ParentNode == null) return;
-        //    foreach (Node ChildNode in ParentNode.Nodes)
-        //    {
-        //        if (ChildNode.Tag != null)
-        //        {
-        //            //Dictionary<string, string> TagDict = (Dictionary<string, string>)ChildNode.Tag;
-        //           // Dictionary<string, string> TagDict = GetSelectedColumnData(ChildNode);
-        //            if (TagDict["preinput"] == EntryName)
-        //            {
-        //                string subString = "";
-        //                if (TagDict["index"] != "")
-        //                {
-        //                    if (ListNodeDic.ContainsKey(TagDict["name"]) == false)
-        //                    {
-        //                        ListNodeDic[subString] = new List<Node>();
-        //                    }
-        //                    ListNodeDic[subString].Add(ChildNode);
-        //                }
-        //            }
-        //        }
-        //        if (ChildNode.HasChildNodes)
-        //        {
-        //            TraverslOnParentTree(ChildNode, EntryName, ListNodeDic);
-        //        }
-        //    }
-        //}
-
         /// <summary>
         /// 更新entry变量的新值
         /// </summary>
@@ -926,6 +919,8 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                     UpdateEntryVarValue(PreinputName, CurrentValueInt);
                     Cnt["current"] = CurrentValueInt;
                     Cnt["diff"] = CurrentValueInt - BeforeValueInt;
+
+
                     return Cnt;
                 }
                 //值相同：返回0
@@ -959,15 +954,20 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             if (node == null) return TempKeyValuePairs;
             string[] columnN = ColumnName.Keys.ToArray();
             foreach (int i in ColumnName.Values)
-            {   
-                if((columnN.Count()>i) && (node.Cells.Count>i))
+            {
+                if ((columnN.Count() > i) && (node.Cells.Count > i))
                 {
                     TempKeyValuePairs[columnN[i]] = node.Cells[i].Text;
                 }
             }
             return TempKeyValuePairs;
-    
+
         }
+        /// <summary>
+        /// 是否为指针变量
+        /// </summary>
+        /// <param name="inputName"></param>
+        /// <returns></returns>
         private bool IsMatchedPointerVar(string inputName)
         {
             if (!inputName.Contains("AAL_SINT8") && inputName.Contains("*"))
@@ -976,6 +976,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             }
             return false;
         }
+        /// <summary>
+        /// 是否为Entry变量
+        /// </summary>
+        /// <param name="inputName"></param>
+        /// <returns></returns>
         private bool IsEntryVar(string inputName)
         {
             if (ComData.EntryVar.ContainsKey(inputName))

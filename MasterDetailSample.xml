@@ -72,7 +72,12 @@
             通过Name,Index判断两个项目是否相等
             </summary>
         </member>
-        <member name="T:SmallManagerSpace.Resources.StructEqualityByName">
+        <member name="T:SmallManagerSpace.Resources.StructItemByName">
+            <summary>
+            通过Name判断两个项目是否相等
+            </summary>
+        </member>
+        <member name="T:SmallManagerSpace.Resources.ParameterItemByName">
             <summary>
             通过Name判断两个项目是否相等
             </summary>
@@ -155,7 +160,7 @@
             <param name="note"></param>
             <param name="nodetype"></param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfParameterItem(SmallManagerSpace.Resources.StructItem,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:SmallManagerSpace.Resources.StructFunction.AddValueOfParameterItem(SmallManagerSpace.Resources.StructItem,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             增加ParameterItem
             </summary>
@@ -217,12 +222,28 @@
             <param name="ColumnName"></param>
             <returns></returns>
         </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.SetSelectedNodeCellData(DevComponents.AdvTree.Node,System.String,System.String)">
+            <summary>
+            设置选中节点列名的数据
+            </summary>
+            <param name="node"></param>
+            <param name="ColumnName"></param>
+            <param name="SetString"></param>
+            <returns></returns>
+        </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.getNodeType(DevComponents.AdvTree.Node)">
             <summary>
             得到节点类型
             </summary>
             <param name="node"></param>
             <returns>enum,base,struct</returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.setNodeControlForEnum(DevComponents.AdvTree.Node,System.String)">
+            <summary>
+            设置节点控件
+            </summary>
+            <param name="node"></param>
+            <param name="enumName"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.GetTraversalModifiedStructNode(DevComponents.AdvTree.Node,System.Int32)">
             <summary>
@@ -310,6 +331,14 @@
             <param name="name">列名</param>
             <returns></returns>
         </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.TraverslOnSpecial(DevComponents.AdvTree.Node,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{DevComponents.AdvTree.Node}})">
+            <summary>
+            在指定节点上遍历
+            </summary>
+            <param name="ParentNode"></param>
+            <param name="EntryName"></param>
+            <param name="ListNodeDic"></param>
+        </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.UpdateEntryVarValue(System.String,System.Int32)">
             <summary>
             更新entry变量的新值
@@ -342,6 +371,20 @@
             <param name="node"></param>
             <returns>"D(columnName,value)"</returns>
         </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.IsMatchedPointerVar(System.String)">
+            <summary>
+            是否为指针变量
+            </summary>
+            <param name="inputName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.IsEntryVar(System.String)">
+            <summary>
+            是否为Entry变量
+            </summary>
+            <param name="inputName"></param>
+            <returns></returns>
+        </member>
         <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeToEntity.GetEntityByAdvTreeNode(DevComponents.AdvTree.AdvTree)">
             <summary>
             将AdvTree节点数据转换为obj
@@ -370,6 +413,20 @@
             <param name="node"></param>
             <param name="CID"></param>
             <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.EntityToAdvTree.FillDataToTreeByTraversvalObj(SmallManagerSpace.Resources.StructEntity,DevComponents.AdvTree.Node)">
+            <summary>
+            结构体数据填充到节点
+            </summary>
+            <param name="inputEntity"></param>
+            <param name="RreeNode"></param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.EntityToAdvTree.GetNodeByTraversal(DevComponents.AdvTree.Node,System.Object)">
+            <summary>
+            遍历填充节点数据
+            </summary>
+            <param name="pNode"></param>
+            <param name="objItem"></param>
         </member>
         <member name="T:SmallManagerSpace.Resources.EntitySerialize">
             <summary>
@@ -450,6 +507,20 @@
             </summary>
             <param name="Type"></param>
             <returns></returns>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntityVsFile.isInHeritData(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            是否保留上次的Enum和Struct,Define
+            </summary>
+            <param name="isInheritEnum">true:保留</param>
+            <param name="isInheritStruct">true:保留</param>
+            <param name="isInheritDefine">true:保留</param>
+        </member>
+        <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetEntityFromFile(System.String)">
+            <summary>
+            得到H文件的序列化数据
+            </summary>
+            <param name="FilePath"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.EntityVsFile.GetCppFileFromEntityByT4(System.String)">
             <summary>
@@ -820,14 +891,48 @@
             <param name="oldSturct"></param>
             <returns></returns>
         </member>
+        <member name="M:MasterDetailSample.frmMain.SetMaxBoardNumForNewStruct(SmallManagerSpace.Resources.StructEntity,SmallManagerSpace.Resources.StructEntity)">
+            <summary>
+            设置最大board_num
+            </summary>
+            <param name="newStruct"></param>
+            <param name="oldSturct"></param>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.TraversalCopy(System.Object)">
+            <summary>
+            遍历复制对象
+            </summary>
+            <param name="ob"></param>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.SyncTraversalCopy(System.Collections.Generic.List{System.Object},System.Collections.Generic.List{System.Object})">
+             <summary>
+            相同名称（name),oldList更新到newList中
+             </summary>
+             <param name="newList"></param>
+             <param name="oldList"></param>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.MergeStructByNameIndexForNewHead(SmallManagerSpace.Resources.StructEntity,SmallManagerSpace.Resources.StructEntity)">
+            <summary>
+            根据name,index保留尾项法合并结构体
+            </summary>
+            <param name="newStruct">新结构体项</param>
+            <param name="oldSturct">旧结构体项</param>
+            <returns></returns>
+        </member>
         <member name="M:MasterDetailSample.frmMain.MergeStructByNameIndexForNewXml(SmallManagerSpace.Resources.StructEntity,SmallManagerSpace.Resources.StructEntity,System.Boolean)">
             <summary>
-            更具name,index保留尾项法合并结构体
+            根据name,index保留尾项法合并结构体
             </summary>
             <param name="newStruct">新结构体项</param>
             <param name="oldSturct">旧结构体项</param>
             <param name="isSaveNew">true:相同项目，则保留newStruct;false:相同项目，则保留oldSturct</param>
             <returns></returns>
+        </member>
+        <member name="M:MasterDetailSample.frmMain.DisplayDataGuiViaOBJ(SmallManagerSpace.Resources.StructEntity)">
+            <summary>
+            结构体数据映射到advtree上
+            </summary>
+            <param name="inputEntity"></param>
         </member>
         <member name="M:MasterDetailSample.frmMain.SaveFileToolStripMenuItem_Click(System.Object,System.EventArgs)">
             <summary>

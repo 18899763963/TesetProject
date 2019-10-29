@@ -39,6 +39,9 @@ namespace SmallManagerSpace.Resources
         [XmlAttribute("nodetype")]
         public string nodetype { get; set; }
 
+        //[XmlAttribute("modified")]
+        //public string modified { get; set; }
+
         [XmlElement("parameter", Type = typeof(Parameter))]
         [XmlElement("structitem", Type = typeof(StructItem))]
         public List<object> parameterList = new List<object>();
@@ -65,6 +68,8 @@ namespace SmallManagerSpace.Resources
         public string note { get; set; }
         [XmlAttribute("nodetype")]
         public string nodetype { get; set; }
+        [XmlAttribute("modified")]
+        public string modified { get; set; }        
     }
 
     /// <summary>
@@ -76,7 +81,8 @@ namespace SmallManagerSpace.Resources
         {
             StructItem ox = x as StructItem;
             StructItem oy = y as StructItem;
-            return (ox.name+ox.index).CompareTo(oy.name+oy.index);
+            if(ox!=null && oy!=null)return (ox.name+ox.index).CompareTo(oy.name+oy.index);
+            return 0;
         }
     }
     /// <summary>
@@ -99,7 +105,7 @@ namespace SmallManagerSpace.Resources
     /// <summary>
     /// 通过Name判断两个项目是否相等
     /// </summary>
-    public class StructEqualityByName : IEqualityComparer<object>
+    public class StructItemByName : IEqualityComparer<object>
     {
         public bool Equals(object x, object y)
         {
@@ -113,7 +119,61 @@ namespace SmallManagerSpace.Resources
             return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
         }
     }
+    /// <summary>
+    /// 通过Name判断两个项目是否相等
+    /// </summary>
+    public class ParameterItemByName : IEqualityComparer<object>
+    {
+        public bool Equals(object x, object y)
+        {
 
+            if(x is Parameter && y is Parameter)
+            {
+                Parameter ox = x as Parameter;
+                Parameter oy = y as Parameter;
+                return ox.name == oy.name;
+
+            }else if(x is StructItem && y is StructItem)
+            {
+                StructItem ox = x as StructItem;
+                StructItem oy = y as StructItem;
+                return ox.name == oy.name;
+            }else if (x is StructItem && y is Parameter)
+            {
+                StructItem ox = x as StructItem;
+                Parameter oy = y as Parameter;
+                return ox.name == oy.name;
+            }
+            else if (x is Parameter && y is StructItem)
+            {
+                Parameter ox = x as Parameter;
+                StructItem oy = y as StructItem;
+                return ox.name == oy.name;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public int GetHashCode(object obj)
+        {
+
+            if(obj is Parameter)
+            {
+                Parameter objx = obj as Parameter;
+                return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
+            }else if(obj is StructItem)
+            {
+                StructItem objx = obj as StructItem;
+                return (objx == null) ? 0 : objx.name.ToString().GetHashCode();
+            }
+            else
+            {
+                return 0;
+            }
+
+        }
+    }
 
     public class StructFunction
     {
@@ -242,7 +302,7 @@ namespace SmallManagerSpace.Resources
                     StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
                     //修改structEntity的index
                     ob.index = "";
-                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype});
                     TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
                 }
                 else
@@ -251,7 +311,7 @@ namespace SmallManagerSpace.Resources
                     //修改structEntity的index
                     ob.index = "0";
                     if (!ComData.EntryVar.ContainsKey(varNum)) { ComData.EntryVar.Add(varNum, 0); }
-                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype });
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype});
                     TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
 
                 }
@@ -282,7 +342,7 @@ namespace SmallManagerSpace.Resources
                         switch (keyValue.Keys.First())
                         {
                             case "base":
-                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" });
+                                destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = sobj.value, length = sobj.length, nodetype = "base" , modified = sobj.modified });
                                 break;
                             case "enum":
                                 //默认匹配第一项
@@ -290,12 +350,12 @@ namespace SmallManagerSpace.Resources
                                 {
                                     simpleType selectItem = ComData.enumEntity.simpleTypes.Where(x => x.name == sobj.type).First();
                                     string defaultEnum = selectItem.EnumValues[0].en;
-                                    destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = defaultEnum, length = sobj.length, nodetype = "enum" });
+                                    destList.Add(new Parameter() { CID = sobj.CID, type = sobj.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = sobj.note, range = sobj.range, value = defaultEnum, length = sobj.length, nodetype = "enum", modified = "N" });
                                 }
                                 break;
                             case "struct":
                                 StructItem i = keyValue[keyValue.Keys.First()] as StructItem;
-                                destList.Add(new StructItem() { CID = i.CID, type = i.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = i.note, nodetype = "struct" });
+                                destList.Add(new StructItem() { CID = i.CID, type = i.type, name = sobj.name, index = sobj.index, preinput = sobj.preinput, note = i.note, nodetype = "struct"});
                                 TraversalAddItem((destList.LastOrDefault() as StructItem).parameterList, i.parameterList);
                                 break;
                             default:
@@ -404,7 +464,7 @@ namespace SmallManagerSpace.Resources
             structitemInfo.index = indexS;
             structitemInfo.preinput = preinput;
             structitemInfo.note = note;
-            structitemInfo.nodetype = nodetype;
+            structitemInfo.nodetype = nodetype;       
             //创建structitem信息
             List<object> parameList = new List<object>();
             structitemInfo.parameterList = parameList;
@@ -425,7 +485,7 @@ namespace SmallManagerSpace.Resources
         /// <param name="length"></param>
         /// <param name="note"></param>
         /// <param name="nodetype"></param>
-        public void AddValueOfParameterItem(StructItem higherNode, string CID, string type, string preinput, string name, string indexS, string range, string value, string length, string note, string nodetype)
+        public void AddValueOfParameterItem(StructItem higherNode, string CID, string type, string preinput, string name, string indexS, string range, string value, string length, string note, string nodetype,string modified)
         {
             //创建parameterInfo信息
             Parameter parameterInfo = new Parameter();
@@ -439,6 +499,7 @@ namespace SmallManagerSpace.Resources
             parameterInfo.length = length;
             parameterInfo.note = note;
             parameterInfo.nodetype = nodetype;
+            parameterInfo.modified = modified;
             //添加parameterInfo到队列中
             //ComRunDatas.structEntity.nodeList.LastOrDefault().parameterList.Add(parameterInfo);
             higherNode.parameterList.Add(parameterInfo);
@@ -455,7 +516,7 @@ namespace SmallManagerSpace.Resources
             {
                 structEntity.nodeList.Reverse();
                 //distinct默认会保留第一个项目
-                structEntity.nodeList = structEntity.nodeList.Distinct<object>(new StructEqualityByName()).ToList();
+                structEntity.nodeList = structEntity.nodeList.Distinct<object>(new StructItemByName()).ToList();
                 structEntity.nodeList.Reverse();
             }
 

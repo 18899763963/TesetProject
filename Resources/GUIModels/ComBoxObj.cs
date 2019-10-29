@@ -102,10 +102,14 @@ namespace SmallManagerSpace.Resources.GUIModels
                 Node selectedNode = advTree.SelectedNode;
                 AdvTreeObj advTreeObj = new AdvTreeObj();
                 Cell selectedCell = advTreeObj.GetSelectedNodeCell(selectedNode, "value");
+                //数据被修改，则设置modified为Y
+                if (!selectedCell.Text.Equals(comboBox.Text))
+                {
+                    advTreeObj.SetSelectedNodeCellData(selectedNode, "modified", "Y");
+                }
                 selectedCell.Text = comboBox.Text;
-            }
 
-            
+            }            
         }
     }
 }

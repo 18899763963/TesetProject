@@ -26,6 +26,12 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             ComData.advTree.Nodes.Add(NewTreeNode);
             ComData.advTree.EndUpdate();
         }
+
+        /// <summary>
+        /// 结构体数据填充到节点
+        /// </summary>
+        /// <param name="inputEntity"></param>
+        /// <param name="RreeNode"></param>
         public void FillDataToTreeByTraversvalObj(StructEntity inputEntity, Node RreeNode)
         {
             foreach (StructItem structitemObj in inputEntity.nodeList)
@@ -61,13 +67,6 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             newTreeNode.Cells.Add(new Cell(sObj.nodetype, elementStyle));
             newTreeNode.Cells.Add(new Cell(sObj.CID, elementStyle));
             newTreeNode.Cells.Add(new Cell(sObj.note, elementStyle));
-            //Dictionary<string, string> TagDict = new Dictionary<string, string>();
-            //TagDict["preinput"] = sObj.preinput;
-            //TagDict["name"] = sObj.name;
-            //TagDict["CID"] = sObj.CID;
-            //TagDict["nodetype"] = sObj.nodetype ?? "struct";
-            //newTreeNode.Tag = TagDict;
-
             return newTreeNode;
         }
         private Node GetNodeByObjOfBase(Parameter pObj, ElementStyle elementStyle, int imageIndex)
@@ -83,13 +82,9 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             newTreeNode.Cells.Add(new Cell(pObj.nodetype, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.CID, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.note, elementStyle));
+            newTreeNode.Cells.Add(new Cell(pObj.modified, elementStyle));
             Dictionary<string, string> TagDict = new Dictionary<string, string>();
-            //TagDict["preinput"] = pObj.preinput;
-            //TagDict["name"] = pObj.name;
-            //TagDict["CID"] = pObj.CID;
-            //TagDict["nodetype"] = pObj.nodetype ?? "base";
-            //newTreeNode.Tag = TagDict;
-            //2.注册entry变量
+             //2.注册entry变量
             if (pObj.preinput.Equals("entry"))
             {
                 AdvTreeObj advTreeObj = new AdvTreeObj();
@@ -125,12 +120,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             newTreeNode.Cells.Add(new Cell(pObj.nodetype, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.CID, elementStyle));
             newTreeNode.Cells.Add(new Cell(pObj.note, elementStyle));
-            //Dictionary<string, string> TagDict = new Dictionary<string, string>();
-            //TagDict["preinput"] = pObj.preinput;
-            //TagDict["name"] = pObj.name;
-            //TagDict["CID"] = pObj.CID;
-            //TagDict["nodetype"] = pObj.nodetype ?? "enum";
-            //newTreeNode.Tag = TagDict;
+            newTreeNode.Cells.Add(new Cell(pObj.modified, elementStyle));
             //2.注册entry变量
             if (pObj.preinput.Equals("entry"))
             {
@@ -140,6 +130,11 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             return newTreeNode;
         }
 
+        /// <summary>
+        /// 遍历填充节点数据
+        /// </summary>
+        /// <param name="pNode"></param>
+        /// <param name="objItem"></param>
         private void GetNodeByTraversal(Node pNode, object objItem)
         {
             if (objItem is Parameter)

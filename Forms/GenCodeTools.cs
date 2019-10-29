@@ -90,6 +90,8 @@ namespace MasterDetailSample
             //2.如果是H头文件，则转换CstructEntity,再转换CustomEntity
             if (ComData.stepNow.Equals(Step.ParserFileToEntity) && PathFileName.Contains(".h"))
             {
+                //是否保留原来的数据
+                EntityVsFile.isInHeritData(false, false, false);
                 //如果是H头文件转换structEntity
                 GetEntityFromHeaderFile(PathFileName);
                 //根据相同name去除重复项，保留最新项
@@ -148,34 +150,38 @@ namespace MasterDetailSample
                 ComData.InitImportData();
                 ComData.stepNow = Step.ParserFileToEntity;
             }
-            ////2.如果是H头文件->StructOBJ对象-->CustomOBJ对象
-            //if (ComData.stepNow.Equals(Step.ParserFileToEntity) && PathFileName.Contains(".h"))
-            //{
-            //    //如果是H头文件->StructOBJ对象
-            //    GetEntityFromHeaderFile(PathFileName);
-            //    //去除结构体中相同元素项目（匹配：name,保留方法：存储最新）
-            //    StructFunction structFunction = new StructFunction();
-            //    EnumFunction enumFunction = new EnumFunction();
-            //    enumFunction.DistinctSameNameOfEnumEntity(ComData.enumEntity);
-            //    structFunction.DistinctSameNameOfStructItem(ComData.structEntity);
-            //    //structEntity转换CustomEntity               
-            //    ComData.importStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
-            //    //合并importStruct到customStruct，保留最新项目
-            //    if (IsContainsSameItemByName(ComData.importStruct, ComData.customStruct))
-            //    {
-            //        //产生对话框
-            //    }
-            //    ComData.customStruct = MergeStructByNameIndexForNewXml(ComData.importStruct, ComData.customStruct, true);
-            //    //按name 升序排序
-            //    ComData.customStruct.nodeList.Sort(new StructSortByNameIndex());
-            //    //将OBJ对象的数据序列化到xml文件中
-            //    EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);
-            //    EntitySerialize.XmlSerializeOnString(ComData.structEntity, ComData.programStartPath + ComData.structItemsFileName);
-            //    ComData.stepNow = Step.EntityToGUI;
-            //}
-            //2.如果是xml文件->importOBJ对象-->CustomOBJ对象
-            if (ComData.stepNow.Equals(Step.ParserFileToEntity) && PathFileName.Contains(".xml"))
+            //2.如果是H头文件->StructOBJ对象-->CustomOBJ对象
+            if (ComData.stepNow.Equals(Step.ParserFileToEntity) && PathFileName.Contains(".h"))
             {
+                //是否保留原来的数据
+                EntityVsFile.isInHeritData(true, false, false);
+                //如果是H头文件->StructOBJ对象
+                GetEntityFromHeaderFile(PathFileName);
+                //去除结构体中相同元素项目（匹配：name,保留方法：存储最新）
+                StructFunction structFunction = new StructFunction();
+                EnumFunction enumFunction = new EnumFunction();
+                enumFunction.DistinctSameNameOfEnumEntity(ComData.enumEntity);
+                structFunction.DistinctSameNameOfStructItem(ComData.structEntity);
+                //structEntity转换CustomEntity               
+                ComData.importStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
+                //合并importStruct到customStruct，保留最新项目
+                if (IsContainsSameItemByName(ComData.importStruct, ComData.customStruct))
+                {
+                    //产生对话框
+                }
+                ComData.customStruct = MergeStructByNameIndexForNewHead(ComData.importStruct, ComData.customStruct);
+                //按name 升序排序
+                ComData.customStruct.nodeList.Sort(new StructSortByNameIndex());
+                //将OBJ对象的数据序列化到xml文件中
+                EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);
+                EntitySerialize.XmlSerializeOnString(ComData.structEntity, ComData.programStartPath + ComData.structItemsFileName);
+                ComData.stepNow = Step.EntityToGUI;
+            }
+            //3.如果是xml文件->importOBJ对象-->CustomOBJ对象
+            else if (ComData.stepNow.Equals(Step.ParserFileToEntity) && PathFileName.Contains(".xml"))
+            {
+                //是否保留原来的数据
+                EntityVsFile.isInHeritData(true, true, true);
                 //转换enum文件的内容                  
                 ComData.enumEntity = ComData.enumFunction.XmlDeSerializeToEnumObj(ComData.programStartPath, ComData.enumItemsFileName);
                 //解析XML文件内容到Entity       
@@ -190,7 +196,7 @@ namespace MasterDetailSample
                 ComData.customStruct.nodeList.Sort(new StructSortByNameIndex());
                 ComData.stepNow = Step.EntityToGUI;
             }
-            //3.CustomEntity对象生成界面
+            //4.CustomEntity对象生成界面
             if (ComData.stepNow.Equals(Step.EntityToGUI))
             {
                 DisplayDataGuiViaOBJ(ComData.customStruct);
@@ -215,7 +221,7 @@ namespace MasterDetailSample
             bool result = false;
             if (newStruct != null && oldSturct != null)
             {
-                if (newStruct.nodeList.Intersect<object>(oldSturct.nodeList, new StructEqualityByName()).Count<object>() > 0)
+                if (newStruct.nodeList.Intersect<object>(oldSturct.nodeList, new StructItemByName()).Count<object>() > 0)
                 {
                     result = true;
                 }
@@ -223,6 +229,11 @@ namespace MasterDetailSample
             return result;
         }
 
+        /// <summary>
+        /// 设置最大board_num
+        /// </summary>
+        /// <param name="newStruct"></param>
+        /// <param name="oldSturct"></param>
         private void SetMaxBoardNumForNewStruct(StructEntity newStruct, StructEntity oldSturct)
         {
             string newStructIndexValue = newStruct.nodeList.Max(i => (i as StructItem).index);
@@ -240,18 +251,18 @@ namespace MasterDetailSample
                 //front>rear;
                 case 1:
                     object oldObj = oldSturct.nodeList.Where(i => (i as StructItem).type.Equals("OTN_USER_B_TYPE_INFO")).FirstOrDefault();
-                   // object newObj = newStruct.nodeList.Where(i => (i as StructItem).type.Equals("OTN_USER_B_TYPE_INFO")).FirstOrDefault();
+                    // object newObj = newStruct.nodeList.Where(i => (i as StructItem).type.Equals("OTN_USER_B_TYPE_INFO")).FirstOrDefault();
                     //(newStruct.nodeList.Where(i => (i as StructItem).type.Equals("OTN_USER_B_TYPE_INFO")).FirstOrDefault() as StructItem)=;
-                    foreach(object newObj in newStruct.nodeList)
+                    foreach (object newObj in newStruct.nodeList)
                     {
-                        if(newObj is StructItem)
+                        if (newObj is StructItem)
                         {
                             StructItem nO = newObj as StructItem;
                             StructItem oO = oldObj as StructItem;
                             if (nO.type.Equals("OTN_USER_B_TYPE_INFO"))
                             {
                                 nO.parameterList = oO.parameterList;
-                            }        
+                            }
                         }
                     }
                     break;
@@ -260,7 +271,81 @@ namespace MasterDetailSample
             }
         }
         /// <summary>
-        /// 更具name,index保留尾项法合并结构体
+        /// 遍历复制对象
+        /// </summary>
+        /// <param name="ob"></param>
+        void TraversalCopy(object ob)
+        {
+            if (ob is StructItem)
+            {
+                StructItem sI = ob as StructItem;
+                StructItem sIFind = ComData.structEntity.nodeList.Find(i => (i as StructItem).type == sI.type) as StructItem;
+                if (sIFind != null)
+                {
+                    //做减法在oldList的基础上
+                    List<object> ToReduce = sI.parameterList.Except<object>(sIFind.parameterList, new ParameterItemByName()).ToList<object>();
+                    ToReduce.ForEach(i => sI.parameterList.Remove(i));
+                    foreach (object sIPara in sI.parameterList)
+                    {
+                        if (sIPara is StructItem)
+                        {
+                            TraversalCopy(sIPara);
+                        }
+                    }
+                    //做加法在oldList的基础上
+                    List<object> ToAdd = sIFind.parameterList.Except<object>(sI.parameterList, new ParameterItemByName()).ToList<object>();
+                    ToAdd.ForEach(i => sI.parameterList.Add(i));
+                    //排序Struct
+                    //sI.parameterList.Sort(new StructSortByNameIndex());
+                }
+            }
+            else if (ob is Parameter)
+            {
+                Parameter pa = ob as Parameter;
+            }
+        }
+        /// <summary>
+        ///相同名称（name),oldList更新到newList中
+        /// </summary>
+        /// <param name="newList"></param>
+        /// <param name="oldList"></param>
+        private void SyncTraversalCopy(List<object> newList, List<object> oldList)
+        {
+            //做减法在oldList的基础上
+          
+            List<object> oldToReduce = oldList.Except<object>(newList, new StructItemByName()).ToList<object>();
+            oldToReduce.ForEach(i => oldList.RemoveAll(j=>(j as StructItem).name==(i as StructItem).name));
+
+            foreach (object ob in oldList)
+            {
+                TraversalCopy(ob);
+            }
+
+            //做加法在oldList的基础上
+            List<object> newToAdd = newList.Except<object>(oldList, new StructItemByName()).ToList<object>();
+            newToAdd.ForEach(i => oldList.Add(i));
+            //排序Struct
+            oldList.Sort(new StructSortByNameIndex());
+
+        }
+
+        /// <summary>
+        /// 根据name,index保留尾项法合并结构体
+        /// </summary>
+        /// <param name="newStruct">新结构体项</param>
+        /// <param name="oldSturct">旧结构体项</param>
+        /// <returns></returns>
+        private StructEntity MergeStructByNameIndexForNewHead(StructEntity newStruct, StructEntity oldSturct)
+        {
+            if (newStruct != null && oldSturct != null)
+            {
+                //相同名称（name),oldStruct更新到newStruct中
+                SyncTraversalCopy(newStruct.nodeList, oldSturct.nodeList);
+            }
+            return oldSturct;
+        }
+        /// <summary>
+        /// 根据name,index保留尾项法合并结构体
         /// </summary>
         /// <param name="newStruct">新结构体项</param>
         /// <param name="oldSturct">旧结构体项</param>
@@ -365,6 +450,10 @@ namespace MasterDetailSample
             return structEntity;
         }
 
+        /// <summary>
+        /// 结构体数据映射到advtree上
+        /// </summary>
+        /// <param name="inputEntity"></param>
         private void DisplayDataGuiViaOBJ(StructEntity inputEntity)
         {
             EntityToAdvTree entityToAdvTree = new EntityToAdvTree();
@@ -700,8 +789,8 @@ namespace MasterDetailSample
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "E:\\";
-            //openFileDialog.Filter = "h文件(*.h)|*.h|xml文件(*.xml)|*.xml";
-            openFileDialog.Filter = "xml文件(*.xml)|*.xml";
+            openFileDialog.Filter = "h文件(*.h)|*.h|xml文件(*.xml)|*.xml";
+            //openFileDialog.Filter = "xml文件(*.xml)|*.xml";
             openFileDialog.RestoreDirectory = true;
             openFileDialog.FilterIndex = 1;
             //定义程序处理阶段

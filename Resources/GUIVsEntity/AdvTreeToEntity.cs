@@ -135,9 +135,8 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             parameter.note = NodeDictinary.ContainsKey("note") ? NodeDictinary["note"] : "";
             parameter.nodetype = NodeDictinary.ContainsKey("nodetype") ? NodeDictinary["nodetype"] : "";
             parameter.index = NodeDictinary.ContainsKey("index") ? NodeDictinary["index"] : "";
+            parameter.modified = NodeDictinary.ContainsKey("modified") ? NodeDictinary["modified"] : "";
             return parameter;
         }
-
-
     }
 }
