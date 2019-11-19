@@ -152,9 +152,9 @@ namespace SmallManagerSpace.Resources
             {
                 ComData.structEntity.nodeList.Clear();
             }
-            if (isInheritDefine == false && ComData.defineEntities != null)
+            if (isInheritDefine == false && ComData.showEntities != null)
             {
-                ComData.defineEntities.Clear();
+                ComData.showEntities.Clear();
             }
         }
         /// <summary>
@@ -230,30 +230,32 @@ namespace SmallManagerSpace.Resources
                             CapturedType = "isEnum";
                             ProcessStep++;
                         }
-                        //3.匹配结构体或结构体数组的定义,例如：
-                        //OTN_USER_BOARD_INFO OTN_USER_BOARD_INFO_VAR;
-                        //OTN_USER_BOARD_INFO OTN_USER_BOARD_INFO_VAR[board_num];
-                        else if (Regex.IsMatch(line, @"^[\w]+[\s]+[\w]+[\s]*(;|[\[]{1}[\S]+[\]]{1};)"))
+                        //3.匹配函数的定义,例如：
+                        //AAL_INT32 otn_user_get_init_info( OTN_USER_INIT_INFO  *init_info );
+                        else if (Regex.IsMatch(line, @"\w+\s+\w+\s*\(\s*\w+\s+\*{1}\s*\w+\s*\)\s*;"))
                         {
-                            string RegexStr3 = @"(?<structType>[\w]+)[\s]+(?<structName>[\w]+)[\s]*(;|[\[]{1}(?<ArrayNum>[\w]+)[\]]{1};)";
+                            string RegexStr3 = @"(?<retType>\w+)\s+(?<funName>\w+)\s*\(\s*(?<argType>\w+)\s+\*{1}\s*(?<argName>\w+)\s*\)\s*;";
                             Match matchStr = Regex.Match(line, RegexStr3);
-                            string structType = matchStr.Groups["structType"].ToString();
-                            string structName = matchStr.Groups["structName"].ToString();
+                            
+                            string retTypeM = matchStr.Groups["retType"].ToString();
+                            string funNameM = matchStr.Groups["funName"].ToString();
+                            string argTypeM = matchStr.Groups["argType"].ToString();
+                            string argNameM = matchStr.Groups["argName"].ToString();
                             //删除同名结构体变量，将最后一个作为新值
-                            if(ComData.defineEntities.Count>0)
+                            if (ComData.showEntities.Count > 0)//如果有相同则用第一个
                             {
-                                DefineEntity matchDefineEntity = ComData.defineEntities.Where(i => i.name == structName).FirstOrDefault();
-                                if (matchDefineEntity != null) { ComData.defineEntities.Remove(matchDefineEntity); }
-                            }
-                            if (matchStr.Groups["ArrayNum"] == null || matchStr.Groups["ArrayNum"].ToString() == "")
+                                ShowEntity matchShowEntity = ComData.showEntities.Where(i => i.argType == argTypeM).FirstOrDefault();
+                                if (matchShowEntity == null)
+                                {
+                                    ComData.showEntities.Add(new ShowEntity() {retType=retTypeM,funName=funNameM,argType=argTypeM,argName=argNameM });
+                                }
+                            }else
                             {
-                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName });
+                                ComData.showEntities.Add(new ShowEntity() { retType = retTypeM, funName = funNameM, argType = argTypeM, argName = argNameM });
+
                             }
-                            else
-                            {
-                                //ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName+"["+ matchStr.Groups["ArrayNum"].ToString()+"]" });
-                                ComData.defineEntities.Add(new DefineEntity() { type = structType, name = structName, ArrayNum = matchStr.Groups["ArrayNum"].ToString() });
-                            }
+
+
                         }
                     }
                 }
@@ -300,7 +302,8 @@ namespace SmallManagerSpace.Resources
                             string nodetype = "base";
                             bool isArrayNumber = false;
                             int arrayNumber = 0;
-                            string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;[\s]*/+(?<parameternote>[\S]+)";
+                            //此处的注释匹配改为可选 (;|[\[]{ 1} (?< ArrayNum >[\w] +)[\]]{ 1};)
+                            string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;([\s]*/+(?<parameternote>[\w]+)|[\s]*)";
                             Match matchStr = Regex.Match(line, RegexStr3);
                             type = matchStr.Groups["parametertype"].ToString();
                             note = matchStr.Groups["parameternote"].ToString() ?? "";

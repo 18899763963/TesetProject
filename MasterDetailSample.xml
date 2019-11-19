@@ -21,9 +21,9 @@
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="T:SmallManagerSpace.Resources.DefineEntity">
+        <member name="T:SmallManagerSpace.Resources.ShowEntity">
             <summary>
-            存放用户自定义数据
+            存放界面可编辑的项和函数实现项
             </summary>
         </member>
         <member name="M:SmallManagerSpace.Resources.ComData.InitImportData">
@@ -108,11 +108,11 @@
             <param name="typeString"></param>
             <returns>"base","enum","struct","undefine"</returns>
         </member>
-        <member name="M:SmallManagerSpace.Resources.StructFunction.CreateCustomStruct(System.Collections.Generic.List{SmallManagerSpace.Resources.DefineEntity})">
+        <member name="M:SmallManagerSpace.Resources.StructFunction.CreateCustomStruct(System.Collections.Generic.List{SmallManagerSpace.Resources.ShowEntity})">
             <summary>
             创建customStruct对象
             </summary>
-            <param name="defineEntitys"></param>
+            <param name="showEntitys"></param>
         </member>
         <member name="M:SmallManagerSpace.Resources.StructFunction.TraversalAddItem(System.Collections.Generic.List{System.Object},System.Collections.Generic.List{System.Object})">
             <summary>

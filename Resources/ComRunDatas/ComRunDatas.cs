@@ -20,7 +20,7 @@ namespace SmallManagerSpace.Resources
         static public StructEntity customStruct = null;
         static public StructEntity importStruct = null;
         static public EnumEntity enumEntity = null;
-        static public List<DefineEntity> defineEntities =new  List<DefineEntity>();
+        static public List<ShowEntity> showEntities =new  List<ShowEntity>();
         static public Step stepNow = Step.InitComm;
         static public string baseItemsFileName = "BaseItems.xsd";
         static public string enumItemsFileName = "EnumItems.xml";
@@ -49,7 +49,7 @@ namespace SmallManagerSpace.Resources
         /// </summary>
         static public void InitImportData()
         {
-            defineEntities.Clear();
+            showEntities.Clear();
         }
         /// <summary>
         /// 初始化程序运行的公共数据
@@ -85,7 +85,7 @@ namespace SmallManagerSpace.Resources
         /// </summary>
         static public void InitEnumSturctContainer()
         {
-            defineEntities.Clear();
+            showEntities.Clear();
             structEntity = null;
             customStruct = null;
             enumFunction = new EnumFunction();

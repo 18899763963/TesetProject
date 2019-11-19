@@ -284,37 +284,41 @@ namespace SmallManagerSpace.Resources
         /// <summary>
         /// 创建customStruct对象
         /// </summary>
-        /// <param name="defineEntitys"></param>
-        public StructEntity CreateCustomStruct(List<DefineEntity> defineEntitys)
+        /// <param name="showEntitys"></param>
+        public StructEntity CreateCustomStruct(List<ShowEntity> showEntitys)
         {
 
             StructEntity structEntity = new StructEntity();
-
-            foreach (DefineEntity defineEntity in defineEntitys)
+            foreach (ShowEntity showEntity in showEntitys)
             {
-
-                //string RegexStr4 = @"(?<varName>[\S]+)[\s]*[\[]+(?<varNum>[\S]*)[\]]+";
-                //Match matc = Regex.Match(defineEntity.name, RegexStr4);
-                string varName = defineEntity.name;
-                string varNum = defineEntity.ArrayNum;
-                if (varNum == "")
+                string argType = showEntity.argType;
+                string argName = showEntity.argName;
+                if(!argType.Equals(""))
                 {
-                    StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
-                    //修改structEntity的index
-                    ob.index = "";
-                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype});
-                    TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
-                }
-                else
-                {
-                    StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == defineEntity.type).First()) as StructItem;
-                    //修改structEntity的index
-                    ob.index = "0";
-                    if (!ComData.EntryVar.ContainsKey(varNum)) { ComData.EntryVar.Add(varNum, 0); }
-                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype});
+                    StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == argType).First()) as StructItem;
+                    //修改structEntity的index                                   
+                    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = ob.name, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
                     TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
 
                 }
+                //if (argType == "")
+                //{
+                //    StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == showEntity.type).First()) as StructItem;
+                //    //修改structEntity的index
+                //    ob.index = "";
+                //    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = ob.preinput, note = ob.note, nodetype = ob.nodetype });
+                //    TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+                //}
+                //else
+                //{
+                //    StructItem ob = (ComData.structEntity.nodeList.Where(x => (x as StructItem).type == showEntity.type).First()) as StructItem;
+                //    //修改structEntity的index
+                //    ob.index = "0";
+                //    if (!ComData.EntryVar.ContainsKey(varNum)) { ComData.EntryVar.Add(varNum, 0); }
+                //    structEntity.nodeList.Add(new StructItem() { CID = ob.CID, type = ob.type, name = varName, index = ob.index, preinput = varNum, note = ob.note, nodetype = ob.nodetype });
+                //    TraversalAddItem((structEntity.nodeList.LastOrDefault() as StructItem).parameterList, ob.parameterList);
+
+                //}
             }
             return structEntity;
         }

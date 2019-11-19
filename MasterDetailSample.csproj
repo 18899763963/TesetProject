@@ -203,7 +203,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Resources\EntityModels\DefineEntity.cs" />
+    <Compile Include="Resources\EntityModels\ShowEntity.cs" />
     <Compile Include="Resources\GUIModels\MenuButtonObj.cs" />
     <Compile Include="Resources\GUIModels\MenuItemObj.cs" />
     <Compile Include="Resources\Resource.designer\Resource.Designer.cs" />
@@ -496,6 +496,7 @@
     <Content Include="Setting\SmallManager.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Release\" />
     <Folder Include="bin\x64\Debug\" />
     <Folder Include="bin\x64\Release\" />
     <Folder Include="bin\x86\Debug\" />

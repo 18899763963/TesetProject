@@ -100,7 +100,7 @@ namespace MasterDetailSample
                 enumFunction.DistinctSameNameOfEnumEntity(ComData.enumEntity);
                 structFunction.DistinctSameNameOfStructItem(ComData.structEntity);
                 //structEntity转换CustomEntity                  
-                ComData.customStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
+                ComData.customStruct = structFunction.CreateCustomStruct(ComData.showEntities);
                 //将OBJ对象的数据序列化到xml文件中
                 EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);
                 EntitySerialize.XmlSerializeOnString(ComData.structEntity, ComData.programStartPath + ComData.structItemsFileName);
@@ -163,7 +163,7 @@ namespace MasterDetailSample
                 enumFunction.DistinctSameNameOfEnumEntity(ComData.enumEntity);
                 structFunction.DistinctSameNameOfStructItem(ComData.structEntity);
                 //structEntity转换CustomEntity               
-                ComData.importStruct = structFunction.CreateCustomStruct(ComData.defineEntities);
+                ComData.importStruct = structFunction.CreateCustomStruct(ComData.showEntities);
                 //合并importStruct到customStruct，保留最新项目
                 if (IsContainsSameItemByName(ComData.importStruct, ComData.customStruct))
                 {
