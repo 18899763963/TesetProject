@@ -379,66 +379,6 @@ namespace MasterDetailSample
             return mergeStruct;
         }
 
-
-        ///// <summary>
-        ///// 得到结构体中有相同项目结构体
-        ///// </summary>
-        ///// <param name="newStruct">新结构体项</param>
-        ///// <param name="oldSturct">旧结构体项</param>
-        ///// <param name="isSaveNew">true:相同项目，则保留newStruct;false:相同项目，则保留oldSturct</param>
-        ///// <returns></returns>
-        //private StructEntity MergeStructEntityFromNewXml(StructEntity newStruct, StructEntity oldSturct, bool isSaveNew)
-        //{
-        //    StructEntity mergeStruct = new StructEntity();
-        //    if (newStruct != null && oldSturct != null)
-        //    {
-        //        if (isSaveNew)
-        //        {
-        //            foreach (object ob in newStruct.nodeList)
-        //            {
-        //                //不含相同项目，则添加到oldStruct列表结尾
-        //                if (!oldSturct.nodeList.Contains<object>(ob, new StructEqualityByName()))
-        //                {
-        //                    oldSturct.nodeList.Add(ob);
-        //                }
-        //                //含有相同项目，则将newStruct相同名的子项替换oldStruct的子项处
-        //                else
-        //                {
-        //                    if (ob is StructItem)
-        //                    {
-        //                        StructItem sI = ob as StructItem;
-        //                        //此处的筛选是同一份内容嘛？
-        //                        //List<object> sameObjectAtOldSide = oldSturct.nodeList.Where(i => i.Equals(ob)).ToList<object>();
-        //                        List<object> sameObjectAtOldSide = oldSturct.nodeList.FindAll(i => (i as StructItem).name == sI.name);
-        //                        //更换其中的parameterList项目
-        //                        foreach (object obItem in sameObjectAtOldSide)
-        //                        {
-        //                            (obItem as StructItem).parameterList = sI.parameterList;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            mergeStruct.nodeList = oldSturct.nodeList;
-        //        }
-        //        else
-        //        {
-
-        //            foreach (object ob in newStruct.nodeList)
-        //            {
-        //                //不含相同项目，则添加到oldStruct列表结尾
-        //                if (!oldSturct.nodeList.Contains<object>(ob, new StructEqualityByName()))
-        //                {
-        //                    oldSturct.nodeList.Add(ob);
-        //                }
-        //            }
-        //            mergeStruct.nodeList = oldSturct.nodeList;
-        //        }
-
-        //    }
-        //    return mergeStruct;
-        //}
-
-
         private StructEntity GetSructEntityFromXmlFileDistinctNameIndex(string path, string InputFilePath)
         {
             //1.解析XML文件内容到Entity
@@ -519,8 +459,8 @@ namespace MasterDetailSample
                             string GenCppFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName;
                             EntityVsFile.GetCppFileFromEntityByT4(GenCppFileFullName);
                             //3.将当前树的数据放入header文件中 
-                            //string GenHeaderFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName.Replace(".cpp", ".h");
-                            //EntityVsFile.GetHeaderFileFromEntityByT4(GenHeaderFileFullName);
+                            string GenHeaderFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName.Replace(".cpp", ".h");
+                            EntityVsFile.GetHeaderFileFromEntityByT4(GenHeaderFileFullName);
                             //********************************************************************//
                             //4.将obj对象的数据序列化到xml文件中
                             EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);

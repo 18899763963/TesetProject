@@ -176,7 +176,7 @@ namespace SmallManagerSpace.Resources
             }
             //foreach
             //ComData.readAllLines.Add();
-            StreamReader sr = new StreamReader(FilePath, Encoding.UTF8);
+            StreamReader sr = new StreamReader(FilePath, Encoding.Default);
             String line;
             int Cid = 1;
             //匹配第一行

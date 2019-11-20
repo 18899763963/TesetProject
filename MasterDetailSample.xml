@@ -666,6 +666,12 @@
             Create the template output
             </summary>
         </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderString.GenerateFunctionAnnotation(System.String,System.String,System.String)">
+            生成函数注释
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderString.GenerateFunctionText">
+            生成函数定义
+        </member>
         <member name="M:SmallManagerSpace.Resources.TextTemplate.GetHeaderString.GenerateEnumText">
             生成枚举体定义
         </member>

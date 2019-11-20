@@ -19,7 +19,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+    #line 1 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class GetHeaderString : GetHeaderStringBase
     {
@@ -39,21 +39,21 @@ namespace SmallManagerSpace.Resources.TextTemplate
    作    者   : 用户1
    生成日期   : ");
             
-            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
@@ -61,113 +61,85 @@ namespace SmallManagerSpace.Resources.TextTemplate
             this.Write("日\r\n   最近修改   :\r\n   功能描述   : 单盘初始化信息处理\r\n   函数列表   :\r\n              \r\n   修改历史   :\r\n" +
                     "   1.日    期   : ");
             
-            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
             #line hidden
-            this.Write(@"日
-    作    者   : 用户1
-    修改内容   : 创建文件
-
-******************************************************************************/
-#ifndef FHAPP_OTN_USER_AUTO_H
-#define FHAPP_OTN_USER_AUTO_H
-
-#include ""fhapp_platform_adpt.h""
-#include ""fhapp_board_comm_inf.h""
-#include ""fhapp_otn_drv_adpt_inf.h""
-#include ""cbb_comm.h""
-#include ""fpga_app_inf.h""
-#include ""fhapp_otn_opt_drv_adapt_inf.h""
-#include ""fhapp_optical_adapt_inf.h""
-#include ""prbs_eth_comm_inf.h""
-#include ""otn_encryption_info.h""//加密头文件
-#include ""uasLibV2.h""
-
-#define	OTN_USER_BOARD_NUM_MAX		5         //单盘软件共用最大单盘数量
-#define	OTN_USER_LOGIC_PORT_NUM_MAX		80         //单盘逻辑口最大数量
-#define	OTN_USER_PHY_PORT_NUM_MAX		80         //单盘物理口最大数量
-#define	OTN_USER_POWER_PIN_MAX		10         //最大监测电源数
-#define	OTN_USER_FPGA_MODULE_MAX		5         //最大监测电源数
-
-#pragma pack(1)
-
-");
+            this.Write("日\r\n    作    者   : 用户1\r\n    修改内容   : 创建文件\r\n\r\n*************************************" +
+                    "*****************************************/\r\n#ifndef FHAPP_OTN_USER_AUTO_H\r\n#defi" +
+                    "ne FHAPP_OTN_USER_AUTO_H\r\n\r\n#include \"fhapp_platform_adpt.h\"\r\n#pragma pack(1)\r\n\r" +
+                    "\n");
             
-            #line 48 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 32 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
  GenerateEnumText(); 
             
             #line default
             #line hidden
             
-            #line 49 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+            #line 33 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
  GenerateStructText(); 
             
             #line default
             #line hidden
-            this.Write(@"
-#pragma pack()
-
-#ifdef  __cplusplus
-extern ""C"" 
-{
-#endif
-
-AAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info);
-
-AAL_INT32 otn_user_get_btype(AAL_UINT8 *btype);
-
-AAL_INT32 otn_user_get_board_info(AAL_UINT8 index, OTN_USER_BOARD_INFO *board_info);
-
-AAL_INT32 otn_user_get_port_info(AAL_UINT8 index, OTN_USER_PORT_INFO *port_info);
-
-AAL_INT32 otn_user_get_fpga_info(AAL_UINT8 index, OTN_USER_FPGA_INFO *fpga_info);
-
-AAL_INT32 otn_user_get_board_alm_info(AAL_UINT8 index, OTN_USER_BOARD_ALM_INFO *board_alm_info);
-
-AAL_INT32 otn_user_fpga_read(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 *data);
-
-AAL_INT32 otn_user_fpga_write(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 data);
-
-AAL_INT32 otn_user_get_pwr_uvalm(AAL_UINT8 chip_no, AAL_UINT8 pwr_pin, AAL_UINT8 *alm_value);
-
-AAL_INT32 otn_user_get_pwr_ovalm(AAL_UINT8 chip_no, AAL_UINT8 pwr_pin, AAL_UINT8 *alm_value);
-
-AAL_INT32 otn_user_get_clk_status(AAL_UINT8 chip_no, AAL_UINT8 *alm_value);
-
-AAL_INT32 otn_user_get_board_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp);
-
-AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp);
-
-#ifdef	__cplusplus
-}
-#endif	/* __cplusplus */
-
-#endif
-
-
-");
+            this.Write("\r\n#pragma pack()\r\n\r\n#ifdef  __cplusplus\r\nextern \"C\" \r\n{\r\n#endif\r\n\r\n");
+            
+            #line 42 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
+ GenerateFunctionText(); 
+            
+            #line default
+            #line hidden
+            this.Write("\r\n#ifdef\t__cplusplus\r\n}\r\n#endif\t/* __cplusplus */\r\n\r\n#endif\r\n\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 91 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetHeaderString.tt"
+        #line 51 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetHeaderString.tt"
  
+                    ///生成函数注释
+                    private void GenerateFunctionAnnotation(string type,string pointer,string funcName)
+                    {
+                    
+                        this.WriteLine("/******************************************************************************");
+                        this.WriteLine("*函数名   :{0}",funcName);
+                        this.WriteLine("*负责人   :");
+                        this.WriteLine("*创建日期 :{0}",DateTime.Now.ToString("yyyyMMdd"));
+                        this.WriteLine("*函数功能 :");
+                        this.WriteLine("*输入参数 :无");
+                        this.WriteLine("*输出参数 :{0}",pointer);
+                        this.WriteLine("*返回值   :0 - 成功，-1 - 失败");
+                        this.WriteLine("*调用关系 :");
+                        this.WriteLine("*其它     :");
+                        this.WriteLine("******************************************************************************/");
+                                
+                     }
 
+                    ///生成函数定义
+                    private void GenerateFunctionText()
+                    {
+                        if(ComData.showEntities.Count>=0)
+                        {
+                            foreach(ShowEntity i in ComData.showEntities)
+                            {
+                                GenerateFunctionAnnotation(i.argType,i.argName,i.funName);
+                                this.WriteLine("{0} {1}({2} *{3});",i.retType,i.funName,i.argType,i.argName);
+                                this.WriteLine("\r\n");
+                            }
+                        }
+                    }
 					///生成枚举体定义
                     private void GenerateEnumText()
 					{   
