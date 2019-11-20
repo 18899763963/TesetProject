@@ -519,8 +519,8 @@ namespace MasterDetailSample
                             string GenCppFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName;
                             EntityVsFile.GetCppFileFromEntityByT4(GenCppFileFullName);
                             //3.将当前树的数据放入header文件中 
-                            string GenHeaderFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName.Replace(".cpp", ".h");
-                            EntityVsFile.GetHeaderFileFromEntityByT4(GenHeaderFileFullName);
+                            //string GenHeaderFileFullName = ComData.saveWorkPath + @"\" + ComData.saveCFileName.Replace(".cpp", ".h");
+                            //EntityVsFile.GetHeaderFileFromEntityByT4(GenHeaderFileFullName);
                             //********************************************************************//
                             //4.将obj对象的数据序列化到xml文件中
                             EntitySerialize.XmlSerializeOnString(ComData.enumEntity, ComData.programStartPath + ComData.enumItemsFileName);

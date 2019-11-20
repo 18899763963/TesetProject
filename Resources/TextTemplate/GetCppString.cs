@@ -19,7 +19,7 @@ namespace SmallManagerSpace.Resources.TextTemplate
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+    #line 1 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class GetCppString : GetCppStringBase
     {
@@ -39,143 +39,61 @@ namespace SmallManagerSpace.Resources.TextTemplate
    作    者   : 用户1
    生成日期   : ");
             
-            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+            #line 15 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
             #line hidden
-            this.Write("日\r\n   最近修改   :\r\n   功能描述   : 单盘初始化信息处理\r\n   函数列表   :\r\n              \r\n   修改历史   :\r\n" +
-                    "   1.日    期   : ");
+            this.Write("日\r\n   最近修改   :\r\n   功能描述   : 单盘初始化信息处理\r\n   函数列表   :              \r\n   修改历史   :\r\n  " +
+                    " 日    期   : ");
             
-            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+            #line 20 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy")));
             
             #line default
             #line hidden
             this.Write("年");
             
-            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+            #line 20 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MM")));
             
             #line default
             #line hidden
             this.Write("月");
             
-            #line 21 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+            #line 20 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("dd")));
             
             #line default
             #line hidden
-            this.Write(@"日
-    作    者   : 用户1
-    修改内容   : 创建文件
-
-******************************************************************************/
-
-/*----------------------------------------------*
-* 包含头文件                                   *
-*----------------------------------------------*/
-#include ""fhapp_otn_user_auto.h""
-
-
-AAL_INT32 otn_user_get_btype_info(OTN_USER_B_TYPE_INFO *btype_info)
-{
-");
+            this.Write("日\r\n   作    者   : 用户1\r\n   修改内容   : 创建文件\r\n*****************************************" +
+                    "*************************************/\r\n\r\n#include \"fhapp_otn_user_auto.h\"\r\n\r\n\r\n" +
+                    "");
             
-            #line 35 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
- GenerateTextToFunction("OTN_USER_B_TYPE_INFO","btype_info->" ,""); 
+            #line 28 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
+ GetFunctionEntity(); 
             
             #line default
             #line hidden
-            this.Write("}\r\n\r\nAAL_INT32 otn_user_get_btype(AAL_UINT8 *btype)\r\n{\r\n    return 0;\r\n}\r\n\r\nAAL_I" +
-                    "NT32 otn_user_get_board_info(AAL_UINT8 index, OTN_USER_BOARD_INFO *board_info)\r\n" +
-                    "{\r\n\r\n");
-            
-            #line 46 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
- GenerateTextToFunction("OTN_USER_BOARD_INFO","board_info->","index"); 
-            
-            #line default
-            #line hidden
-            this.Write("}\r\n\r\nAAL_INT32 otn_user_get_port_info(AAL_UINT8 index, OTN_USER_PORT_INFO *port_i" +
-                    "nfo)\r\n{\r\n");
-            
-            #line 51 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
- GenerateTextToFunction("OTN_USER_PORT_INFO","port_info->","index"); 
-            
-            #line default
-            #line hidden
-            this.Write("}\r\n\r\nAAL_INT32 otn_user_get_fpga_info(AAL_UINT8 index, OTN_USER_FPGA_INFO *fpga_i" +
-                    "nfo)\r\n{\r\n");
-            
-            #line 56 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
- GenerateTextToFunction("OTN_USER_FPGA_INFO","fpga_info->","index"); 
-            
-            #line default
-            #line hidden
-            this.Write("}\r\n\r\nAAL_INT32 otn_user_get_board_alm_info(AAL_UINT8 index, OTN_USER_BOARD_ALM_IN" +
-                    "FO *board_alm_info)\r\n{\r\n");
-            
-            #line 61 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
- GenerateTextToFunction("OTN_USER_BOARD_ALM_INFO","board_alm_info->","index"); 
-            
-            #line default
-            #line hidden
-            this.Write(@"}
-
-
-AAL_INT32 otn_user_fpga_read(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 *data)
-{
-    return 0;
-}
-
-AAL_INT32 otn_user_fpga_write(AAL_UINT8 chip_no,AAL_UINT32 fpga_addr, AAL_UINT32 data)
-{
-    return 0;
-}
-
-AAL_INT32 otn_user_get_pwr_uvalm(AAL_UINT8 chip_no, AAL_UINT8 pwr_pin, AAL_UINT8 *alm_value)
-{
-    return 0;
-}
-
-AAL_INT32 otn_user_get_pwr_ovalm(AAL_UINT8 chip_no, AAL_UINT8 pwr_pin, AAL_UINT8 *alm_value)
-{
-    return 0;
-}
-
-AAL_INT32 otn_user_get_clk_status(AAL_UINT8 chip_no, AAL_UINT8 *alm_value)
-{
-    return 0;
-}
-
-AAL_INT32 otn_user_get_board_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
-{
-    return 0;
-}
-
-AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
-{
-    return 0;
-}
-");
+            this.Write("\r\n");
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 99 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeTools\Resources\TextTemplate\GetCppString.tt"
+        #line 30 "F:\WorkProject\Fiber_Project\2.Software\GenCodeTools\GenCodeToolsSource\Resources\TextTemplate\GetCppString.tt"
  
                     ///得到BoardNum数量
 				    private string GetBoardNum()
@@ -196,40 +114,66 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
                         }
                         return substring;
 					}
+                    
+                    ///得到函数名称并填充函数内容
+                    private void GetFunctionEntity()
+                    {
+                        if(ComData.showEntities.Count>=0)
+                        {
+                            foreach(ShowEntity i in ComData.showEntities)
+                            {
+                                GenerateFunctionAnnotation(i.argType,i.argName,i.funName);
+                                this.WriteLine("{0} {1}({2} *{3})",i.retType,i.funName,i.argType,i.argName);
+                                this.WriteLine("{");
+                                this.WriteLine("\tif({0} != NULL)",i.argName);
+                                GenerateTextToFunction(i.argType,i.argName+"->","");
+                                this.WriteLine("\telse");
+                                this.WriteLine("\t{");
+                                this.WriteLine("\t\t return -1;");
+                                this.WriteLine("\t}");
+                                this.WriteLine("\treturn 0;");	
+                                this.WriteLine("}");
+                                this.WriteLine("\r\n\r\n");
+                            }
+                        }
+                    }        
+                    ///生成函数注释
+                    private void GenerateFunctionAnnotation(string type,string pointer,string funcName)
+                    {
+                    
+                        this.WriteLine("/******************************************************************************");
+                        this.WriteLine("*函数名   :{0}",funcName);
+                        this.WriteLine("*负责人   :");
+                        this.WriteLine("*创建日期 :{0}",DateTime.Now.ToString("yyyyMMdd"));
+                        this.WriteLine("*函数功能 :");
+                        this.WriteLine("*输入参数 :无");
+                        this.WriteLine("*输出参数 :{0}",pointer);
+                        this.WriteLine("*返回值   :0 - 成功，-1 - 失败");
+                        this.WriteLine("*调用关系 :");
+                        this.WriteLine("*其它     :");
+                        this.WriteLine("******************************************************************************/");
+                                
+                     }
+
                     ///生成字符串入口函数
-					private void GenerateTextToFunction(string type,string pointer,string indexName)
-    {
+	                private void GenerateTextToFunction(string type,string pointer,string indexName)
+                    {
 				
-        //分类指定type的数据
-        var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
-        //添加校验项目					
-        if(indexName!="")
-        {
-            this.WriteLine("\tif(index >= {0})",GetBoardNum());	
-            this.WriteLine("\t{");
-            this.WriteLine("\t\t"+GetPointerName(pointer)+" = NULL;");	
-            this.WriteLine("\t\treturn -1;");
-            this.WriteLine("\t}");
-            this.WriteLine("\tswitch({0})","index");
-        }
-        //遍历其中的项目		
-        if(indexName==""){this.WriteLine("\tswitch(0)");}
-					  
-        this.WriteLine("\t{");
-        int i=0;
-        foreach(var StructItem in StructList)
-        {
-            this.WriteLine("\t\tcase {0}:",i);
-            TraversalStructItem(StructItem,pointer,false,0);
-            this.WriteLine("\t\tbreak;");
-            i++;
-        }
-        //添加default:break;字符串
-        this.WriteLine("\t\tdefault:");
-        this.WriteLine("\t\tbreak;");
-        this.WriteLine("\t}");
-        this.WriteLine("\treturn 0;");	
-    }
+                        //分类指定type的数据
+                        var StructList=ComData.customStruct.nodeList.Where(x => (x as StructItem).type == type).ToList(); 
+               
+                        //遍历其中的项目	  
+                        this.WriteLine("\t{");
+                        int i=0;
+                        foreach(var StructItem in StructList)
+                        {
+                            TraversalStructItem(StructItem,pointer,false,0);
+                            i++;
+                        }
+                        this.WriteLine("\t}");
+
+                    }
+
 					///将parameter struct对象分别放入不同队列
 					private List<Dictionary<string,List<object>>> GroupSameObject(List<object> objList)
 					{
@@ -269,6 +213,8 @@ AAL_INT32 otn_user_get_framer_temp(AAL_UINT8 chip_no, AAL_FLOAT32 *temp)
 								return listDic;
 								
 					}
+
+
                 ///遍历得到树形结构字符串
 				private void TraversalStructItem(object ObjItem,string Prefix,bool isArray,int indexValue)
 				{		

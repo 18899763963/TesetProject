@@ -176,7 +176,7 @@ namespace SmallManagerSpace.Resources
             }
             //foreach
             //ComData.readAllLines.Add();
-            StreamReader sr = new StreamReader(FilePath, Encoding.Default);
+            StreamReader sr = new StreamReader(FilePath, Encoding.UTF8);
             String line;
             int Cid = 1;
             //匹配第一行
@@ -303,7 +303,7 @@ namespace SmallManagerSpace.Resources
                             bool isArrayNumber = false;
                             int arrayNumber = 0;
                             //此处的注释匹配改为可选 (;|[\[]{ 1} (?< ArrayNum >[\w] +)[\]]{ 1};)
-                            string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;([\s]*/+(?<parameternote>[\w]+)|[\s]*)";
+                            string RegexStr3 = @"(?<parametertype>[\S]+)[\s]+(?<parametername>[\S]+)[\s]*;([\s]*/+(?<parameternote>[\S]*)[\s]*|[\s]*)";
                             Match matchStr = Regex.Match(line, RegexStr3);
                             type = matchStr.Groups["parametertype"].ToString();
                             note = matchStr.Groups["parameternote"].ToString() ?? "";

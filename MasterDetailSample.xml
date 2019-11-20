@@ -259,41 +259,37 @@
             <param name="node">节点</param>
             <param name="setIndex">下标</param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.DeletetNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.DeletetNode(DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
             <summary>
             遍历删除Struct节点
             </summary>
-            <param name="RootN">根节点</param>
             <param name="SelectNode">选择节点</param>
             <param name="preinputName">预输入名</param>
             <param name="require">当前数量</param>
             <param name="diff">需要数量（正数）</param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AddStructNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AddStructNode(DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
             <summary>
             遍历添加Struct节点
             </summary>
-            <param name="RootN">根节点</param>
             <param name="SelectNode">选择节点</param>
             <param name="preinputName">预输入名</param>
             <param name="require">当前数量</param>
             <param name="diff">需要数量（正数）</param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AddBaseEnumNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.AddBaseEnumNode(DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
             <summary>
             添加base,enum节点
             </summary>
-            <param name="RootN"></param>
             <param name="selectedNode"></param>
             <param name="preinputName"></param>
             <param name="require"></param>
             <param name="diff"></param>
         </member>
-        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.TraverslAddBaseEnumNode(DevComponents.AdvTree.Node,DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
+        <member name="M:SmallManagerSpace.Resources.GUIVsEntity.AdvTreeObj.TraverslAddBaseEnumNode(DevComponents.AdvTree.Node,System.String,System.Int32,System.Int32)">
             <summary>
             遍历添加base,enum节点
             </summary>
-            <param name="RootN"></param>
             <param name="selectedNode"></param>
             <param name="preinputName"></param>
             <param name="require"></param>
@@ -549,6 +545,12 @@
         </member>
         <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GetPointerName(System.String)">
             得到pointerName
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GetFunctionEntity">
+            得到函数名称并填充函数内容
+        </member>
+        <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GenerateFunctionAnnotation(System.String,System.String,System.String)">
+            生成函数注释
         </member>
         <member name="M:SmallManagerSpace.Resources.TextTemplate.GetCppString.GenerateTextToFunction(System.String,System.String,System.String)">
             生成字符串入口函数

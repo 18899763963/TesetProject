@@ -211,9 +211,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             AdvTree CurrentAdvTree = (AdvTree)sender;
             Node selectedNode = CurrentAdvTree.SelectedNode;
             BeforeValue = selectedNode.SelectedCell.Text;
-            // BeforeSelectedColumnData = GetSelectedColumnData(selectedNode);
-            //string type_space_name = BeforeSelectedColumnData["type"] + " " + BeforeSelectedColumnData["name"];
-        }
+         }
 
         /// <summary>
         /// 处理Value列变更后的操作
@@ -233,26 +231,22 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
                 //处理方法：1.含preinput=entry 变量
                 //          2.从父节点开始找到 同级的兄妹结点  name和preinput值相同的节点
                 //          3.在同父亲节点中添加或删除新节点
-
                 //1.含preinput=entry 变量
                 string preinputName = SelectedColumnData["name"];
                 //得到节点变动数值  current,diff  
                 Dictionary<string, int> nameNum = GetAddNodeCount(selectedNode, SelectedColumnData["name"], SelectedColumnData["value"]);
-
                 if (nameNum.Count > 0)
                 {
                     if (nameNum["diff"] > 0)
                     {
-                        //增加节点
-                        Node RootNode = CurrentAdvTree.DisplayRootNode;
-                        AddStructNode(RootNode, selectedNode, preinputName, nameNum["current"], nameNum["diff"]);
-                        AddBaseEnumNode(RootNode, selectedNode, preinputName, nameNum["current"], nameNum["diff"]);
+                        //增加节点      
+                        AddStructNode(selectedNode, preinputName, nameNum["current"], nameNum["diff"]);
+                        AddBaseEnumNode(selectedNode, preinputName, nameNum["current"], nameNum["diff"]);
                     }
                     else if (nameNum["diff"] < 0)
                     {
-                        //删除节点
-                        Node RootNode = CurrentAdvTree.DisplayRootNode;
-                        DeletetNode(RootNode, selectedNode, preinputName, nameNum["current"], nameNum["diff"]);
+                        //删除节点                     
+                        DeletetNode( selectedNode, preinputName, nameNum["current"], nameNum["diff"]);
 
                     }
                 }
@@ -494,16 +488,15 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// <summary>
         /// 遍历删除Struct节点
         /// </summary>
-        /// <param name="RootN">根节点</param>
         /// <param name="SelectNode">选择节点</param>
         /// <param name="preinputName">预输入名</param>
         /// <param name="require">当前数量</param>
         /// <param name="diff">需要数量（正数）</param>
-        private void DeletetNode(Node RootN, Node SelectNode, string preinputName, int require, int diff)
+        private void DeletetNode(Node SelectNode, string preinputName, int require, int diff)
         {
             //********************删除顶级节点************************************//
             //查找同名节点
-            Node[] nodes = RootN.Nodes.Find(preinputName, true);
+            Node[] nodes = SelectNode.Parent.Nodes.Find(preinputName, true);
             string columnName = "name";
             //分组同名节点
             Dictionary<string, List<Node>> SameNameNode = NodeGroupByCellHeaderName(nodes, columnName);
@@ -559,15 +552,14 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// <summary>
         /// 遍历添加Struct节点
         /// </summary>
-        /// <param name="RootN">根节点</param>
         /// <param name="SelectNode">选择节点</param>
         /// <param name="preinputName">预输入名</param>
         /// <param name="require">当前数量</param>
         /// <param name="diff">需要数量（正数）</param>
-        private void AddStructNode(Node RootN, Node SelectNode, string preinputName, int require, int diff)
+        private void AddStructNode(Node SelectNode, string preinputName, int require, int diff)
         {
             //查找同名节点
-            Node[] nodes = RootN.Nodes.Find(preinputName, true);
+            Node[] nodes = SelectNode.Parent.Nodes.Find(preinputName, true);
             string columnName = "name";
             //分组同名节点
             Dictionary<string, List<Node>> SameNameNode = NodeGroupByCellHeaderName(nodes, columnName);
@@ -626,24 +618,22 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
         /// <summary>
         /// 添加base,enum节点
         /// </summary>
-        /// <param name="RootN"></param>
         /// <param name="selectedNode"></param>
         /// <param name="preinputName"></param>
         /// <param name="require"></param>
         /// <param name="diff"></param>
-        private void AddBaseEnumNode(Node RootN, Node selectedNode, string preinputName, int require, int diff)
+        private void AddBaseEnumNode(Node selectedNode, string preinputName, int require, int diff)
         {
-            TraverslAddBaseEnumNode(RootN, selectedNode, preinputName, require, diff);
+            TraverslAddBaseEnumNode(selectedNode, preinputName, require, diff);
         }
         /// <summary>
         /// 遍历添加base,enum节点
         /// </summary>
-        /// <param name="RootN"></param>
         /// <param name="selectedNode"></param>
         /// <param name="preinputName"></param>
         /// <param name="require"></param>
         /// <param name="diff"></param>
-        private void TraverslAddBaseEnumNode(Node RootN, Node selectedNode, string preinputName, int require, int diff)
+        private void TraverslAddBaseEnumNode(Node selectedNode, string preinputName, int require, int diff)
         {
             //添加同级子级节点
             //寻找，分类
@@ -689,7 +679,7 @@ namespace SmallManagerSpace.Resources.GUIVsEntity
             {
                 foreach (Node selectedNodeChild in selectedNode.Nodes)
                 {
-                    TraverslAddBaseEnumNode(RootN, selectedNodeChild, preinputName, require, diff);
+                    TraverslAddBaseEnumNode( selectedNodeChild, preinputName, require, diff);
                 }
             }
 
